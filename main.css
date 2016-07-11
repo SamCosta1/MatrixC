@@ -1,0 +1,13 @@
+#headerText {
+   text-align: center;
+   color: white;
+   font-size: 60px;
+   margin:0px;
+   line-height:1;
+}
+
+#header {
+  font-family: 'Shrikhand', cursive;
+font-family: 'Hind Vadodara', sans-serif;
+   background-color: #333333;
+}
