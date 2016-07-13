@@ -1,0 +1,2 @@
+while true; do speep 0.2; sass main.scss dependencies/main.css; done
+

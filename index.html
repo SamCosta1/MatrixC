@@ -1,15 +1,98 @@
 <html>
+
 <head>
-   <title>Matrix Calculator</title>
-   <script src="dependencies/jquery-3.0.0.min.js"></script>
-   <link href="dependencies/headerfont" rel="stylesheet">
-   <link rel="stylesheet" href="main.css">
+    <title>Matrix Calculator</title>
+    <script src="dependencies/jquery-3.0.0.min.js"></script>
+    <link href="dependencies/headerfont" rel="stylesheet">
+    <link rel="stylesheet" href="dependencies/main.css">
 </head>
 
-<div id="header">
-    <div id="headerText">
-      M&#945trix<br>C&#945lculator
+<body>
+    <div id="header">
+        <img class="Lbracket center bracket" src="img/bracketWhite.png">
+        <div id="headerText">
+            M&#945trix
+            <br>C&#945lculator
+        </div>
+        <img class="Rbracket center flip" src="img/bracketWhite.png">
     </div>
-</div>
+    <hr>
+
+    <div id="mainBody">
+        <p id="enterMat"> Enter Matricies! </p>
+        <div id="matDefinitions">
+
+        </div><br><br><br>
+
+        <div id="commandLine" class="center">
+          <textarea id="cmdinput" rows="3" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" >MatCalculator &gt&gt </textarea>
+<script>
+var base = "MatCalculator >> ";
+var regex = new RegExp("^" + base, "i");
+$('#cmdinput').on("input", function(ev) {
+  var query = $(this).val();
+  if (!regex.test(query)) {
+    //ev.preventDefault();
+    $(this).val(base);
+  }
+});
+
+</script>
+        </div>
+    </div>
+
+    <script>
+        var matLbl = "A"
+        var $div = $("<div>", {
+            id: matLbl,
+            class: "matInput"
+        });
+
+
+        var $lab = $("<label>", {
+            id: matLbl + "-name",
+            class: "pull-left"
+        });
+        var $labtxt = $("<input>", {
+            class: "clickedit",
+            type: "text"
+        });
+
+        $lab.append(matLbl);
+
+
+
+        $div.append($lab);
+        $div.append($labtxt);
+        $div.append("=");
+        $('#matDefinitions').append($div);
+
+
+        function endEdit(e) {
+            var input = $(e.target),
+                label = input && input.prev();
+
+            label.text(input.val() === '' ? defaultText : input.val());
+            input.hide();
+            label.show();
+        }
+
+        $('.clickedit').hide()
+            .focusout(endEdit)
+            .keyup(function(e) {
+                if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+                    endEdit(e);
+                    return false;
+                } else {
+                    return true;
+                }
+            })
+            .prev().click(function() {
+                $(this).hide();
+                $(this).next().show().focus();
+            });
+    </script>
+
+</body>
 
 </html>

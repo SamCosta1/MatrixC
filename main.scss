@@ -1,0 +1,109 @@
+$fontstack: 'Mandali', sans-serif;
+$col1: #fbfbfb;
+$col2: gray;
+
+#headerText {
+    text-align: center;
+    color: white;
+    font-size: 50px;
+    margin: 0px;
+    line-height: 1;
+    margin-top: 7px
+}
+body {
+    margin: 0px;
+    padding: 0px;
+    font: 100% $fontstack;
+    background-color: $col1;
+}
+label:hover {
+    background: #f2f5ff;
+    border-radius:5px;
+    padding:2px 4px;
+}
+#enterMat {
+  font: 100% $fontstack;
+  font-size: 30px;
+
+}
+
+.matInput {
+   letter-spacing: 10px;
+   font-size: 20px;
+}
+
+#header {
+    margin-top: 0;
+    font: 100% $fontstack;
+    background-color: #333333;
+    border: 0px;
+    display: inline-flex;
+    width: 100%;
+    height:120px;
+}
+.center {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+.flip {
+    transform: scaleX(-1);
+}
+.bracket {
+  margin-top: 3px;
+  margin-bottom:3px;
+}
+.Rbracket {
+    margin-left: 10px;
+}
+.Lbracket {
+    margin-right: 10px;
+}
+#cmdinput {
+   background: transparent;
+   border:none;
+   width:100%;
+   color:white;
+   resize: none;
+}
+
+#cmdinput:hover {
+   border:none;
+}
+#cmdinput:focus {
+  border:none;
+  outline:none;
+}
+
+#commandLine {
+  width:100%;
+  background-color: #080440;
+  height:50px;
+  border-radius: 10px;
+}
+
+#mainBody {
+    width: 50%;
+    min-width: 700px;
+    margin-top: 0;
+    padding-top: 0;
+    height: 100%;
+    display: table;
+    margin: auto;
+    background-color: white;
+    padding-left: 10px;
+}
+hr {
+    margin-top: 0;
+    padding: 0.5px;
+    background-color: black;
+    border-color: #737373;
+    margin-bottom: 0;
+}
+
+.clickedit {
+   width:60px;
+
+   font-size: 30px;
+   border-style: none;
+}
