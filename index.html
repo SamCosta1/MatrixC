@@ -24,11 +24,34 @@
     <div id="mainBody">
         <p id="enterMat"> Enter Matricies! </p>
         <div id="matDefinitions">
-
         </div>
         <br>
         <br>
-        <br>
+        <div id="newMatGroup">
+            <div id="newLabel" hidden> New Matrix!! </div>
+            <div id="btnNewMat" class="center">
+                <canvas id="cvsNewBtn" width=40; height=40></canvas>
+            </div>
+        </div>
+        <script>
+            drawButton();
+            var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+            var index = 2;
+            $('#btnNewMat')
+                .hover(function() {
+                    $('#newLabel').show();
+
+                }, function() {
+                    $('#newLabel').hide();
+                })
+                .click(function() {
+                    if (isValid(alphabet[index])) {
+                        newMatrixGUI(alphabet[index]);
+                    } else
+                        newMatrixGUI("-");
+                    index++;
+                });
+        </script>
 
         <div id="commandLine" class="center">
             <textarea id="cmdinput" rows="3" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">MatCalculator &gt&gt </textarea>
@@ -48,7 +71,40 @@
 
 
 
-                */
+*/
+                // Take input from commandLine
+                var base = "MatCalculator >> ";
+                var regex = new RegExp("^" + base, "i");
+
+                $('#cmdinput')
+                    .on("input", function(ev) {
+                        var query = $(this).val();
+                        if (!regex.test(query)) {
+                            //ev.preventDefault();
+                            $(this).val(base);
+                        }
+                    })
+                    .keyup(function(e) {
+                        var code = e.keyCode ? e.keyCode : e.which;
+                        if (code == 13) {
+                            // Enter key pressed
+
+
+                            var input = $(this).val().slice(base.length);
+                            console.log("I'm running!");
+                            $(this).val(base);
+                        }
+                        /*
+                                                } else if (code == 38) {
+
+                                                    $(this).val(base + history[history.length - 1]);
+                                                    history.pop();
+                                                }*/
+                    });
+
+                function commandInput(cmd) {
+
+                }
 
 
                 variables.set("A", m);
@@ -57,9 +113,9 @@
                 newMatrixGUI("B");
             </script>
         </div>
-<div id="output">
+        <div id="output">
 
-</div>
+        </div>
     </div>
 
 

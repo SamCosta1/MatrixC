@@ -1,30 +1,21 @@
-// Take input from commandLine
-var base = "MatCalculator >> ";
-var regex = new RegExp("^" + base, "i");
-$('#cmdinput')
-    .on("input", function(ev) {
-        var query = $(this).val();
-        if (!regex.test(query)) {
-            //ev.preventDefault();
-            $(this).val(base);
-        }
-    })
-    .keyup(function(e) {
-        var code = e.keyCode ? e.keyCode : e.which;
-        if (code == 13) {
-            // Enter key pressed
+function drawButton() {
+    var c = document.getElementById("cvsNewBtn");
+    var ctx = c.getContext("2d");
+    ctx.fillStyle = "black";
+    ctx.moveTo(0, 0);
+    ctx.beginPath();
+    var radius = 20;
+    ctx.arc(radius, radius, radius, 0, 2 * Math.PI);
 
-            var input = $(this).val().slice(base.length);
-
-            commandInput(input);
-            $(this).val(base);
-        }
-    });
-
-function commandInput(cmd) {
-
+    ctx.fill();
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 3;
+    ctx.moveTo(radius,5);
+    ctx.lineTo(radius,2*radius - 5);
+    ctx.moveTo(5,radius);
+    ctx.lineTo(2*radius - 5, radius);
+    ctx.stroke();
 }
-
 
 function newMatrixGUI(matLbl) {
 
@@ -97,7 +88,7 @@ function endEdit(e) {
 function isValid(varName) {
 
     return !$('#' + varName).length &&
-        !(varName === '')
+        !(varName == '')
 }
 
 function makeCammelCase(inputted) {
