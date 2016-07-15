@@ -22,7 +22,7 @@
     <hr>
 
     <div id="mainBody">
-        <p id="enterMat"> Enter Matricies! </p>
+        <p id="enterMat"> Enter Matrices! </p>
         <div id="matDefinitions">
         </div>
         <br>
@@ -46,9 +46,9 @@
                 })
                 .click(function() {
                     if (isValid(alphabet[index])) {
-                        newMatrixGUI(alphabet[index]);
+                        newMatrixGUI(alphabet[index],3,3);
                     } else
-                        newMatrixGUI("-");
+                        newMatrixGUI("-",3,3);
                     index++;
                 });
         </script>
@@ -109,8 +109,8 @@
 
                 variables.set("A", m);
                 variables.set("B", m);
-                newMatrixGUI("A");
-                newMatrixGUI("B");
+                newMatrixGUI("A", 3, 3);
+                newMatrixGUI("B", 3, 3);
             </script>
         </div>
         <div id="output">
