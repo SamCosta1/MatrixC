@@ -16,12 +16,17 @@ function drawButton() {
     ctx.lineTo(2 * radius - 5, radius);
     ctx.stroke();
 }
+var count = 0;
 
-function newMatrixGUI(matLbl, rows, cols) {
+function newMatrixGUI(matLbl, row, col) {
     var $div = $("<div>", {
         id: "MAT-" + matLbl,
         class: "matInput"
     });
+    var $span = $("<span>", {
+        class: "label"
+    });
+    $span.css("top", col * 35 - 5);
     var $lab = $("<label>", {
         class: "pull-left"
     });
@@ -29,44 +34,67 @@ function newMatrixGUI(matLbl, rows, cols) {
         class: "clickedit",
         type: "text"
     });
-    var $LBrac = $("<img>", {
-        src: "img/bracketBlack.png",
-        class: "matBracket"
-    });
-    var $RBrac = $("<img>", {
-        src: "img/bracketBlack.png",
-        class: "matBracket flip"
-    });
-
-
 
     $lab.append(matLbl);
-    $div.append($lab);
-    $div.append($labtxt);
-    $div.append(" = ");
+    $span.append($lab);
+    $span.append($labtxt);
+    $span.append("     = ");
+    $div.append($span);
 
-    var $inputs = $("<span>", {
-        id: matLbl + "-cells",
-        class: "grid"
+    var $contnr = $("<div>", {
+        class: "matContainer"
     });
-    $inputs.append($LBrac);
-    // Cells
-    for (i = 0; i < rows; i++) {
-        for (j = 0; j < cols; j++) {
-            var $txt = $("<input>", {
-                class: "matrixCell",
-                type: "text"
-            });
-            $inputs.append($txt);
+    var $table = $("<table>", {
+        class: "matGui",
+        id: "t" + count
+    });
+    $table.attr("data-cols",col);
+    $table.attr("data-rows",row);
+    for (i = 0; i < row; i++) {
+        var $tr = $("<tr>");
+        for (j = 0; j < col; j++) {
+            var $td = $("<td>");
+            $td.append(getCell(i, j));
+            $tr.append($td);
         }
+        $table.append($tr);
     }
-    $inputs.append($RBrac);
-    $inputs.append($("<br>"));
-    $div.append($inputs);
+    $contnr.append($table);
+
+    $div.append($contnr);
+
+    $colbtn = $("<button>", {
+        text: ">",
+        class: "colButton rowColModifier"
+    });
+    $colbtn.attr("data-tableid", "t" + count);
+    $rowbtn = $("<button>", {
+        text: "<",
+        class: "rowButton rowColModifier"
+    });
+
+    $colbtn.css("top", col * 35 - 5);
+    $rowbtn.css("top", col * 35 - 5);
+
+    $colbtn.click(
+        function() {
+            var rowCount = 0;
+            $table = $("#" + $(this).attr("data-tableid"));
+            var n = $table.attr("data-cols")-1;
+            $table.attr("data-cols", n+2)
+            console.log($table.attr("cols"));
+            $table.find('tr').each(function() {
+                    var $td = $("<td>");
+                    $td.append(getCell(rowCount,n+1));
+                    rowCount++;
+                    $(this).find('td').eq(n).after($td);
+                })
+        });
+    count++;
+    $div.append($colbtn);
+    $div.append($rowbtn);
     $('#matDefinitions').append($div);
-    //$('#matDefinitions').append($inputs);
-
-
+    $('#matDefinitions').append($("<br>"));
     $('.clickedit').hide()
         .focusout(endEdit)
         .keyup(function(e) {
@@ -81,7 +109,16 @@ function newMatrixGUI(matLbl, rows, cols) {
             $(this).hide();
             $(this).next().show().focus();
         });
+}
 
+function getCell(row, col) {
+    var $c = $("<input>", {
+        class: "matrixCell",
+        type: "text"
+    });
+    $c.attr('data-row', row);
+    $c.attr('data-col', col);
+    return $c;
 }
 
 function endEdit(e) {

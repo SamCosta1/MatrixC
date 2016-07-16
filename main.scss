@@ -20,22 +20,29 @@ $col2: gray;
     width: 50px;
     height: 50px;
     margin-right: 10px;
-    margin-bottom:10px;
+    margin-bottom: 10px;
     text-align: center;
-
 }
-.grid {
-  position: relative;
-  columns:3;
-}
+$borderStyle: 3px solid black;
 .matGUI {
-   border: 2px solid black;
+    padding-left: 10px;
+    padding-top: 10px;
+    border-left: $borderStyle;
+    border-right: $borderStyle;
+    border-radius: 20px;
+}
+.matContainer {
+    margin-left: 20px;
+    margin-top: 10px;
 }
 body {
     margin: 0;
     padding: 0;
     font: 100% $fontstack;
     background-color: $col1;
+}
+.label {
+    position: relative;
 }
 label:hover {
     background: #f2f5ff;
@@ -57,6 +64,30 @@ label:hover {
 }
 .matInput {
     font-size: 20px;
+    display: inline-flex;
+}
+
+.rowColModifier {
+    height: 30px;
+    position: relative;
+    margin-left: 15px;
+    border-radius: 5px;
+    border-color: black;
+    background-color: white;
+    cursor: pointer;
+}
+
+.rowButton {
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+    position: relative;
+}
+.colButton {
+    
+
 }
 #header {
     margin-top: 0;
