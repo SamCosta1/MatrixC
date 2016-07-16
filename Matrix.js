@@ -3,6 +3,8 @@ var variables = new Map();
 function Matrix(arrMatrix) {
     if (arrMatrix instanceof Array)
         this.matrix = math.matrix(arrMatrix);
+    else if (arrMatrix == null)
+        this.matrix = math.zeros(3,3);
     else
         this.matrix = arrMatrix;
 
@@ -26,39 +28,17 @@ function Matrix(arrMatrix) {
     this.power = function(power) {
         var result = this.matrix;
         for (i = 1; i < power; i++)
-            result = math.multiply(result,this.matrix);
-
-return new Matrix(result);
-
+            result = math.multiply(result, this.matrix);
+        return new Matrix(result);
     }
 
-    // Functions with label setters
-    this.Ldeterminant = function(label) {
-        var tmp = this.det();
-        variables.set(label, tmp);
-        return tmp;
-    }
-    this.Ldet = function(label) {
-        return this.determinant(label);
+    this.update = function(row, col, val) {
+        this.matrix = math.subset(this.matrix, math.index(parseInt(row),
+            parseInt(col)), parseInt(val));
     }
 
-    this.Ltranspose = function(label) {
-            var tmp = this.transpose();
-            variables.set(label, tmp);
-            return tmp;
-        }
-        //TODO
-    this.Ladd = function(other, label) {
-        return this.add(other);
+    this.getCell = function(row,col) {
+        return math.subset(this.matrix, math.index(row, col));
     }
-    this.Lsubtract = function(other, label) {
-        var tmp = this.subtract(other);
-        variables.set(label, tmp);
-        return tmp;
-    }
-    this.Lpower = function(power, label) {
-        var tmp = this.power(power);
-        variables.set(label, tmp);
-        return tmp;
-    }
+
 }
