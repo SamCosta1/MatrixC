@@ -95,7 +95,7 @@ function newMatrixGUI(matLbl, row, col) {
             $table = $("#" + $(this).attr("data-tableid"));
             var numCols = $table.attr("data-cols");
             var numRows = $table.attr("data-rows");
-            $table.attr("data-rows", numRows);
+            $table.attr("data-rows", parseInt(numRows)+1);
 
             $tr = $("<tr>");
             for (i = 0; i < numCols; i++) {
