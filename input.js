@@ -48,8 +48,8 @@ function newMatrixGUI(matLbl, row, col) {
         class: "matGui",
         id: "t" + count
     });
-    $table.attr("data-cols",col);
-    $table.attr("data-rows",row);
+    $table.attr("data-cols", col);
+    $table.attr("data-rows", row);
     for (i = 0; i < row; i++) {
         var $tr = $("<tr>");
         for (j = 0; j < col; j++) {
@@ -72,7 +72,7 @@ function newMatrixGUI(matLbl, row, col) {
         text: "<",
         class: "rowButton rowColModifier"
     });
-
+    $rowbtn.attr("data-tableid", "t" + count);
     $colbtn.css("top", col * 35 - 5);
     $rowbtn.css("top", col * 35 - 5);
 
@@ -80,16 +80,35 @@ function newMatrixGUI(matLbl, row, col) {
         function() {
             var rowCount = 0;
             $table = $("#" + $(this).attr("data-tableid"));
-            var n = $table.attr("data-cols")-1;
-            $table.attr("data-cols", n+2)
+            var n = $table.attr("data-cols") - 1;
+            $table.attr("data-cols", n + 2)
             console.log($table.attr("cols"));
             $table.find('tr').each(function() {
-                    var $td = $("<td>");
-                    $td.append(getCell(rowCount,n+1));
-                    rowCount++;
-                    $(this).find('td').eq(n).after($td);
-                })
+                var $td = $("<td>");
+                $td.append(getCell(rowCount, n + 1));
+                rowCount++;
+                $(this).find('td').eq(n).after($td);
+            })
         });
+    $rowbtn.click(
+        function() {
+            $table = $("#" + $(this).attr("data-tableid"));
+            var numCols = $table.attr("data-cols");
+            var numRows = $table.attr("data-rows");
+            $table.attr("data-rows", numRows);
+
+            $tr = $("<tr>");
+            for (i = 0; i < numCols; i++) {
+                $td = $("<td>");
+                $td.append(getCell(numRows, i));
+                $tr.append($td);
+            }
+
+            $table.append($tr);
+
+
+        });
+
     count++;
     $div.append($colbtn);
     $div.append($rowbtn);
