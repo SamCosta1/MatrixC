@@ -18,6 +18,9 @@ function Matrix(arrMatrix) {
     this.transpose = function() {
         return new Matrix(math.transpose(this.matrix));
     }
+    this.inverse = function() {
+        return new Matrix(math.inv(this.matrix));
+    }
     this.add = function(other) {
         return new Matrix(math.add(this.matrix, other.matrix));
     }

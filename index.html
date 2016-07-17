@@ -92,21 +92,78 @@
                             comHist.pop();
                         }
                     });
-                //                  trans(5*A)+B*C
+                //                  (transpose(5*A)+B*C+inverse(A+B))
                 newMatrix("A", 2, 2, m);
                 newMatrix("B", 3, 3, n);
 
                 function commandInput(cmd) {
-                    var stack = [];
+                    cmd = cmd.replace(/ /g, '');
+                    cmd = parseNames(cmd);
+                    console.log(cmd);
+                    var theArray = [];
                     for (i = 0; i < cmd.length; i++) {
                         var thisChar = cmd.charAt(i);
-                        if (isOperator(thisChar))
-                            console.log(thisChar);
+                        if (!isCloseBracket(thisChar)) {
+                            if (isSquiggle(thisChar)) {
+                                var funcName = "";
+                                i++;
+                                while (!isSquiggle(tmp = cmd.charAt(i))) {
+                                    i++;
+                                    funcName += tmp;
+                                }
+                                theArray.push(funcName);
+                            } else {
+                                theArray.push(thisChar);
+                            }
+                        } else {
+                            theArray.push(")");
+                            var openIndex = theArray.length;
+                            while (!isOpenBracket(theArray[openIndex]))
+                                openIndex--;
+                                openIndex++;
+                            console.log(openIndex);
+
+                            var result;
+                            for (j = openIndex; j < theArray.length-1; j++) {
+                                if (!isOperator(theArray[j])) {
+                                    if (typeof theArray[j] == "string" && theArray[j].charAt(0) == "#") {
+
+                                    } else {
+                                        if (isNaN(theArray[j]) && typeof theArray[j] != 'object'){
+                                          console.log(theArray[j]);
+                                            theArray[j] = variables.get(theArray[j]);
+                                          }
+                                    }
+                                }
+
+                            }
+                        }
                     }
+                    console.log(theArray);
+
+                }
+
+                function parseNames(cmd) {
+                    var list = "transpose inverse rank det diagonalize".split(" ");
+                    for (i = 0; i < list.length; i++)
+                        cmd = cmd.replace(new RegExp(list[i], "g"), "{#" + list[i] + "}");
+                    return cmd;
                 }
 
                 function isOperator(str) {
                     return "+^-*/".split('').indexOf(str) >= 0;
+                }
+
+                function isCloseBracket(str) {
+                    return str == ")";
+                }
+
+                function isOpenBracket(str) {
+                    return str == "(";
+                }
+
+                function isSquiggle(str) {
+                    return str == "}" || str == "{";
                 }
 
                 function isFunction(str) {

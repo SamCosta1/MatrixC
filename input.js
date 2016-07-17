@@ -68,7 +68,6 @@ function newMatrix(matLbl, row, col, matrix) {
 
     $modifiers = $("<span>", {
         class: "guiModifiers"
-
     });
 
     $colbtn = $("<button>", {
@@ -79,6 +78,7 @@ function newMatrix(matLbl, row, col, matrix) {
         text: "<",
         class: "rowButton rowColModifier"
     });
+    $rowbtn.css("margin-left", "15px");
     $rmvColbtn = $("<button>", {
         text: "<",
         class: "colButton rowColModifier"
@@ -87,12 +87,15 @@ function newMatrix(matLbl, row, col, matrix) {
         text: ">",
         class: "rowButton rowColModifier"
     });
+
     $colbtn.attr("data-tableid", "t" + count);
     $rowbtn.attr("data-tableid", "t" + count);
     $rmvRowbtn.attr("data-tableid", "t" + count);
     $rmvColbtn.attr("data-tableid", "t" + count);
 
     $modifiers.css("top", col * 35 - 5);
+
+
 
 
     $colbtn.click(
@@ -126,6 +129,7 @@ function newMatrix(matLbl, row, col, matrix) {
             }
             $table.append($tr);
             var varName = $(this).closest(".matInput").attr("id").split("-")[1];
+            console.log(varName);
             variables.get(varName).matrix.resize(
                 [parseInt(numRows) + 1, parseInt(numCols)]);
             guiResize(this, 1);
@@ -163,7 +167,6 @@ function newMatrix(matLbl, row, col, matrix) {
     $modifiers.append($rmvRowbtn);
     $modifiers.append($rmvColbtn);
     $modifiers.append($colbtn);
-
     $div.append($modifiers);
 
     $('#matDefinitions').append($div);
@@ -171,6 +174,7 @@ function newMatrix(matLbl, row, col, matrix) {
     $('.clickedit').hide()
         .focusout(endEdit)
         .keyup(function(e) {
+
             if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
                 endEdit(e);
                 return false;
@@ -220,7 +224,7 @@ function getCell(row, col, val) {
             $(this).val("0");
         } else
             variables.get(varName).update(row, col, $(this).val());
-        console.log("|" + variables.get(varName).matrix);
+
     });
     return $c;
 }
@@ -234,11 +238,12 @@ function endEdit(e) {
     console.log(variables.get(inputted) == undefined);
     if (!isValid(inputted))
         label.text(label.closest("div").attr('id').split("-")[1]);
-
     else {
         label.text(inputted);
+        var mat = variables.get(label.closest("div").attr('id').split("-")[1]);
+        variables.delete(label.closest("div").attr('id').split("-")[1]);
+        variables.set(inputted, mat);
         label.closest("div").attr('id', "MAT-" + inputted);
-
     }
     input.hide();
     label.show();
