@@ -66,6 +66,11 @@ function newMatrix(matLbl, row, col, matrix) {
 
     $div.append($contnr);
 
+    $modifiers = $("<span>", {
+        class: "guiModifiers"
+
+    });
+
     $colbtn = $("<button>", {
         text: ">",
         class: "colButton rowColModifier"
@@ -87,15 +92,15 @@ function newMatrix(matLbl, row, col, matrix) {
     $rmvRowbtn.attr("data-tableid", "t" + count);
     $rmvColbtn.attr("data-tableid", "t" + count);
 
-    $colbtn.css("top", col * 35 - 5);
-    $rowbtn.css("top", col * 35 - 5);
-    $rmvColbtn.css("top", col * 35 - 5);
-    $rmvRowbtn.css("top", col * 35 - 5);
+    $modifiers.css("top", col * 35 - 5);
+
+
     $colbtn.click(
         function() {
             var rowCount = 0;
             $table = $("#" + $(this).attr("data-tableid"));
             var n = $table.attr("data-cols") - 1;
+            var m = $table.attr("data-rows");
             $table.attr("data-cols", n + 2)
             $table.find('tr').each(function() {
                 var $td = $("<td>");
@@ -103,7 +108,8 @@ function newMatrix(matLbl, row, col, matrix) {
                 rowCount++;
                 $(this).find('td').eq(n).after($td);
             })
-
+            var varName = $(this).closest(".matInput").attr("id").split("-")[1];
+            variables.get(varName).matrix.resize([parseInt(m), n + 2]);
         });
     $rowbtn.click(
         function() {
@@ -119,31 +125,46 @@ function newMatrix(matLbl, row, col, matrix) {
                 $tr.append($td);
             }
             $table.append($tr);
+            var varName = $(this).closest(".matInput").attr("id").split("-")[1];
+            variables.get(varName).matrix.resize(
+                [parseInt(numRows) + 1, parseInt(numCols)]);
+            guiResize(this, 1);
         });
 
     $rmvColbtn.click(function() {
         var $table = $("#" + $(this).attr("data-tableid"));
         var numCols = parseInt($table.attr("data-cols"));
+        var numRows = parseInt($table.attr("data-rows"));
         if (numCols > 1) {
             $("#" + $(this).attr("data-tableid") + " td:last-child").remove();
-            $table.attr("data-cols", numCols - 1);
+            numCols--;
+            $table.attr("data-cols", numCols);
+            var varName = $(this).closest(".matInput").attr("id").split("-")[1];
+            variables.get(varName).matrix.resize([numRows, numCols]);
         }
     });
     $rmvRowbtn.click(function() {
         var $table = $("#" + $(this).attr("data-tableid"));
         var numRows = parseInt($table.attr("data-rows"));
+        var numCols = parseInt($table.attr("data-cols"));
         if (numRows > 1) {
             $("#" + $(this).attr("data-tableid") + " tr:last-child").remove();
-            $table.attr("data-rows", numRows - 1);
+            numRows--;
+            $table.attr("data-rows", numRows);
+            var varName = $(this).closest(".matInput").attr("id").split("-")[1];
+            variables.get(varName).matrix.resize([numRows, numCols]);
+            guiResize(this, -1);
         }
     });
 
 
     count++;
-    $div.append($rowbtn);
-    $div.append($rmvRowbtn);
-    $div.append($rmvColbtn);
-    $div.append($colbtn);
+    $modifiers.append($rowbtn);
+    $modifiers.append($rmvRowbtn);
+    $modifiers.append($rmvColbtn);
+    $modifiers.append($colbtn);
+
+    $div.append($modifiers);
 
     $('#matDefinitions').append($div);
     $('#matDefinitions').append($("<br>"));
@@ -161,6 +182,16 @@ function newMatrix(matLbl, row, col, matrix) {
             $(this).hide();
             $(this).next().show().focus();
         });
+}
+
+function guiResize($clickedBtn, dRow) {
+    var $cntr = $($clickedBtn).closest(".matInput").find(".guiModifiers");
+    var $lbl = $($clickedBtn).closest(".matInput").find(".label");
+    var current = parseInt($cntr.css("top"));
+    console.log(current);
+    $cntr.css("top", current + 35 * dRow);
+    $lbl.css("top", current + 35 * dRow);
+
 }
 
 function getCell(row, col, val) {
@@ -183,7 +214,12 @@ function getCell(row, col, val) {
         var varName = $(this).closest(".matInput").attr("id").split("-")[1];
         var row = $(this).attr("data-row");
         var col = $(this).attr("data-col");
-        variables.get(varName).update(row, col, $(this).val());
+        if ($(this).val().trim() == "") {
+            $c.css("color", "gray");
+            variables.get(varName).update(row, col, 0);
+            $(this).val("0");
+        } else
+            variables.get(varName).update(row, col, $(this).val());
         console.log("|" + variables.get(varName).matrix);
     });
     return $c;
