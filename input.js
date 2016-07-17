@@ -18,9 +18,13 @@ function drawButton() {
 }
 var count = 0;
 
-function newMatrix(matLbl, row, col, matrix) {
+function newMatrix(matLbl, matrix) {
     if (matrix == null)
         matrix = new Matrix();
+
+    var row = matrix.numRows();
+    var col = matrix.numCols();
+    //console.log(row,col);
     variables.set(matLbl, matrix);
     var $div = $("<div>", {
         id: "MAT-" + matLbl,
@@ -129,7 +133,7 @@ function newMatrix(matLbl, row, col, matrix) {
             }
             $table.append($tr);
             var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-            console.log(varName);
+            //console.log(varName);
             variables.get(varName).matrix.resize(
                 [parseInt(numRows) + 1, parseInt(numCols)]);
             guiResize(this, 1);
@@ -192,7 +196,7 @@ function guiResize($clickedBtn, dRow) {
     var $cntr = $($clickedBtn).closest(".matInput").find(".guiModifiers");
     var $lbl = $($clickedBtn).closest(".matInput").find(".label");
     var current = parseInt($cntr.css("top"));
-    console.log(current);
+    //console.log(current);
     $cntr.css("top", current + 35 * dRow);
     $lbl.css("top", current + 35 * dRow);
 
@@ -235,7 +239,7 @@ function endEdit(e) {
 
     //make cammel case if needed
     var inputted = makeCammelCase(input.val());
-    console.log(variables.get(inputted) == undefined);
+    //console.log(variables.get(inputted) == undefined);
     if (!isValid(inputted))
         label.text(label.closest("div").attr('id').split("-")[1]);
     else {

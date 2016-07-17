@@ -46,9 +46,9 @@
                 })
                 .click(function() {
                     if (isValid(alphabet[index])) {
-                        newMatrix(alphabet[index], 2, 2);
+                        newMatrix(alphabet[index]);
                     } else
-                        newMatrix("-", 2, 2);
+                        newMatrix("-");
                     index++;
                 });
         </script>
@@ -57,13 +57,14 @@
             <textarea id="cmdinput" rows="3" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">MatCalculator &gt&gt </textarea>
             <script>
                 var m = new Matrix([
-                    [0, 0],
-                    [0, 0]
+                    [1, 0, 0],
+                    [0, 1, 0],
+                    [0, 0, 1]
                 ]);
                 var n = new Matrix([
-                    [0, 0, 0],
-                    [0, 0, 0],
-                    [0, 0, 0]
+                    [1, 0, 0],
+                    [0, 2, 0],
+                    [0, 0, 1]
                 ]);
 
                 // Take input from commandLine
@@ -85,7 +86,7 @@
                             // Enter key pressed
                             var input = $(this).val().slice(base.length);
                             commandInput(input);
-                            comHist.push(input);
+                            comHist.push(input.replace(/\n/g, ''));
                             $(this).val(base);
                         } else if (code == 38 && comHist.length > 0) {
                             $(this).val(base + comHist[comHist.length - 1]);
@@ -93,13 +94,15 @@
                         }
                     });
                 //                  (transpose(5*A)+B*C+inverse(A+B))
-                newMatrix("A", 2, 2, m);
-                newMatrix("B", 3, 3, n);
+                newMatrix("A", m);
+                newMatrix("B", n);
+                //    commandInput("(transpose(5*A)+B*C+inverse(A+B))");
+                commandInput("(A*3)");
 
                 function commandInput(cmd) {
-                    cmd = cmd.replace(/ /g, '');
-                    cmd = parseNames(cmd);
-                    console.log(cmd);
+                    cmd = cmd.replace(/ /g, '').replace(/\n/g, '');
+                    cmd = "(" + parseNames(cmd) + ")";
+
                     var theArray = [];
                     for (i = 0; i < cmd.length; i++) {
                         var thisChar = cmd.charAt(i);
@@ -120,27 +123,97 @@
                             var openIndex = theArray.length;
                             while (!isOpenBracket(theArray[openIndex]))
                                 openIndex--;
-                                openIndex++;
-                            console.log(openIndex);
-
+                            openIndex++;
                             var result;
-                            for (j = openIndex; j < theArray.length-1; j++) {
-                                if (!isOperator(theArray[j])) {
-                                    if (typeof theArray[j] == "string" && theArray[j].charAt(0) == "#") {
+                            for (j = openIndex; j < theArray.length - 1; j++) {
 
-                                    } else {
-                                        if (isNaN(theArray[j]) && typeof theArray[j] != 'object'){
-                                          console.log(theArray[j]);
-                                            theArray[j] = variables.get(theArray[j]);
-                                          }
-                                    }
+                                if (isOperator(theArray[j])) {
+
+
+                                    var before = getOperand(theArray[j - 1]);
+                                    var after = getOperand(theArray[j + 1]);
+                                    var result = calculate(before, after, theArray[j]);
+
+                                    theArray[j] = result;
+                                    theArray.splice(j - 1, 1);
+                                    theArray.splice(j, 1);
+                                    j--;
                                 }
+                            }
+                            if (result == null)
+                                result = theArray[j - 1];
+
+
+                            if (openIndex > 0 && isFunction(theArray[openIndex - 2])) {
+                                result = performFunction(theArray[openIndex - 2], getOperand(result));
+                                theArray.splice(openIndex - 2, 3);
+                                theArray[openIndex - 2] = result;
 
                             }
                         }
+                        console.log(theArray);
                     }
                     console.log(theArray);
 
+                    console.log("");
+                    for (i = 0; i < theArray.length; i++)
+                        if (!isBrackets(theArray[i]))
+                            if (!isNaN(theArray[i]))
+                                console.log(theArray[i]);
+                            else
+                                newMatrix("F", theArray[i]);
+
+                }
+
+                function performFunction(func, arg) {
+                    return arg.performFunction(func);
+                }
+
+                function calculate(before, after, op) {
+                    var result;
+                    switch (op) {
+                        case "+":
+                            if (typeof before == "object")
+                                result = before.add(after);
+                            else
+                                result = before + after;
+                            break;
+                        case "-":
+                            if (typeof before == "object")
+                                result = before.subtract(after);
+                            else
+                                result = before - after;
+                            break;
+                        case "/":
+                        if (typeof before == "object")
+                            result = before.divide(after);
+                        else if (typeof after == "object")
+                            result = after.divide(before);
+                        else
+                            result = before / after;
+                        break;
+                        case "*":
+                            if (typeof before == "object")
+                                result = before.times(after);
+                            else if (typeof after == "object")
+                                result = after.times(before);
+                            else
+                                result = before * after;
+                            break;
+                        case "^":
+                            if (typeof before == "object")
+                                result = before.power(after);
+                            else
+                                result = Math.pow(before, after);
+                            break;
+                    }
+                    return result;
+                }
+
+                function getOperand(oprnd) {
+                    if (!isNaN(oprnd)) return parseInt(oprnd)
+                    else if (typeof oprnd == 'object') return oprnd;
+                    else return variables.get(oprnd);
                 }
 
                 function parseNames(cmd) {
@@ -162,12 +235,17 @@
                     return str == "(";
                 }
 
+                function isBrackets(str) {
+                    return isCloseBracket(str) || isOpenBracket(str);
+                }
+
                 function isSquiggle(str) {
                     return str == "}" || str == "{";
                 }
 
                 function isFunction(str) {
-                    return "transpose det inv rank eigen diagonalize".split(' ').indexOf(str) >= 0;
+                    return "#transpose #inverse #rank #det #diagonalize"
+                        .split(' ').indexOf(str) >= 0;
                 }
             </script>
         </div>
