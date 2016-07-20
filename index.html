@@ -96,157 +96,120 @@
                 //                  (transpose(5*A)+B*C+inverse(A+B))
                 newMatrix("A", m);
                 newMatrix("B", n);
-                //    commandInput("(transpose(5*A)+B*C+inverse(A+B))");
-                commandInput("(A*3)");
+                commandInput("(transpose(5*A)+B*C+inverse(A+B))");
+                //commandInput("(A*3)");
 
                 function commandInput(cmd) {
                     cmd = cmd.replace(/ /g, '').replace(/\n/g, '');
-                    cmd = "(" + parseNames(cmd) + ")";
+                    cmd = "(" + cmd + ")";
 
                     var theArray = [];
-                    for (i = 0; i < cmd.length; i++) {
-                        var thisChar = cmd.charAt(i);
-                        if (!isCloseBracket(thisChar)) {
-                            if (isSquiggle(thisChar)) {
-                                var funcName = "";
-                                i++;
-                                while (!isSquiggle(tmp = cmd.charAt(i))) {
-                                    i++;
-                                    funcName += tmp;
-                                }
-                                theArray.push(funcName);
-                            } else {
-                                theArray.push(thisChar);
+                    for (i = 1; i < cmd.length; i++) {
+                        if (isOperatorOrBracket(cmd[i]) &&
+                            !isOperatorOrBracket(cmd[i - 1])) {
+
+                            var j = i;
+                            var identifier = "";
+
+                            while (!isOperatorOrBracket(cmd[j])) {
+                                j--;
+                                identifier = cmd[j] + identifier;
                             }
-                        } else {
-                            theArray.push(")");
-                            var openIndex = theArray.length;
-                            while (!isOpenBracket(theArray[openIndex]))
-                                openIndex--;
-                            openIndex++;
+
                             var result;
-                            for (j = openIndex; j < theArray.length - 1; j++) {
-
-                                if (isOperator(theArray[j])) {
-
-
-                                    var before = getOperand(theArray[j - 1]);
-                                    var after = getOperand(theArray[j + 1]);
-                                    var result = calculate(before, after, theArray[j]);
-
-                                    theArray[j] = result;
-                                    theArray.splice(j - 1, 1);
-                                    theArray.splice(j, 1);
-                                    j--;
-                                }
-                            }
-                            if (result == null)
-                                result = theArray[j - 1];
-
-
-                            if (openIndex > 0 && isFunction(theArray[openIndex - 2])) {
-                                result = performFunction(theArray[openIndex - 2], getOperand(result));
-                                theArray.splice(openIndex - 2, 3);
-                                theArray[openIndex - 2] = result;
-
-                            }
+                            if (!isNaN(identifier))
+                                result = parseInt(identifier);
                         }
-                        console.log(theArray);
+
+
                     }
-                    console.log(theArray);
 
-                    console.log("");
-                    for (i = 0; i < theArray.length; i++)
-                        if (!isBrackets(theArray[i]))
-                            if (!isNaN(theArray[i]))
-                                console.log(theArray[i]);
-                            else
-                                newMatrix("F", theArray[i]);
-
-                }
-
-                function performFunction(func, arg) {
-                    return arg.performFunction(func);
-                }
-
-                function calculate(before, after, op) {
-                    var result;
-                    switch (op) {
-                        case "+":
-                            if (typeof before == "object")
-                                result = before.add(after);
-                            else
-                                result = before + after;
-                            break;
-                        case "-":
-                            if (typeof before == "object")
-                                result = before.subtract(after);
-                            else
-                                result = before - after;
-                            break;
-                        case "/":
-                        if (typeof before == "object")
-                            result = before.divide(after);
-                        else if (typeof after == "object")
-                            result = after.divide(before);
-                        else
-                            result = before / after;
-                        break;
-                        case "*":
-                            if (typeof before == "object")
-                                result = before.times(after);
-                            else if (typeof after == "object")
-                                result = after.times(before);
-                            else
-                                result = before * after;
-                            break;
-                        case "^":
-                            if (typeof before == "object")
-                                result = before.power(after);
-                            else
-                                result = Math.pow(before, after);
-                            break;
+                    function performFunction(func, arg) {
+                        return arg.performFunction(func);
                     }
-                    return result;
-                }
 
-                function getOperand(oprnd) {
-                    if (!isNaN(oprnd)) return parseInt(oprnd)
-                    else if (typeof oprnd == 'object') return oprnd;
-                    else return variables.get(oprnd);
-                }
+                    function calculate(before, after, op) {
+                        var result;
+                        switch (op) {
+                            case "+":
+                                if (typeof before == "object")
+                                    result = before.add(after);
+                                else
+                                    result = before + after;
+                                break;
+                            case "-":
+                                if (typeof before == "object")
+                                    result = before.subtract(after);
+                                else
+                                    result = before - after;
+                                break;
+                            case "/":
+                                if (typeof before == "object")
+                                    result = before.divide(after);
+                                else if (typeof after == "object")
+                                    result = after.divide(before);
+                                else
+                                    result = before / after;
+                                break;
+                            case "*":
+                                if (typeof before == "object")
+                                    result = before.times(after);
+                                else if (typeof after == "object")
+                                    result = after.times(before);
+                                else
+                                    result = before * after;
+                                break;
+                            case "^":
+                                if (typeof before == "object")
+                                    result = before.power(after);
+                                else
+                                    result = Math.pow(before, after);
+                                break;
+                        }
+                        return result;
+                    }
 
-                function parseNames(cmd) {
-                    var list = "transpose inverse rank det diagonalize".split(" ");
-                    for (i = 0; i < list.length; i++)
-                        cmd = cmd.replace(new RegExp(list[i], "g"), "{#" + list[i] + "}");
-                    return cmd;
-                }
+                    function getOperand(oprnd) {
+                        if (!isNaN(oprnd)) return parseInt(oprnd)
+                        else if (typeof oprnd == 'object') return oprnd;
+                        else return variables.get(oprnd);
+                    }
 
-                function isOperator(str) {
-                    return "+^-*/".split('').indexOf(str) >= 0;
-                }
+                    function parseNames(cmd) {
+                        var list = "transpose inverse rank det diagonalize".split(" ");
+                        for (i = 0; i < list.length; i++)
+                            cmd = cmd.replace(new RegExp(list[i], "g"), "{#" + list[i] + "}");
+                        return cmd;
+                    }
 
-                function isCloseBracket(str) {
-                    return str == ")";
-                }
+                    function isOperator(str) {
+                        return "+^-*/".split('').indexOf(str) >= 0;
+                    }
 
-                function isOpenBracket(str) {
-                    return str == "(";
-                }
+                    function isCloseBracket(str) {
+                        return str == ")";
+                    }
 
-                function isBrackets(str) {
-                    return isCloseBracket(str) || isOpenBracket(str);
-                }
+                    function isOpenBracket(str) {
+                        return str == "(";
+                    }
 
-                function isSquiggle(str) {
-                    return str == "}" || str == "{";
-                }
+                    function isBrackets(str) {
+                        return isCloseBracket(str) || isOpenBracket(str);
+                    }
 
-                function isFunction(str) {
-                    return "#transpose #inverse #rank #det #diagonalize"
-                        .split(' ').indexOf(str) >= 0;
-                }
+                    function isOperatorOrBracket(str) {
+                        return isOperator(str) || isBrackets(str);
+                    }
+
+                    function isSquiggle(str) {
+                        return str == "}" || str == "{";
+                    }
+
+                    function isFunction(str) {
+                        return "#transpose #inverse #rank #det #diagonalize"
+                            .split(' ').indexOf(str) >= 0;
+                    }
             </script>
         </div>
         <div id="output">
