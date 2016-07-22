@@ -46,9 +46,9 @@
                 })
                 .click(function() {
                     if (isValid(alphabet[index])) {
-                        newMatrix(alphabet[index]);
+                        newInputComp(alphabet[index]);
                     } else
-                        newMatrix("-");
+                        newInputComp("-");
                     index++;
                 });
         </script>
@@ -94,122 +94,169 @@
                         }
                     });
                 //                  (transpose(5*A)+B*C+inverse(A+B))
-                newMatrix("A", m);
-                newMatrix("B", n);
-                commandInput("(transpose(5*A)+B*C+inverse(A+B))");
-                //commandInput("(A*3)");
-
+                newInputComp("A", m);
+                newInputComp("B", n);
+                commandInput("transpose(5*A)+B*B+inverse(A+A-A)");
+                //    commandInput("inverse(B+B)");
+//commandInput('transpose(A)');
                 function commandInput(cmd) {
                     cmd = cmd.replace(/ /g, '').replace(/\n/g, '');
-                    cmd = "(" + cmd + ")";
+                    cmd = "(" + cmd + ')';
 
+                    var theArray = getArrayFromString(cmd);
+                    console.log("Start", theArray);
+
+                    for (var i = 0; i < theArray.length; i++) {
+                        if (!isCloseBracket(theArray[i]))
+                            continue;
+
+                        var j = i;
+                        while (!isOpenBracket(theArray[j])) {
+                            if (isOperator(theArray[j])) {
+                                console.log(theArray[j - 1], theArray[j + 1], theArray[j]);
+                                var res = calculate(theArray[j - 1], theArray[j + 1], theArray[j]);
+                                theArray.splice(j, 2);
+                                theArray[j - 1] = res;
+                            }
+                            j--;
+                        }
+                        console.log(j, theArray[j-1]);
+                        if (funcENUM.isFunction(theArray[j - 1])) {
+                            console.log("is func", theArray[j - 1]);
+                            var res = performFunction(theArray[j - 1], theArray[j + 1]);
+                            theArray.splice(j, 3);
+                            theArray[j - 1] = res
+                        } else {
+                            theArray.splice(j, 1) // get rid of (
+                            theArray.splice(j + 1, 1) // get rid of )
+                        }
+                        if (j != 0)
+                            i = j - 1;
+                        else
+                            break;
+
+                        console.log("End of loop cycle", theArray, j);
+                    }
+                    console.log("end",theArray);
+                    if (typeof theArray[0] == 'object')
+                        newInputComp("F" + Math.random(),theArray[0]);
+                    else
+                        console.log("Answer!  " , theArray[0]);
+
+
+                }
+
+                function getArrayFromString(cmd) {
                     var theArray = [];
-                    for (i = 1; i < cmd.length; i++) {
+                    theArray.push("(");
+                    for (var i = 1; i < cmd.length; i++) {
                         if (isOperatorOrBracket(cmd[i]) &&
                             !isOperatorOrBracket(cmd[i - 1])) {
-
-                            var j = i;
+                            var j = i - 1;
                             var identifier = "";
-
                             while (!isOperatorOrBracket(cmd[j])) {
-                                j--;
                                 identifier = cmd[j] + identifier;
+                                j--;
                             }
-
+console.log("r",identifier);
                             var result;
                             if (!isNaN(identifier))
                                 result = parseInt(identifier);
+                            else
+                            if ((result = getEnum(identifier)) == funcENUM.NONE) {
+                                if (typeof(result = variables.get(identifier)) === undefined)
+                                    throw "Unexpected identifier";
+                            }
+                            theArray.push(result);
                         }
-
-
+                        if (isOperatorOrBracket(cmd[i]))
+                            theArray.push(cmd[i]);
                     }
+                    return theArray;
+                }
 
-                    function performFunction(func, arg) {
-                        return arg.performFunction(func);
-                    }
+                function performFunction(func, arg) {
+                    return arg.performFunction(func);
+                }
 
-                    function calculate(before, after, op) {
-                        var result;
-                        switch (op) {
-                            case "+":
-                                if (typeof before == "object")
-                                    result = before.add(after);
-                                else
-                                    result = before + after;
-                                break;
-                            case "-":
-                                if (typeof before == "object")
-                                    result = before.subtract(after);
-                                else
-                                    result = before - after;
-                                break;
-                            case "/":
-                                if (typeof before == "object")
-                                    result = before.divide(after);
-                                else if (typeof after == "object")
-                                    result = after.divide(before);
-                                else
-                                    result = before / after;
-                                break;
-                            case "*":
-                                if (typeof before == "object")
-                                    result = before.times(after);
-                                else if (typeof after == "object")
-                                    result = after.times(before);
-                                else
-                                    result = before * after;
-                                break;
-                            case "^":
-                                if (typeof before == "object")
-                                    result = before.power(after);
-                                else
-                                    result = Math.pow(before, after);
-                                break;
-                        }
-                        return result;
+                function calculate(before, after, op) {
+                    var result;
+                    switch (op) {
+                        case "+":
+                            if (typeof before == "object")
+                                result = before.add(after);
+                            else
+                                result = before + after;
+                            break;
+                        case "-":
+                            if (typeof before == "object")
+                                result = before.subtract(after);
+                            else
+                                result = before - after;
+                            break;
+                        case "/":
+                            if (typeof before == "object")
+                                result = before.divide(after);
+                            else if (typeof after == "object")
+                                result = after.divide(before);
+                            else
+                                result = before / after;
+                            break;
+                        case "*":
+                            if (typeof before == "object")
+                                result = before.times(after);
+                            else if (typeof after == "object")
+                                result = after.times(before);
+                            else
+                                result = before * after;
+                            break;
+                        case "^":
+                            if (typeof before == "object")
+                                result = before.power(after);
+                            else
+                                result = Math.pow(before, after);
+                            break;
                     }
+                    return result;
+                }
 
-                    function getOperand(oprnd) {
-                        if (!isNaN(oprnd)) return parseInt(oprnd)
-                        else if (typeof oprnd == 'object') return oprnd;
-                        else return variables.get(oprnd);
-                    }
+                function getOperand(oprnd) {
+                    if (!isNaN(oprnd)) return parseInt(oprnd)
+                    else if (typeof oprnd == 'object') return oprnd;
+                    else return variables.get(oprnd);
+                }
 
-                    function parseNames(cmd) {
-                        var list = "transpose inverse rank det diagonalize".split(" ");
-                        for (i = 0; i < list.length; i++)
-                            cmd = cmd.replace(new RegExp(list[i], "g"), "{#" + list[i] + "}");
-                        return cmd;
-                    }
+                function parseNames(cmd) {
+                    var list = "transpose inverse rank det diagonalize".split(" ");
+                    for (i = 0; i < list.length; i++)
+                        cmd = cmd.replace(new RegExp(list[i], "g"), "{#" + list[i] + "}");
+                    return cmd;
+                }
 
-                    function isOperator(str) {
-                        return "+^-*/".split('').indexOf(str) >= 0;
-                    }
+                function isOperator(str) {
+                    return "+^-*/".split('').indexOf(str) >= 0;
+                }
 
-                    function isCloseBracket(str) {
-                        return str == ")";
-                    }
+                function isCloseBracket(str) {
+                    return str == ")";
+                }
 
-                    function isOpenBracket(str) {
-                        return str == "(";
-                    }
+                function isOpenBracket(str) {
+                    return str == "(";
+                }
 
-                    function isBrackets(str) {
-                        return isCloseBracket(str) || isOpenBracket(str);
-                    }
+                function isBrackets(str) {
+                    return isCloseBracket(str) || isOpenBracket(str);
+                }
 
-                    function isOperatorOrBracket(str) {
-                        return isOperator(str) || isBrackets(str);
-                    }
+                function isOperatorOrBracket(str) {
+                    return isOperator(str) || isBrackets(str);
+                }
 
-                    function isSquiggle(str) {
-                        return str == "}" || str == "{";
-                    }
+                function isSquiggle(str) {
+                    return str == "}" || str == "{";
+                }
 
-                    function isFunction(str) {
-                        return "#transpose #inverse #rank #det #diagonalize"
-                            .split(' ').indexOf(str) >= 0;
-                    }
             </script>
         </div>
         <div id="output">

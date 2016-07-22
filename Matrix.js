@@ -42,7 +42,7 @@ function Matrix(arrMatrix) {
         if (typeof other == 'object')
             return this.times(other.inverse());
         else
-            return this.times(1/other);
+            return this.times(1 / other);
     }
     this.subtract = function(other) {
         var minusOther = math.multiply(other.matrix, -1);
@@ -63,15 +63,66 @@ function Matrix(arrMatrix) {
         return math.subset(this.matrix, math.index(row, col));
     }
     this.performFunction = function(func) {
-
-        switch (func)
-        {
-            case "#transpose":return this.transpose(); break;
-            case "#inverse": return this.inverse(); break;
-            case "#rank": return null;/*this.transpose();*/ break;
-            case "#det": return this.det(); break;
-            case "#diagonalize": return null;/*this.transpose(); */break;
+        switch (func) {
+            case funcENUM.TRANSPOSE:
+                return this.transpose();
+                break;
+            case funcENUM.INVERSE:
+                return this.inverse();
+                break;
+            case funcENUM.RANK:
+                return null;
+                break;
+            case funcENUM.DET:
+                return this.det();
+                break;
+            case funcENUM.DIAGONALIZE:
+                return null;
+                break;
         }
     }
+}
+var funcENUM = {
+    NONE: '#',
+    TRANSPOSE: '#T',
+    INVERSE: '#I',
+    RANK: '#R',
+    DET: '#D',
+    EIGEN: '#E',
+    DIAGONALIZE: '#DI',
+    isFunction: function(str) {
+        var found = false;
+        $.each(this, function(key, value) {
+            if (value == str)
+                found = true;
+        })
+        return found;
+    }
+}
 
+function getEnum(input) {
+    switch (input.toLowerCase()) {
+        case 'transpose':
+        case 'trans':
+            return funcENUM.TRANSPOSE;
+            break;
+        case 'inverse':
+        case 'inv':
+            return funcENUM.INVERSE;
+            break;
+        case 'rank':
+            return funcENUM.RANK;
+            break;
+        case 'det':
+        case 'determinant':
+            return funcENUM.DET;
+            break;
+        case 'eigen':
+            return funcENUM.EIGEN;
+            break;
+        case 'diagonalize':
+            return funcENUM.DIAGONALIZE;
+            break;
+    }
+    return funcENUM.NONE;
 }

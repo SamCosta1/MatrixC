@@ -18,7 +18,7 @@ function drawButton() {
 }
 var count = 0;
 
-function newMatrix(matLbl, matrix) {
+function newInputComp(matLbl, matrix) {
     if (matrix == null)
         matrix = new Matrix();
 
