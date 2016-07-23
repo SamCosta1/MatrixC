@@ -37,15 +37,15 @@ function newInputComp(matLbl, matrix) {
         class: "matInput draggable drag-drop"
     });
     var $img = $("<img>", {
-        class: "handle",
+        class: "handle noSelect",
         src: "img/dragHandle.png"
     });
     var $span = $("<span>", {
-        class: "label"
+        class: "label noSelect"
     });
     //$span.css("top", col * 35 - 5);
     var $lab = $("<label>", {
-        class: "pull-left"
+        class: "pull-left noSelect"
     });
     var $labtxt = $("<input>", {
         class: "clickedit",
@@ -129,20 +129,20 @@ function newInputComp(matLbl, matrix) {
 
         $colbtn = $("<button>", {
             text: ">",
-            class: "addCol colButton rowColModifier"
+            class: "addCol colButton rowColModifier noSelect"
         });
         $rowbtn = $("<button>", {
             text: "<",
-            class: "addRow rowButton rowColModifier"
+            class: "addRow rowButton rowColModifier noSelect"
         });
         $rowbtn.css("margin-left", "15px");
         $rmvColbtn = $("<button>", {
             text: "<",
-            class: "rmvCol colButton rowColModifier"
+            class: "rmvCol colButton rowColModifier noSelect"
         });
         $rmvRowbtn = $("<button>", {
             text: ">",
-            class: "rmvRow rowButton rowColModifier"
+            class: "rmvRow rowButton rowColModifier noSelect"
         });
 
         $colbtn.attr("data-tableid", "t" + count);
