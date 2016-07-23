@@ -3,82 +3,77 @@ var variables = new Map();
 function Matrix(arrMatrix) {
     if (arrMatrix instanceof Array)
         this.matrix = math.matrix(arrMatrix);
-    else if (arrMatrix == null)
+    else if (arrMatrix === null)
         this.matrix = math.zeros(2, 2);
     else
         this.matrix = arrMatrix;
 
     this.numRows = function() {
         return this.matrix.size()[0];
-    }
+    },
     this.numCols = function() {
         return this.matrix.size()[1];
-    }
+    },
 
 
     // Standard functions
     this.determinant = function() {
         return math.det(this.matrix);
-    }
+    },
     this.det = function() {
         return this.determinant();
-    }
+    },
     this.transpose = function() {
         return new Matrix(math.transpose(this.matrix));
-    }
+    },
     this.inverse = function() {
         return new Matrix(math.inv(this.matrix));
-    }
+    },
     this.add = function(other) {
         return new Matrix(math.add(this.matrix, other.matrix));
-    }
+    },
     this.times = function(other) {
         if (typeof other == 'object')
             return new Matrix(math.multiply(this.matrix, other.matrix));
         else
             return new Matrix(math.multiply(this.matrix, other));
-    }
+    },
     this.divide = function(other) {
         if (typeof other == 'object')
             return this.times(other.inverse());
         else
             return this.times(1 / other);
-    }
+    },
     this.subtract = function(other) {
         var minusOther = math.multiply(other.matrix, -1);
         return new Matrix(math.add(this.matrix, minusOther));
-    }
+    },
     this.power = function(power) {
         var result = this.matrix;
         for (i = 1; i < power; i++)
             result = math.multiply(result, this.matrix);
         return new Matrix(result);
-    }
+    },
 
     this.update = function(row, col, val) {
         this.matrix = math.subset(this.matrix, math.index(parseInt(row),
             parseInt(col)), parseInt(val));
-    }
+    },
     this.getCell = function(row, col) {
-        return math.subset(this.matrix, math.index(row, col));
-    }
+        return math.subset(this.matrix, math.index(parseInt(row), parseInt(col)));
+    },
     this.performFunction = function(func) {
         switch (func) {
             case funcENUM.TRANSPOSE:
                 return this.transpose();
-                break;
             case funcENUM.INVERSE:
                 return this.inverse();
-                break;
             case funcENUM.RANK:
                 return null;
-                break;
             case funcENUM.DET:
                 return this.det();
-                break;
             case funcENUM.DIAGONALIZE:
                 return null;
-                break;
         }
     }
 }
@@ -95,34 +90,28 @@ var funcENUM = {
         $.each(this, function(key, value) {
             if (value == str)
                 found = true;
-        })
+        });
         return found;
     }
-}
+};
 
 function getEnum(input) {
     switch (input.toLowerCase()) {
         case 'transpose':
         case 'trans':
             return funcENUM.TRANSPOSE;
-            break;
         case 'inverse':
         case 'inv':
             return funcENUM.INVERSE;
-            break;
         case 'rank':
             return funcENUM.RANK;
-            break;
         case 'det':
         case 'determinant':
             return funcENUM.DET;
-            break;
         case 'eigen':
             return funcENUM.EIGEN;
-            break;
         case 'diagonalize':
             return funcENUM.DIAGONALIZE;
-            break;
     }
     return funcENUM.NONE;
 }

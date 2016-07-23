@@ -11,18 +11,23 @@ $col2: gray;
 }
 #newLabel {
     position: absolute;
-    margin-left: 200px;
     background-color: #e8effd;
     border-radius: 10px;
     padding: 2px 5px;
+    margin-left: 10px;
+}
+textarea {
+    font-size: 25px;
 }
 .matrixCell {
-
     width: 50px;
     height: 55px;
     margin-right: 10px;
     margin-bottom: 10px;
     text-align: center;
+    border-radius: 4px;
+    border-color: black;
+    border-width: 1px;
 }
 $borderStyle: 3px solid black;
 .matGUI {
@@ -32,20 +37,30 @@ $borderStyle: 3px solid black;
     border-right: $borderStyle;
     border-radius: 20px;
 }
+
+#bin {
+    float: right;
+    margin-left: auto;
+    margin-right: 10px;
+}
 .matContainer {
     margin-left: 20px;
     margin-top: 10px;
-/*    min-height: 60px;*/
+    /*    min-height: 60px;*/
 }
+$gridCol: rgba(128, 128, 128, 0.1);
+$gridDim: 20px;
 body {
     margin: 0;
     padding: 0;
     font: 100% $fontstack;
     background-color: $col1;
+    background-size: $gridDim $gridDim;
+    background-image: linear-gradient(to right, $gridCol 1px, transparent 1px), linear-gradient(to bottom, $gridCol 1px, transparent 1px);
 }
 .label {
-    position: relative;
-    height:40px;
+    display: flex;
+    align-items: center;
 }
 label:hover {
     background: #f2f5ff;
@@ -60,19 +75,25 @@ label:hover {
     background-color: black;
     border-radius: 10px;
 }
+#newMatGroup {
+    display: flex;
+    margin-left: 10px;
+}
+#matrixDefinitions {
+    height: 100%;
+}
 #btnNewMat {
     width: 40px;
-    margin-bottom: 20px;
     cursor: pointer;
 }
 .matInput {
     font-size: 20px;
     display: inline-flex;
-
+    margin-left: 10px;
 }
 .guiModifiers {
-    position: relative;
-    height:50px;
+    display: flex;
+    align-items: center;
 }
 .rowColModifier {
     position: relative;
@@ -80,11 +101,9 @@ label:hover {
     border-color: black;
     background-color: white;
     cursor: pointer;
-    margin-left:5px;
-    user-select:none;
+    margin-left: 5px;
+    user-select: none;
 }
-
-
 .rowButton {
     -webkit-transform: rotate(-90deg);
     -moz-transform: rotate(-90deg);
@@ -92,10 +111,10 @@ label:hover {
     -o-transform: rotate(-90deg);
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
     position: relative;
-    width:22px;
+    width: 22px;
 }
 .colButton {
-height:22px;
+    height: 22px;
 }
 #header {
     margin-top: 0;
@@ -105,9 +124,7 @@ height:22px;
     display: inline-flex;
     width: 100%;
     height: 120px;
-    user-select:none;
-
-
+    user-select: none;
 }
 .center {
     position: relative;
@@ -142,21 +159,14 @@ height:22px;
     outline: none;
 }
 #commandLine {
-    width: 100%;
-    background-color: #2a689e;
-    height: 50px;
+    width: 50%;
+    background-color: #22374a;
     border-radius: 7px;
 }
-#mainBody {
-    width: 50%;
-    min-width: 700px;
-    margin-top: 0;
-    padding-top: 0;
-    height: 100%;
-    display: table;
-    margin: auto;
-    background-color: white;
-    padding-left: 10px;
+.controlContainer {
+    display: flex;
+    align-items: center;
+    margin: 5px;
 }
 hr {
     margin-top: 0;
