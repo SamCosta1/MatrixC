@@ -20,15 +20,15 @@ var count = 0;
 
 function newInputComp(matLbl, matrix) {
     var row, col;
-
     if (matrix === null || matrix === undefined) {
         matrix = new Matrix();
     }
-    if (!isNaN(matrix)) {
-        row = col = 1;
-    } else {
+    if (isNaN(matrix)) {
+        // console.log(matrix);
         col = matrix.numCols();
         row = matrix.numRows();
+    } else {
+        row = col = 1;
     }
 
     variables.set(matLbl, matrix);
