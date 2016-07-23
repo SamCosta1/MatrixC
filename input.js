@@ -223,8 +223,8 @@ function newInputComp(matLbl, matrix) {
         $modifiers.append($rmvColbtn);
         $modifiers.append($colbtn);
         $div.append($modifiers);
-        $div.append($img);
     }
+    $div.append($img);
 
     $('#matDefinitions').append($div);
     //$('#matDefinitions').append($("<br>"));
