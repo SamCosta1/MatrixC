@@ -36,6 +36,10 @@ function newInputComp(matLbl, matrix) {
         id: "MAT-" + matLbl,
         class: "matInput draggable drag-drop"
     });
+    var $img = $("<img>", {
+        class: "handle",
+        src: "img/dragHandle.png"
+    });
     var $span = $("<span>", {
         class: "label"
     });
@@ -71,11 +75,11 @@ function newInputComp(matLbl, matrix) {
             // keep the element within the area of it's parent
             restrict: {
                 restriction: "#mainBody",
-                endOnly: true,
+                endOnly: false,
                 elementRect: {
                     top: 0,
                     left: 0,
-                    bottom: 1,
+                    bottom: 0,
                     right: 1
                 }
             },
@@ -85,7 +89,8 @@ function newInputComp(matLbl, matrix) {
             // call this function on every dragmove event
             onmove: dragMoveListener,
 
-        });
+        }).allowFrom('.handle');
+
 
     // this is used later in the resizing and gesture demos
     window.dragMoveListener = dragMoveListener;
@@ -218,6 +223,7 @@ function newInputComp(matLbl, matrix) {
         $modifiers.append($rmvColbtn);
         $modifiers.append($colbtn);
         $div.append($modifiers);
+        $div.append($img);
     }
 
     $('#matDefinitions').append($div);

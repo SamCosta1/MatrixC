@@ -32,6 +32,7 @@
                 </div>
                 <div id="newLabel" hidden> New Matrix!! </div>
             </div>
+            <img class="bin" src="img/bin.png"></img>
         </div>
         <div id="matDefinitions">
         </div>
@@ -49,12 +50,14 @@
                     $('#newLabel').hide();
                 })
                 .click(function() {
-                        newInputComp(getNextFreeLetter());
+                    newInputComp(getNextFreeLetter());
                 });
 
 
             function getNextFreeLetter() {
                 index++;
+                if (index >= alphabet.length)
+                    index = 0;
                 if (isValid(alphabet[index]))
                     return alphabet[index];
 
@@ -67,10 +70,6 @@
             }
         </script>
 
-
-        <div id="output">
-
-        </div>
         <script src="commandInput.js"></script>
 
     </div>

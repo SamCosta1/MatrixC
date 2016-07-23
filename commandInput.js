@@ -83,9 +83,13 @@ function commandInput(cmd) {
 
     if (!variables.get(lbl))
         newInputComp(lbl, theArray[0]);
-    else
+    else {
+        if (typeof variables.get(lbl) == typeof theArray[0])
         updateGUI(lbl, theArray[0]);
-
+        else {
+            throw "Incompatible Types";
+        }
+    }
 }
 
 function getArrayFromString(cmd) {
