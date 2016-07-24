@@ -3,7 +3,7 @@ var variables = new Map();
 function Matrix(arrMatrix) {
     if (arrMatrix instanceof Array)
         this.matrix = math.matrix(arrMatrix);
-    else if (arrMatrix == null)
+    else if (arrMatrix === 'null')
         this.matrix = math.zeros(2, 2);
     else
         this.matrix = arrMatrix;
@@ -92,6 +92,23 @@ var funcENUM = {
                 found = true;
         });
         return found;
+    },
+    getString: function(str) {
+        switch (str) {
+            case this.TRANSPOSE:
+                return "transpose";
+            case this.RANK:
+                return "rank";
+            case this.INVERSE:
+                return "inverse";
+            case this.DET:
+                return "determinant";
+            case this.EIGEN:
+                return "eigenvalues/vectors";
+            case this.DIAGONALIZE:
+                return "diagonal form";
+        }
+        return "NOTHING";
     }
 };
 

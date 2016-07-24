@@ -24,7 +24,6 @@ $('#cmdinput')
             var input = $(this).val().slice(base.length);
             commandInput(input);
             comHist.push(input.replace(/\n/g, ''));
-            $(this).val(base);
         } else if (code == 38 && comHist.length > 0) {
             $(this).val(base + comHist[comHist.length - 1]);
             comHist.pop();
@@ -34,13 +33,18 @@ newInputComp('A', m);
 
 function commandInput(cmd) {
     try {
-        $('#errDisplay').show();
-       performCalc(cmd);
+        $('#errDisplay').hide();
+        performCalc(cmd);
+        $('#cmdinput').val(base);
     } catch (err) {
-        console.log(err);
-        $('#errDisplay').text(err)
-            .show();
+        errorHandle(err);
     }
+}
+
+function errorHandle(err) {
+    console.log(err);
+    $('#errDisplay').text(err)
+        .show();
 }
 
 function performCalc(cmd) {
@@ -49,7 +53,11 @@ function performCalc(cmd) {
     var lbl = '';
     if (cmd.includes('=')) {
         lbl = cmd.split('=')[0];
-        cmd = cmd.split('=')[1];
+        if (isValid(lbl, true))
+            cmd = cmd.split('=')[1];
+        else
+            throw "Invalid Variable Name :(";
+
     } else
         lbl = getNextFreeLetter();
     cmd = '(' + cmd + ')';
@@ -89,14 +97,30 @@ function performCalc(cmd) {
         if (typeof variables.get(lbl) == typeof theArray[0])
             updateGUI(lbl, theArray[0]);
         else {
-            throw "Incompatible Types";
+            if (typeof theArray[0] === 'object')
+                throw "You can't assign a matrix to a number";
+            else
+                throw "You can't assign a number to a matrix"
+
         }
     }
 }
 
 function getArrayFromString(cmd) {
+    var openBktCnt = 1;
+    var closeBktCnt = 0;
+
     var theArray = [];
+    theArray.add = function(arg) {
+        if (isOpenBracket(arg))
+            openBktCnt++;
+        else if (isCloseBracket(arg))
+            closeBktCnt++;
+        this.push(arg);
+    };
+
     theArray.push('(');
+
     console.log(cmd);
     var highPrecendeces = [];
     for (var i = 1; i < cmd.length; i++) {
@@ -115,27 +139,30 @@ function getArrayFromString(cmd) {
                 result = parseInt(identifier);
             else
             if ((result = getEnum(identifier)) == funcENUM.NONE) {
-                if (typeof(result = variables.get(identifier)) === undefined)
-                    throw 'Unexpected identifier';
+                if (typeof(result = variables.get(identifier)) === 'undefined')
+                    throw 'Sorry, I don\'t know what \'' + identifier + '\' is :(';
             }
 
             theArray.push(result);
 
         }
-
         if (isOperatorOrBracket(cmd[i]))
-            theArray.push(cmd[i]);
-        if (cmd[i] === '*' || cmd[i] === '^')
-            highPrecendeces.push(theArray.length - 1);
+            theArray.add(cmd[i]);
     }
 
     // TODO Precedences
 
+    if (openBktCnt > closeBktCnt)
+        throw "Unexpected character (";
+    else if (closeBktCnt > openBktCnt)
+        throw "Unexpected character )";
     console.log('#1', theArray);
     return theArray;
 }
 
 function performFunction(func, arg) {
+    if (typeof arg === 'number')
+       throw "Can't calculate the " + funcENUM.getString(func) + " of " + arg;
     return arg.performFunction(func);
 }
 
@@ -143,12 +170,16 @@ function calculate(before, after, op) {
     var result;
     switch (op) {
         case '+':
+            if (typeof before !== typeof after)
+                throw "You can't add a matrix and number sorry!";
             if (typeof before == 'object')
                 result = before.add(after);
             else
                 result = before + after;
             break;
         case '-':
+            if (typeof before !== typeof after)
+                throw "You can't subtract a matrix and number sorry!";
             if (typeof before == 'object')
                 result = before.subtract(after);
             else
