@@ -11,6 +11,9 @@ $col2: gray;
     align-items: center;
     margin-bottom: 8;
 }
+.addPad {
+    margin: 20px;
+}
 #newLabel {
     position: absolute;
     background-color: #e8effd;
@@ -159,6 +162,7 @@ $binsize: 50px;
     width: 100%;
     height: 140px;
     user-select: none;
+    cursor:default;
 }
 .center {
     position: relative;
