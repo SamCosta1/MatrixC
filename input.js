@@ -20,7 +20,8 @@ var count = 0;
 
 function newInputComp(matLbl, matrix) {
     var row, col;
-    if (matrix === null || matrix === undefined) {
+    console.log(matrix);
+    if (matrix == null|| matrix == undefined) {
         matrix = new Matrix();
     }
     if (isNaN(matrix)) {

@@ -3,7 +3,7 @@ var variables = new Map();
 function Matrix(arrMatrix) {
     if (arrMatrix instanceof Array)
         this.matrix = math.matrix(arrMatrix);
-    else if (arrMatrix === 'null')
+    else if (arrMatrix == null)
         this.matrix = math.zeros(2, 2);
     else
         this.matrix = arrMatrix;
