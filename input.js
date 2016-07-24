@@ -309,9 +309,10 @@ function endEdit(e) {
     //make cammel case if needed
     var inputted = makeCammelCase(input.val());
     //console.log(variables.get(inputted) == undefined);
-    if (!isValid(inputted))
+    if (!isValid(inputted, false)) {
+        errorHandle("Invalid Variable Name :(");
         label.text(label.closest("div").attr('id').split("-")[1]);
-    else {
+    } else {
         label.text(inputted);
         var mat = variables.get(label.closest("div").attr('id').split("-")[1]);
         variables.delete(label.closest("div").attr('id').split("-")[1]);
@@ -324,8 +325,11 @@ function endEdit(e) {
 
 }
 
-function isValid(inputted) {
-    return inputted !== '' && variables.get(inputted) === undefined;
+function isValid(inputted, allowDuplicate) {
+    return /^[a-z0-9]+$/i.test(inputted) && allowDuplicate ? true :
+        variables.get(inputted) === undefined &&
+        getEnum(inputted) === funcENUM.NONE;
+
 }
 
 function makeCammelCase(inputted) {
@@ -343,9 +347,9 @@ function updateGUI(lbl, matrix) {
     variables.set(lbl, matrix);
 
     if (isNaN(matrix)) {
-        var dRow = matrix.numCols() - $('#MAT-' + lbl).find('table').attr('data-rows');
-        var dCol = matrix.numRows() - $('#MAT-' + lbl).find('table').attr('data-cols');
-        if (dRow != 0 || dCol != 0) {
+        var dRow = parseInt(matrix.numCols() - $('#MAT-' + lbl).find('table').attr('data-rows'));
+        var dCol = parseInt(matrix.numRows() - $('#MAT-' + lbl).find('table').attr('data-cols'));
+        if (dRow !== 0 || dCol !== 0) {
 
             var $guiMods = $('#MAT-' + lbl).find('.guiModifiers');
             var $addCol = $guiMods.find('.addCol');
