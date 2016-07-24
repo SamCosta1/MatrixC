@@ -38,6 +38,7 @@ function commandInput(cmd) {
         $('#cmdinput').val(base);
     } catch (err) {
         errorHandle(err);
+        $('#cmdinput').val($('#cmdinput').val().replace(/\n/g, ''));
     }
 }
 
