@@ -100,7 +100,7 @@ function performCalc(cmd) {
             if (typeof theArray[0] === 'object')
                 throw "You can't assign a matrix to a number";
             else
-                throw "You can't assign a number to a matrix"
+                throw "You can't assign a number to a matrix";
 
         }
     }
@@ -162,7 +162,7 @@ function getArrayFromString(cmd) {
 
 function performFunction(func, arg) {
     if (typeof arg === 'number')
-       throw "Can't calculate the " + funcENUM.getString(func) + " of " + arg;
+       throw "Can't calculate " + funcENUM.getString(func) + " of " + arg;
     return arg.performFunction(func);
 }
 
