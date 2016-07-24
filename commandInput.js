@@ -8,6 +8,7 @@ var m = new Matrix([
 var base = 'MatCalculator >> ';
 var regex = new RegExp('^' + base, 'i');
 var comHist = [];
+var histPos = 0;
 
 $('#cmdinput')
     .on('input', function(ev) {
@@ -24,9 +25,13 @@ $('#cmdinput')
             var input = $(this).val().slice(base.length);
             commandInput(input);
             comHist.push(input.replace(/\n/g, ''));
+            histPos++;
         } else if (code == 38 && comHist.length > 0) {
-            $(this).val(base + comHist[comHist.length - 1]);
-            comHist.pop();
+            if (histPos > 0) histPos--;
+            $(this).val(base + comHist[histPos]);
+        } else if (code == 40 && comHist.length > 0) {
+            if (histPos < comHist.length - 1) histPos++;
+            $(this).val(base + comHist[histPos]);
         }
     });
 newInputComp('A', m);
@@ -163,7 +168,7 @@ function getArrayFromString(cmd) {
 
 function performFunction(func, arg) {
     if (typeof arg === 'number')
-       throw "Can't calculate " + funcENUM.getString(func) + " of " + arg;
+        throw "Can't calculate " + funcENUM.getString(func) + " of " + arg;
     return arg.performFunction(func);
 }
 
