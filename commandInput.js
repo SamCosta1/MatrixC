@@ -209,7 +209,10 @@ function calculate(before, after, op) {
             break;
         case '^':
             if (typeof before == 'object')
-                result = before.power(after);
+                if (typeof after == 'object')
+                    result = before.conjugate(after);
+                else
+                    result = before.power(after);
             else
                 result = Math.pow(before, after);
             break;

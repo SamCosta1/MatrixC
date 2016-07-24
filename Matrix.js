@@ -54,7 +54,9 @@ function Matrix(arrMatrix) {
             result = math.multiply(result, this.matrix);
         return new Matrix(result);
     },
-
+    this.conjugate = function(power) {
+        return power.inverse().times(this).times(power);
+    },
     this.update = function(row, col, val) {
         this.matrix = math.subset(this.matrix, math.index(parseInt(row),
             parseInt(col)), parseInt(val));
