@@ -3,11 +3,6 @@ var m = new Matrix([
     [0, 1, 0],
     [0, 0, 1]
 ]);
-var n = new Matrix([
-    [1, 0, 0],
-    [0, 2, 0],
-    [0, 0, 1]
-]);
 
 // Take input from commandLine
 var base = 'MatCalculator >> ';
@@ -35,13 +30,20 @@ $('#cmdinput')
             comHist.pop();
         }
     });
-//                  (transpose(5*A)+B*C+inverse(A+B))
 newInputComp('A', m);
-newInputComp('B', n);
-commandInput('transpose(5*A)+B*B+inverse(A+A-A)');
-//    commandInput('inverse(B+B)');
-//commandInput('transpose(A)');
+
 function commandInput(cmd) {
+    try {
+        $('#errDisplay').show();
+       performCalc(cmd);
+    } catch (err) {
+        console.log(err);
+        $('#errDisplay').text(err)
+            .show();
+    }
+}
+
+function performCalc(cmd) {
     cmd = cmd.replace(/ /g, '').replace(/\n/g, '');
 
     var lbl = '';
@@ -85,7 +87,7 @@ function commandInput(cmd) {
         newInputComp(lbl, theArray[0]);
     else {
         if (typeof variables.get(lbl) == typeof theArray[0])
-        updateGUI(lbl, theArray[0]);
+            updateGUI(lbl, theArray[0]);
         else {
             throw "Incompatible Types";
         }

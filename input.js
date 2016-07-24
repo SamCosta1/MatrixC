@@ -343,9 +343,9 @@ function updateGUI(lbl, matrix) {
     variables.set(lbl, matrix);
 
     if (isNaN(matrix)) {
-        var dRow = matrix.numCols() - $('#MAT-' + lbl).find('table').attr('data-rows');
-        var dCol = matrix.numRows() - $('#MAT-' + lbl).find('table').attr('data-cols');
-        if (dRow != 0 || dCol != 0) {
+        var dRow = parseInt(matrix.numCols() - $('#MAT-' + lbl).find('table').attr('data-rows'));
+        var dCol = parseInt(matrix.numRows() - $('#MAT-' + lbl).find('table').attr('data-cols'));
+        if (dRow !== 0 || dCol !== 0) {
 
             var $guiMods = $('#MAT-' + lbl).find('.guiModifiers');
             var $addCol = $guiMods.find('.addCol');
