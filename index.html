@@ -74,8 +74,13 @@
                     return withRndm;
                 else
                     getNextFreeLetter();
-
             }
+
+            var m = new Matrix([[1,2,1],
+                                [443,2,7],
+                                [1.345,0,1]]);
+            newInputComp("B",m);
+            newInputComp("C",m.solveAugmentedMatrix());
         </script>
 
         <script src="commandInput.js"></script>

@@ -9,75 +9,121 @@ function Matrix(arrMatrix) {
         this.matrix = arrMatrix;
 
     this.numRows = function() {
-        return this.matrix.size()[0];
-    },
-    this.numCols = function() {
-        return this.matrix.size()[1];
-    },
+            return this.matrix.size()[0];
+        },
+        this.numCols = function() {
+            return this.matrix.size()[1];
+        },
 
 
-    // Standard functions
-    this.determinant = function() {
-        return math.det(this.matrix);
-    },
-    this.det = function() {
-        return this.determinant();
-    },
-    this.transpose = function() {
-        return new Matrix(math.transpose(this.matrix));
-    },
-    this.inverse = function() {
-        return new Matrix(math.inv(this.matrix));
-    },
-    this.add = function(other) {
-        return new Matrix(math.add(this.matrix, other.matrix));
-    },
-    this.times = function(other) {
-        if (typeof other == 'object')
-            return new Matrix(math.multiply(this.matrix, other.matrix));
-        else
-            return new Matrix(math.multiply(this.matrix, other));
-    },
-    this.divide = function(other) {
-        if (typeof other == 'object')
-            return this.times(other.inverse());
-        else
-            return this.times(1 / other);
-    },
-    this.subtract = function(other) {
-        var minusOther = math.multiply(other.matrix, -1);
-        return new Matrix(math.add(this.matrix, minusOther));
-    },
-    this.power = function(power) {
-        var result = this.matrix;
-        for (i = 1; i < power; i++)
-            result = math.multiply(result, this.matrix);
-        return new Matrix(result);
-    },
-    this.conjugate = function(power) {
-        return power.inverse().times(this).times(power);
-    },
-    this.update = function(row, col, val) {
-        this.matrix = math.subset(this.matrix, math.index(parseInt(row),
-            parseInt(col)), parseInt(val));
-    },
-    this.getCell = function(row, col) {
-        return math.subset(this.matrix, math.index(parseInt(row), parseInt(col)));
-    },
-    this.performFunction = function(func) {
-        switch (func) {
-            case funcENUM.TRANSPOSE:
-                return this.transpose();
-            case funcENUM.INVERSE:
-                return this.inverse();
-            case funcENUM.RANK:
-                return null;
-            case funcENUM.DET:
-                return this.det();
-            case funcENUM.DIAGONALIZE:
-                return null;
+        // Standard functions
+        this.determinant = function() {
+            return math.det(this.matrix);
+        },
+        this.det = function() {
+            return this.determinant();
+        },
+        this.transpose = function() {
+            return new Matrix(math.transpose(this.matrix));
+        },
+        this.inverse = function() {
+            return new Matrix(math.inv(this.matrix));
+        },
+        this.add = function(other) {
+            return new Matrix(math.add(this.matrix, other.matrix));
+        },
+        this.times = function(other) {
+            if (typeof other == 'object')
+                return new Matrix(math.multiply(this.matrix, other.matrix));
+            else
+                return new Matrix(math.multiply(this.matrix, other));
+        },
+        this.divide = function(other) {
+            if (typeof other == 'object')
+                return this.times(other.inverse());
+            else
+                return this.times(1 / other);
+        },
+        this.subtract = function(other) {
+            var minusOther = math.multiply(other.matrix, -1);
+            return new Matrix(math.add(this.matrix, minusOther));
+        },
+        this.power = function(power) {
+            var result = this.matrix;
+            for (i = 1; i < power; i++)
+                result = math.multiply(result, this.matrix);
+            return new Matrix(result);
+        },
+        this.conjugate = function(power) {
+            return power.inverse().times(this).times(power);
+        },
+        this.update = function(row, col, val) {
+            this.matrix = math.subset(this.matrix, math.index(parseInt(row),
+                parseInt(col)), parseInt(val));
+        },
+        this.getCell = function(row, col) {
+            return math.subset(this.matrix, math.index(parseInt(row), parseInt(col)));
+        },
+        this.performFunction = function(func) {
+            switch (func) {
+                case funcENUM.TRANSPOSE:
+                    return this.transpose();
+                case funcENUM.INVERSE:
+                    return this.inverse();
+                case funcENUM.RANK:
+                    return null;
+                case funcENUM.DET:
+                    return this.det();
+                case funcENUM.DIAGONALIZE:
+                    return null;
+            }
+        },
+        this.solveAugmentedMatrix = function(numCols) {
+            if (numCols == undefined || numCols > this.numCols)
+                numCols = this.numCols();
+
+            var result = new Matrix(this.matrix);
+            var takenPivots = -1;
+            for (var col = 0; col < numCols; col++) {
+                if (this.getCell(col, takenPivots + 1) === 0) {
+
+                }
+            }
+
+            return this.kill.below(0, 0, result);
+        },
+
+        this.kill = {
+            // Kill all cells BELOW row value NOT INCLUDING row value
+            below: function(rows, cols, M) {
+                for (var rowDying = rows + 1; rowDying < M.numRows(); rowDying++) {
+                    var multiplier = M.getCell(rowDying, cols);
+                    if (multiplier == 0) continue;
+                    console.log(multiplier);
+
+                    for (var col = 0; col < M.numCols(); col++) {
+                        var thisVal = M.getCell(rowDying, col);
+                        var pivRowVal = M.getCell(rows, col);
+                        M.update(rowDying, col, thisVal - multiplier * pivRowVal);
+                    }
+                }
+                return M;
+            },
+            above: function(row, col, M) {
+                for (var rowDying = rows - 1; rowDying >= 0; rowDying--) {
+                    var multiplier = M.getCell(rowDying, cols);
+                    if (multiplier == 0) continue;
+                    console.log(multiplier);
+
+                    for (var col = 0; col < M.numCols(); col++) {
+                        var thisVal = M.getCell(rowDying, col);
+                        var pivRowVal = M.getCell(rows, col);
+                        M.update(rowDying, col, thisVal - multiplier * pivRowVal);
+                    }
+                }
+                return M;
+            }
         }
-    }
 }
 var funcENUM = {
     NONE: '#',
