@@ -59,7 +59,7 @@ function Matrix(arrMatrix) {
         },
         this.update = function(row, col, val) {
             this.matrix = math.subset(this.matrix, math.index(parseInt(row),
-                parseInt(col)), parseInt(val));
+                parseInt(col)), parseFloat(val));
         },
         this.getCell = function(row, col) {
             return math.subset(this.matrix, math.index(parseInt(row), parseInt(col)));
@@ -85,43 +85,75 @@ function Matrix(arrMatrix) {
             var result = new Matrix(this.matrix);
             var takenPivots = -1;
             for (var col = 0; col < numCols; col++) {
-                if (this.getCell(col, takenPivots + 1) === 0) {
-
+                // Get a nonzero entry in this cell
+                console.log("Col " + col, result.matrix + "","P",this.getCell(col, takenPivots + 1));
+console.log(" ");
+                if (result.getCell(col, takenPivots + 1) === 0) {
+                    var zeroFound = false;
+                    var _row = 0;
+                    while (!zeroFound && _row < result.numRows()) {
+                        if (result.getCell(_row, col) !== 0) {
+                            zeroFound = true;
+                            result.swap(_row, takenPivots + 1);
+                            takenPivots++;
+                        }
+                        _row++;
+                    }
+                    // Non zero entry not found, so skip this column
+                    if (_row == result.numRows())
+                        continue;
+                } else {
+                    takenPivots++;
                 }
+                console.log("Col " + col + " after swap", result.matrix + "");console.log(" ");
+                //console.log(takenPivots,col,this.getCell(takenPivots,col));
+                result.multiplyRow(takenPivots, 1 / result.getCell(takenPivots, col));console.log(" ");
+                console.log("Col " + col + " after *", result.matrix + "");
+                result.killBelow(takenPivots, col);
+                result.killAbove(takenPivots, col);
+                console.log("Col " + col + " after kill", result.matrix + "");console.log(" ");
             }
 
-            return this.kill.below(0, 0, result);
+            return result;
         },
+        this.multiplyRow = function(row, multiplier) {
+            var col = 0;
+            var mat = this;
+            math.forEach(this.matrix.toArray()[row], function(val) {
+                mat.update(row, col, val * multiplier);
+                col++;
+            });
 
-        this.kill = {
-            // Kill all cells BELOW row value NOT INCLUDING row value
-            below: function(rows, cols, M) {
-                for (var rowDying = rows + 1; rowDying < M.numRows(); rowDying++) {
-                    var multiplier = M.getCell(rowDying, cols);
-                    if (multiplier == 0) continue;
-                    console.log(multiplier);
+        },
+        this.swap = function(row1, row2) {
+            this.matrix = this.matrix.swapRows(row1, row2);
+        },
+        // Kill all cells BELOW row value NOT INCLUDING row value
+        this.killBelow = function(rows, cols) {
+            var M = this;
+            for (var rowDying = rows + 1; rowDying < M.numRows(); rowDying++) {
+                var multiplier = M.getCell(rowDying, cols);
+                if (multiplier == 0) continue;
 
-                    for (var col = 0; col < M.numCols(); col++) {
-                        var thisVal = M.getCell(rowDying, col);
-                        var pivRowVal = M.getCell(rows, col);
-                        M.update(rowDying, col, thisVal - multiplier * pivRowVal);
-                    }
+                for (var col = 0; col < M.numCols(); col++) {
+                    var thisVal = M.getCell(rowDying, col);
+                    var pivRowVal = M.getCell(rows, col);
+                    M.update(rowDying, col, thisVal - multiplier * pivRowVal);
                 }
-                return M;
-            },
-            above: function(row, col, M) {
-                for (var rowDying = rows - 1; rowDying >= 0; rowDying--) {
-                    var multiplier = M.getCell(rowDying, cols);
-                    if (multiplier == 0) continue;
-                    console.log(multiplier);
+            }
+        },
+        this.killAbove = function(rows, cols) {
+            var M = this;
+            for (var rowDying = rows - 1; rowDying >= 0; rowDying--) {
+                var multiplier = M.getCell(rowDying, cols);
+                if (multiplier == 0) continue;
+                //console.log(multiplier);
 
-                    for (var col = 0; col < M.numCols(); col++) {
-                        var thisVal = M.getCell(rowDying, col);
-                        var pivRowVal = M.getCell(rows, col);
-                        M.update(rowDying, col, thisVal - multiplier * pivRowVal);
-                    }
+                for (var col = 0; col < M.numCols(); col++) {
+                    var thisVal = M.getCell(rowDying, col);
+                    var pivRowVal = M.getCell(rows, col);
+                    M.update(rowDying, col, thisVal - multiplier * pivRowVal);
                 }
-                return M;
             }
         }
 }
