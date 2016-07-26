@@ -4,6 +4,7 @@
     <title>Matrix Calculator</title>
     <link href="dependencies/headerfont" rel="stylesheet">
     <link rel="stylesheet" href="dependencies/main.css">
+    <link rel="stylesheet" href="dependencies/refrences.css">
     <script src="dependencies/interact.js" type="text/javascript"></script>
 </head>
 
@@ -22,7 +23,7 @@
     <hr>
     <div class="mainBody">
         <br>
-        <div class="matInput draggable addPad">
+        <div class="matInput draggable addPad" style="padding-left:10px;">
             <p>interact.js module - <a href="http://interactjs.io/">Drag Stuff!</a></p>
             <img class="handle noSelect" src="img/dragHandle.png">
         </div>
@@ -36,7 +37,7 @@
             <img class="handle noSelect addPad" src="img/dragHandle.png">
         </div>
 
-        <div class="matInput draggable addPad">
+        <div class="matInput draggable addPad" style="padding-left:10px;">
             <p>Loads of mathsy stuff from <a href="http://www.mathjs.org">mathjs.org!</a></p>
             <img class="handle noSelect" src="img/dragHandle.png">
         </div>
@@ -45,10 +46,38 @@
             <img src="img/github.png" class="noSelect" style="width:40px;height:40px;margin-top:19px;margin-right:5px;"></img>
             <p> GitHub Repository <a href="https://github.com/SamCosta1/MatrixC">here!</a></p>
             <img class="handle noSelect" src="img/dragHandle.png">
-    </div>
+        </div>
         <div class="matInput draggable addPad">
             <img src="img/trello.png" class="noSelect" style="height:40px;margin-top:19px;margin-right:5px;"></img>
             <p> My attempt at organization <a href="https://trello.com/b/535Ywpo0/matrixc">here!</a></p>
+            <img class="handle noSelect" src="img/dragHandle.png">
+        </div>
+        <div class="matInput draggable addPad">
+
+            <div class="form">
+                <form name="feedback" action="thanks.html" netlify>
+                    <div class="frmInputContainer title">
+                        Any feedback is great!!
+                    </div>
+                    <div class="frmInputContainer">
+                        <label class="frmLbl">Your Name: </label>
+                        <input class="frmInput textInput" type="text" name="name">
+                    </div>
+
+                    <div class="frmInputContainer">
+                        <label class="frmLbl">Your Email: </label>
+                        <input class="frmInput textInput" type="email" name="email"></input>
+                    </div>
+                    <div class="frmInputContainer">
+                        <label class="frmLbl msgLbl">Message: </label>
+                        <textarea class="frmInput msgInput" name="message"></textarea>
+                    </div><br>
+                    <div class="frmInputContainer btnContainer">
+                        <button>Send</button>
+                    </div>
+
+                </form>
+            </div>
             <img class="handle noSelect" src="img/dragHandle.png">
         </div>
     </div>

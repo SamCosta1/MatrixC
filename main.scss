@@ -11,9 +11,6 @@ $col2: gray;
     align-items: center;
     margin-bottom: 8;
 }
-.addPad {
-    margin: 20px;
-}
 #newLabel {
     position: absolute;
     background-color: #e8effd;
@@ -23,6 +20,15 @@ $col2: gray;
 }
 textarea {
     font-size: 25px;
+}
+.thanks {
+    text-align: center;
+    font-size: 40px !important;
+    width: 100%;
+    padding: 10px 0 !important;
+}
+.thankText {
+    margin-left: 28px;
 }
 .matrixCell {
     width: 50px;
@@ -162,7 +168,7 @@ $binsize: 50px;
     width: 100%;
     height: 140px;
     user-select: none;
-    cursor:default;
+    cursor: default;
 }
 .center {
     position: relative;
