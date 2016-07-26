@@ -76,24 +76,25 @@ function Matrix(arrMatrix) {
                     return this.det();
                 case funcENUM.DIAGONALIZE:
                     return null;
+                case funcENUM.ROWREDUCE:
+                    return this.reduceToReducedEchF();
             }
+            throw "Something weird just happened!";
         },
-        this.solveAugmentedMatrix = function(numCols) {
+        this.reduceToReducedEchF = function(numCols) {
             if (numCols == undefined || numCols > this.numCols)
                 numCols = this.numCols();
 
             var result = new Matrix(this.matrix);
             var takenPivots = -1;
             for (var col = 0; col < numCols; col++) {
-                // Get a nonzero entry in this cell
-                console.log("Col " + col, result.matrix + "","P",this.getCell(col, takenPivots + 1));
-console.log(" ");
+                // Get a nonzero entry in this cell (or try to)
                 if (result.getCell(col, takenPivots + 1) === 0) {
-                    var zeroFound = false;
-                    var _row = 0;
-                    while (!zeroFound && _row < result.numRows()) {
+                    var nonzeroFound = false;
+                    var _row = takenPivots+1;
+                    while (!nonzeroFound && _row < result.numRows()) {
                         if (result.getCell(_row, col) !== 0) {
-                            zeroFound = true;
+                            nonzeroFound = true;
                             result.swap(_row, takenPivots + 1);
                             takenPivots++;
                         }
@@ -105,13 +106,9 @@ console.log(" ");
                 } else {
                     takenPivots++;
                 }
-                console.log("Col " + col + " after swap", result.matrix + "");console.log(" ");
-                //console.log(takenPivots,col,this.getCell(takenPivots,col));
-                result.multiplyRow(takenPivots, 1 / result.getCell(takenPivots, col));console.log(" ");
-                console.log("Col " + col + " after *", result.matrix + "");
+                result.multiplyRow(takenPivots, 1 / result.getCell(takenPivots, col));
                 result.killBelow(takenPivots, col);
                 result.killAbove(takenPivots, col);
-                console.log("Col " + col + " after kill", result.matrix + "");console.log(" ");
             }
 
             return result;
@@ -138,7 +135,12 @@ console.log(" ");
                 for (var col = 0; col < M.numCols(); col++) {
                     var thisVal = M.getCell(rowDying, col);
                     var pivRowVal = M.getCell(rows, col);
-                    M.update(rowDying, col, thisVal - multiplier * pivRowVal);
+                    var newVal = thisVal - multiplier * pivRowVal;
+
+                    if (Math.abs(newVal) < 1e-10)
+                       newVal = 0;
+
+                    M.update(rowDying, col, newVal);
                 }
             }
         },
@@ -147,12 +149,15 @@ console.log(" ");
             for (var rowDying = rows - 1; rowDying >= 0; rowDying--) {
                 var multiplier = M.getCell(rowDying, cols);
                 if (multiplier == 0) continue;
-                //console.log(multiplier);
 
                 for (var col = 0; col < M.numCols(); col++) {
                     var thisVal = M.getCell(rowDying, col);
                     var pivRowVal = M.getCell(rows, col);
-                    M.update(rowDying, col, thisVal - multiplier * pivRowVal);
+                    var newVal = thisVal - multiplier * pivRowVal;
+                    if (Math.abs(newVal) < 1e-10)
+                       newVal = 0;
+
+                    M.update(rowDying, col, newVal);
                 }
             }
         }
@@ -165,6 +170,7 @@ var funcENUM = {
     DET: '#D',
     EIGEN: '#E',
     DIAGONALIZE: '#DI',
+    ROWREDUCE: '#RRD',
     isFunction: function(str) {
         var found = false;
         $.each(this, function(key, value) {
@@ -187,6 +193,8 @@ var funcENUM = {
                 return "eigenvalues/vectors";
             case this.DIAGONALIZE:
                 return "diagonal form";
+            case this.ROWREDUCE:
+                return "Reduced Echelon Form";
         }
         return "NOTHING";
     }
@@ -209,6 +217,8 @@ function getEnum(input) {
             return funcENUM.EIGEN;
         case 'diagonalize':
             return funcENUM.DIAGONALIZE;
+        case 'rowreduce':
+            return funcENUM.ROWREDUCE;
     }
     return funcENUM.NONE;
 }
