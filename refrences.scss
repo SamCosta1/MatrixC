@@ -9,7 +9,7 @@
     background-color: white;
     border-color: black;
     border-width: 1;
-    font-size: 30px;
+    margin-top:4px;
 }
 .frmLbl {
     margin-right: 10px;
@@ -23,10 +23,17 @@
 }
 .msgLbl {
     position: relative;
-    bottom: 9px;
+    bottom: 5px;
+}
+.btnContainer {
+    margin-left: 2px;
+}
+.msgInput {
+    font-size:25px;
 }
 .textInput {
     height: 35px;
+    font-size: 30px;
 }
 .matInput {
     padding-left: 0;
@@ -36,7 +43,6 @@
 }
 .title {
     font-size:23px;
-
 }
 button {
     text-align: center;
