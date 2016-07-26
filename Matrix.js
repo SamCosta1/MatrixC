@@ -78,12 +78,16 @@ function Matrix(arrMatrix) {
                     return null;
                 case funcENUM.ROWREDUCE:
                     return this.reduceToReducedEchF();
+                case funcENUM.SOLVAUG:
+                    return this.reduceToReducedEchF(-1);
             }
             throw "Something weird just happened!";
         },
         this.reduceToReducedEchF = function(numCols) {
             if (numCols == undefined || numCols > this.numCols)
                 numCols = this.numCols();
+            else if (numCols == -1) // Allow func to be called with -1 for solving aug
+                numCols--;
             var numRows = this.numRows();
 
 
@@ -173,6 +177,7 @@ var funcENUM = {
     EIGEN: '#E',
     DIAGONALIZE: '#DI',
     ROWREDUCE: '#RRD',
+    SOLVAUG: '#SA',
     isFunction: function(str) {
         var found = false;
         $.each(this, function(key, value) {
@@ -196,6 +201,7 @@ var funcENUM = {
             case this.DIAGONALIZE:
                 return "diagonal form";
             case this.ROWREDUCE:
+            case this.SOLVAUG:
                 return "Reduced Echelon Form";
         }
         return "NOTHING";
@@ -221,6 +227,9 @@ function getEnum(input) {
             return funcENUM.DIAGONALIZE;
         case 'rowreduce':
             return funcENUM.ROWREDUCE;
+        case 'solveaugmented':
+        case 'solveaugmentedmatrix':
+            return funcENUM.SOLVAUG;
     }
     return funcENUM.NONE;
 }
