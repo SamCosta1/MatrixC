@@ -84,12 +84,14 @@ function Matrix(arrMatrix) {
         this.reduceToReducedEchF = function(numCols) {
             if (numCols == undefined || numCols > this.numCols)
                 numCols = this.numCols();
+            var numRows = this.numRows();
+
 
             var result = new Matrix(this.matrix);
             var takenPivots = -1;
-            for (var col = 0; col < numCols; col++) {
+            for (var col = 0; col < numCols && takenPivots < numRows-1; col++) {
                 // Get a nonzero entry in this cell (or try to)
-                if (result.getCell(col, takenPivots + 1) === 0) {
+                if (result.getCell(takenPivots + 1,col) === 0) {
                     var nonzeroFound = false;
                     var _row = takenPivots+1;
                     while (!nonzeroFound && _row < result.numRows()) {
