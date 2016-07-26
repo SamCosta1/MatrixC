@@ -226,13 +226,6 @@ function getOperand(oprnd) {
     else return variables.get(oprnd);
 }
 
-function parseNames(cmd) {
-    var list = 'transpose inverse rank det diagonalize'.split(' ');
-    for (i = 0; i < list.length; i++)
-        cmd = cmd.replace(new RegExp(list[i], 'g'), '{#' + list[i] + '}');
-    return cmd;
-}
-
 function isOperator(str) {
     return '+^-*/'.split('').indexOf(str) >= 0;
 }
