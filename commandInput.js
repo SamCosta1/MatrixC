@@ -8,6 +8,7 @@ var m = new Matrix([
 var base = 'MatCalculator >> ';
 var regex = new RegExp('^' + base, 'i');
 var comHist = [];
+var histPos = 0;
 
 $('#cmdinput')
     .on('input', function(ev) {
@@ -24,9 +25,13 @@ $('#cmdinput')
             var input = $(this).val().slice(base.length);
             commandInput(input);
             comHist.push(input.replace(/\n/g, ''));
+            histPos++;
         } else if (code == 38 && comHist.length > 0) {
-            $(this).val(base + comHist[comHist.length - 1]);
-            comHist.pop();
+            if (histPos > 0) histPos--;
+            $(this).val(base + comHist[histPos]);
+        } else if (code == 40 && comHist.length > 0) {
+            if (histPos < comHist.length - 1) histPos++;
+            $(this).val(base + comHist[histPos]);
         }
     });
 newInputComp('A', m);
@@ -38,6 +43,7 @@ function commandInput(cmd) {
         $('#cmdinput').val(base);
     } catch (err) {
         errorHandle(err);
+        $('#cmdinput').val($('#cmdinput').val().replace(/\n/g, ''));
     }
 }
 
@@ -100,7 +106,7 @@ function performCalc(cmd) {
             if (typeof theArray[0] === 'object')
                 throw "You can't assign a matrix to a number";
             else
-                throw "You can't assign a number to a matrix"
+                throw "You can't assign a number to a matrix";
 
         }
     }
@@ -162,7 +168,7 @@ function getArrayFromString(cmd) {
 
 function performFunction(func, arg) {
     if (typeof arg === 'number')
-       throw "Can't calculate the " + funcENUM.getString(func) + " of " + arg;
+        throw "Can't calculate " + funcENUM.getString(func) + " of " + arg;
     return arg.performFunction(func);
 }
 
@@ -203,7 +209,10 @@ function calculate(before, after, op) {
             break;
         case '^':
             if (typeof before == 'object')
-                result = before.power(after);
+                if (typeof after == 'object')
+                    result = before.conjugate(after);
+                else
+                    result = before.power(after);
             else
                 result = Math.pow(before, after);
             break;
@@ -215,13 +224,6 @@ function getOperand(oprnd) {
     if (!isNaN(oprnd)) return parseInt(oprnd);
     else if (typeof oprnd == 'object') return oprnd;
     else return variables.get(oprnd);
-}
-
-function parseNames(cmd) {
-    var list = 'transpose inverse rank det diagonalize'.split(' ');
-    for (i = 0; i < list.length; i++)
-        cmd = cmd.replace(new RegExp(list[i], 'g'), '{#' + list[i] + '}');
-    return cmd;
 }
 
 function isOperator(str) {

@@ -20,11 +20,10 @@ var count = 0;
 
 function newInputComp(matLbl, matrix) {
     var row, col;
-    if (matrix === null || matrix === undefined) {
+    if (matrix == null|| matrix == undefined) {
         matrix = new Matrix();
     }
     if (isNaN(matrix)) {
-        // console.log(matrix);
         col = matrix.numCols();
         row = matrix.numRows();
     } else {
@@ -183,12 +182,11 @@ function newInputComp(matLbl, matrix) {
                     $td.append(getCell(numRows, i, "0"));
                     $tr.append($td);
                 }
+
                 $table.append($tr);
                 var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-                //console.log(varName);
                 variables.get(varName).matrix.resize(
                     [parseInt(numRows) + 1, parseInt(numCols)]);
-                guiResize(this, 1);
             });
 
         $rmvColbtn.click(function() {
@@ -213,7 +211,6 @@ function newInputComp(matLbl, matrix) {
                 $table.attr("data-rows", numRows);
                 var varName = $(this).closest(".matInput").attr("id").split("-")[1];
                 variables.get(varName).matrix.resize([numRows, numCols]);
-                guiResize(this, -1);
             }
         });
 
@@ -243,16 +240,6 @@ function newInputComp(matLbl, matrix) {
             $(this).hide();
             $(this).next().show().focus();
         });
-}
-
-function guiResize($clickedBtn, dRow) {
-    var $cntr = $($clickedBtn).closest(".matInput").find(".guiModifiers");
-    var $lbl = $($clickedBtn).closest(".matInput").find(".label");
-    var current = parseInt($cntr.css("top"));
-    //console.log(current);
-    //$cntr.css("top", current + 35 * dRow);
-    //$lbl.css("top", current + 35 * dRow);
-
 }
 
 function getCell(row, col, val) {
@@ -379,8 +366,7 @@ function updateGUI(lbl, matrix) {
             var row = $input.attr("data-row");
             var col = $input.attr("data-col");
 
-            $input.val(isNaN(matrix) ?
-                matrix.getCell(row, col) : matrix);
+            $input.val(isNaN(matrix) ?  matrix.getCell(row, col) : matrix);
         });
     });
 
