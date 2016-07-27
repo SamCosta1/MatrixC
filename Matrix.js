@@ -49,6 +49,8 @@ function Matrix(arrMatrix) {
             return new Matrix(math.add(this.matrix, minusOther));
         },
         this.power = function(power) {
+            if (this.numCols() != this.numRows())
+                throw "You can only calculate powers of square matricies!";
             var result;
             if (power < 0) {
                 result = this.inverse().matrix;
