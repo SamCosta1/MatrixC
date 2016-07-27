@@ -8,6 +8,10 @@ var m = new Matrix([
 var base = 'MatCalculator >> ';
 var regex = new RegExp('^' + base, 'i');
 var comHist = [];
+comHist.add = function(toAdd) {
+    if (this.indexOf(toAdd) < 0)
+        this.push(toAdd);
+}
 var histPos = 0;
 
 $('#cmdinput')
@@ -23,15 +27,18 @@ $('#cmdinput')
         if (code == 13) {
             // Enter key pressed
             var input = $(this).val().slice(base.length);
-            commandInput(input);
-            comHist.push(input.replace(/\n/g, ''));
+            comHist.add(input.replace(/\n/g, ''));
             histPos++;
+            commandInput(input);
         } else if (code == 38 && comHist.length > 0) {
             if (histPos > 0) histPos--;
             $(this).val(base + comHist[histPos]);
         } else if (code == 40 && comHist.length > 0) {
             if (histPos < comHist.length - 1) histPos++;
             $(this).val(base + comHist[histPos]);
+        }
+        else {
+            histPos = comHist.length;
         }
     });
 
