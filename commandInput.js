@@ -152,11 +152,15 @@ function getArrayFromString(cmd) {
             var result;
             if (!isNaN(identifier)) {
                 result = parseInt(identifier);
-                // Allow correct parsing of negatives
+                // Allow correct parsing of sign
                 if (theArray[theArray.length - 1] == '-' &&
                     isNaN(theArray[theArray.length - 2])) {
                     theArray.pop();
                     result *= -1;
+                }
+                if (theArray[theArray.length - 1] == '+' &&
+                    isNaN(theArray[theArray.length - 2])) {
+                    theArray.pop();
                 }
 
             } else
@@ -237,6 +241,9 @@ function calculate(before, after, op) {
                 else
                     result = before.power(after);
             else
+                if (!isNaN(before) || !isNaN(after))
+                   throw "That's not valid maths! ";
+
                 result = Math.pow(before, after);
             break;
     }
