@@ -141,9 +141,16 @@ function getArrayFromString(cmd) {
             }
 
             var result;
-            if (!isNaN(identifier))
+            if (!isNaN(identifier)) {
                 result = parseInt(identifier);
-            else
+                // Allow correct parsing of negatives
+                if (theArray[theArray.length - 1] == '-' &&
+                    isNaN(theArray[theArray.length - 2])) {
+                    theArray.pop();
+                    result *= -1;
+                }
+
+            } else
             if ((result = getEnum(identifier)) == funcENUM.NONE) {
                 if (typeof(result = variables.get(identifier)) === 'undefined')
                     throw 'Sorry, I don\'t know what \'' + identifier + '\' is :(';
