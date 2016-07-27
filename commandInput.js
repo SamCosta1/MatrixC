@@ -91,6 +91,7 @@ function performCalc(cmd) {
     console.log("#MAT-" + org);
     if (!containsEqs && theArray.length == 3 && typeof theArray[1] == 'object'){
         $("#MAT-" + org).trigger("click");
+        $("#MAT-" + org).get(0).scrollIntoView();
         return;
     }
 
