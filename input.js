@@ -301,10 +301,10 @@ function endEdit(e) {
 
     //make cammel case if needed
     var inputted = makeCammelCase(input.val());
-    //console.log(variables.get(inputted) == undefined);
+    var err = false;
     if (!isValid(inputted, false)) {
-        errorHandle("Invalid Variable Name :(");
         label.text(label.closest("div").attr('id').split("-")[1]);
+        err = true;
     } else {
         label.text(inputted);
         var mat = variables.get(label.closest("div").attr('id').split("-")[1]);
@@ -315,6 +315,9 @@ function endEdit(e) {
     input.hide();
     label.show();
     input.val("");
+
+    if(err)
+      errorHandle("Invalid Variable Name :(");
 
 }
 
@@ -340,8 +343,8 @@ function updateGUI(lbl, matrix) {
     variables.set(lbl, matrix);
 
     if (isNaN(matrix)) {
-        var dRow = parseInt(matrix.numCols() - $('#MAT-' + lbl).find('table').attr('data-rows'));
-        var dCol = parseInt(matrix.numRows() - $('#MAT-' + lbl).find('table').attr('data-cols'));
+        var dRow = parseInt(matrix.numRows() - $('#MAT-' + lbl).find('table').attr('data-rows'));
+        var dCol = parseInt(matrix.numCols() - $('#MAT-' + lbl).find('table').attr('data-cols'));
         if (dRow !== 0 || dCol !== 0) {
 
             var $guiMods = $('#MAT-' + lbl).find('.guiModifiers');
