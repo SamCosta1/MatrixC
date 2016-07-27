@@ -54,6 +54,8 @@ function Matrix(arrMatrix) {
                 result = this.inverse().matrix;
                 power = Math.abs(power);
             } else {
+                if (power == 0)
+                    return this.getIdentity();
                 result = this.matrix;
             }
             for (i = 1; i < power; i++)
@@ -172,6 +174,14 @@ function Matrix(arrMatrix) {
                     M.update(rowDying, col, newVal);
                 }
             }
+        },
+        this.getIdentity = function(rows, cols) {
+            // If called with no arguments - use this matrix's dimensions
+            if (rows == undefined)
+                rows = this.numRows();
+            if (cols == undefined)
+                cols = this.numCols();
+            return new Matrix(math.eye(rows, cols));
         }
 }
 var funcENUM = {
