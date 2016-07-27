@@ -49,7 +49,13 @@ function Matrix(arrMatrix) {
             return new Matrix(math.add(this.matrix, minusOther));
         },
         this.power = function(power) {
-            var result = this.matrix;
+            var result;
+            if (power < 0) {
+                result = this.inverse().matrix;
+                power = Math.abs(power);
+            } else {
+                result = this.matrix;
+            }
             for (i = 1; i < power; i++)
                 result = math.multiply(result, this.matrix);
             return new Matrix(result);
