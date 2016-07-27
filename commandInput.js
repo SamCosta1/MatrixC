@@ -54,9 +54,11 @@ function errorHandle(err) {
 
 function performCalc(cmd) {
     cmd = cmd.replace(/ /g, '').replace(/\n/g, '');
-
+    var org = cmd;
     var lbl = '';
+    var containsEqs = false;
     if (cmd.includes('=')) {
+        containsEqs = true;
         lbl = cmd.split('=')[0];
         if (isValid(lbl, true))
             cmd = cmd.split('=')[1];
@@ -68,6 +70,11 @@ function performCalc(cmd) {
     cmd = '(' + cmd + ')';
 
     var theArray = getArrayFromString(cmd);
+    console.log("#MAT-" + org);
+    if (!containsEqs && theArray.length == 3 && typeof theArray[1] == 'object'){
+        $("#MAT-" + org).trigger("click");
+        return;
+    }
 
     for (var i = 0; i < theArray.length; i++) {
         if (!isCloseBracket(theArray[i]))
@@ -91,7 +98,7 @@ function performCalc(cmd) {
                     args.push(theArray[cnt+ (j + 1)]);
                 cnt++;
             }
-            console.log(theArray[j - 1], args);
+
             var r = performFunction(theArray[j - 1], args);
             theArray.splice(j, cnt+2);
             theArray[j - 1] = r;
@@ -135,7 +142,6 @@ function getArrayFromString(cmd) {
 
     theArray.push('(');
 
-    console.log(cmd);
     var highPrecendeces = [];
     for (var i = 1; i < cmd.length; i++) {
         if (isOperatorOrBracket(cmd[i]) &&
@@ -182,7 +188,7 @@ function getArrayFromString(cmd) {
         throw "Unexpected character (";
     else if (closeBktCnt > openBktCnt)
         throw "Unexpected character )";
-    console.log('#1', theArray);
+
     return theArray;
 }
 

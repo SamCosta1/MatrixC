@@ -20,7 +20,7 @@ var count = 0;
 
 function newInputComp(matLbl, matrix) {
     var row, col;
-    if (matrix == null|| matrix == undefined) {
+    if (matrix == null || matrix == undefined) {
         matrix = new Matrix();
     }
     if (isNaN(matrix)) {
@@ -33,7 +33,8 @@ function newInputComp(matLbl, matrix) {
     variables.set(matLbl, matrix);
     var $div = $("<div>", {
         id: "MAT-" + matLbl,
-        class: "matInput draggable drag-drop"
+        class: "matInput draggable drag-drop",
+        'data-clicked': 0
     });
     var $img = $("<img>", {
         class: "handle noSelect",
@@ -127,7 +128,7 @@ function newInputComp(matLbl, matrix) {
         });
 
         var btnImg = function() {
-            return $("<img>",{
+            return $("<img>", {
                 src: "img/arrow.png"
             });
         }
@@ -218,6 +219,18 @@ function newInputComp(matLbl, matrix) {
                 var varName = $(this).closest(".matInput").attr("id").split("-")[1];
                 variables.get(varName).matrix.resize([numRows, numCols]);
             }
+        });
+
+        $div.click(function(e) {
+            e.stopImmediatePropagation();
+            if ($(this).attr("data-clicked") == 1) {
+                $(this).css("background-color", "rgba(204, 204, 204, 0.2)");
+                $(this).attr("data-clicked", 0);
+            } else {
+                $(this).css("background-color", "rgba(99, 182, 255, 0.2)");
+                $(this).attr("data-clicked", 1)
+            }
+            $selectedMatrix = this;
         });
 
         count++;
