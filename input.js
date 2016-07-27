@@ -161,7 +161,8 @@ function newInputComp(matLbl, matrix) {
 
 
         $colbtn.click(
-            function() {
+            function(e) {
+                e.stopImmediatePropagation();
                 var rowCount = 0;
                 $table = $("#" + $(this).attr("data-tableid"));
                 var n = $table.attr("data-cols") - 1;
@@ -177,7 +178,8 @@ function newInputComp(matLbl, matrix) {
                 variables.get(varName).matrix.resize([parseInt(m), n + 2]);
             });
         $rowbtn.click(
-            function() {
+            function(e) {
+                e.stopImmediatePropagation();
                 $table = $("#" + $(this).attr("data-tableid"));
                 var numCols = $table.attr("data-cols");
                 var numRows = $table.attr("data-rows");
@@ -196,7 +198,8 @@ function newInputComp(matLbl, matrix) {
                     [parseInt(numRows) + 1, parseInt(numCols)]);
             });
 
-        $rmvColbtn.click(function() {
+        $rmvColbtn.click(function(e) {
+            e.stopImmediatePropagation();
             var $table = $("#" + $(this).attr("data-tableid"));
             var numCols = parseInt($table.attr("data-cols"));
             var numRows = parseInt($table.attr("data-rows"));
@@ -208,7 +211,8 @@ function newInputComp(matLbl, matrix) {
                 variables.get(varName).matrix.resize([numRows, numCols]);
             }
         });
-        $rmvRowbtn.click(function() {
+        $rmvRowbtn.click(function(e) {
+            e.stopImmediatePropagation();
             var $table = $("#" + $(this).attr("data-tableid"));
             var numRows = parseInt($table.attr("data-rows"));
             var numCols = parseInt($table.attr("data-cols"));
@@ -247,7 +251,7 @@ function newInputComp(matLbl, matrix) {
     $('.clickedit').hide()
         .focusout(endEdit)
         .keyup(function(e) {
-
+            e.stopImmediatePropagation();
             if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
                 endEdit(e);
                 return false;
@@ -255,7 +259,8 @@ function newInputComp(matLbl, matrix) {
                 return true;
             }
         })
-        .prev().click(function() {
+        .prev().click(function(e) {
+            e.stopImmediatePropagation();
             $(this).hide();
             $(this).next().show().focus();
         });
@@ -272,12 +277,14 @@ function getCell(row, col, val) {
     $c.attr('data-row', row);
     $c.attr('data-col', col);
 
-    $c.click(function() {
+    $c.click(function(e) {
+        e.stopImmediatePropagation();
         if ($(this).val() == "0")
             $(this).val("");
         $(this).css("color", "black");
     });
-    $c.change(function() {
+    $c.change(function(e) {
+        e.stopImmediatePropagation();
         var varName = $(this).closest(".matInput").attr("id").split("-")[1];
         var row = $(this).attr("data-row");
         var col = $(this).attr("data-col");
@@ -309,6 +316,8 @@ function dragMoveListener(event) {
 }
 
 function endEdit(e) {
+    e.stopImmediatePropagation();
+
     var input = $(e.target),
         label = input && input.prev();
 
@@ -329,14 +338,14 @@ function endEdit(e) {
     label.show();
     input.val("");
 
-    if(err)
-      errorHandle("Invalid Variable Name :(");
+    if (err)
+        errorHandle("Invalid Variable Name :(");
 
 }
 
 function isValid(inputted, allowDuplicate) {
     return /^[a-z0-9]+$/i.test(inputted) && (allowDuplicate ? true :
-        variables.get(inputted) === undefined) &&
+            variables.get(inputted) === undefined) &&
         getEnum(inputted) === funcENUM.NONE;
 
 }
@@ -388,7 +397,7 @@ function updateGUI(lbl, matrix) {
             var row = $input.attr("data-row");
             var col = $input.attr("data-col");
 
-            $input.val(isNaN(matrix) ?  matrix.getCell(row, col) : matrix);
+            $input.val(isNaN(matrix) ? matrix.getCell(row, col) : matrix);
         });
     });
 
