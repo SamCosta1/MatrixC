@@ -54,6 +54,17 @@ function errorHandle(err) {
 
 function performCalc(cmd) {
     cmd = cmd.replace(/ /g, '').replace(/\n/g, '');
+
+    // Split lines by semi colon and run each command seperatly
+    if (cmd.includes(';'))
+    {
+        var commands = cmd.split(';');
+        for (var c in commands)
+            performCalc(commands[c]);
+        return;
+    }
+
+
     var org = cmd;
     var lbl = '';
     var containsEqs = false;
