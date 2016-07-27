@@ -74,7 +74,7 @@ function Matrix(arrMatrix) {
         this.getCell = function(row, col) {
             return math.subset(this.matrix, math.index(parseInt(row), parseInt(col)));
         },
-        this.performFunction = function(func) {
+        this.performFunction = function(func, args) {
             switch (func) {
                 case funcENUM.TRANSPOSE:
                     return this.transpose();
@@ -90,6 +90,10 @@ function Matrix(arrMatrix) {
                     return this.reduceToReducedEchF();
                 case funcENUM.SOLVAUG:
                     return this.reduceToReducedEchF(-1);
+                case funcENUM.ID:
+                    return this.getIdentity(args[0], args[1]);
+                case funcENUM.ZEROS:
+                    return this.getZeros(args[0], args[1]);
             }
             throw "Something weird just happened!";
         },
@@ -171,19 +175,41 @@ function Matrix(arrMatrix) {
                     var pivRowVal = M.getCell(rows, col);
                     var newVal = thisVal - multiplier * pivRowVal;
                     if (Math.abs(newVal) < 1e-10)
-                       newVal = 0;
+                        newVal = 0;
 
                     M.update(rowDying, col, newVal);
                 }
             }
         },
         this.getIdentity = function(rows, cols) {
+            console.log(rows,cols);
+            if (rows == undefined && cols != undefined)
+                rows = cols;
+            if (rows != undefined && cols == undefined)
+                cols = rows;
             // If called with no arguments - use this matrix's dimensions
             if (rows == undefined)
                 rows = this.numRows();
             if (cols == undefined)
                 cols = this.numCols();
+            console.log("Coords" ,rows,cols);
+
             return new Matrix(math.eye(rows, cols));
+        },
+        this.getZeros = function(rows, cols) {
+            console.log(rows,cols);
+            if (rows == undefined && cols != undefined)
+                rows = cols;
+            if (rows != undefined && cols == undefined)
+                cols = rows;
+            // If called with no arguments - use this matrix's dimensions
+            if (rows == undefined)
+                rows = this.numRows();
+            if (cols == undefined)
+                cols = this.numCols();
+            console.log("Coords" ,rows,cols);
+
+            return new Matrix(math.zeros(rows, cols));
         }
 }
 var funcENUM = {
@@ -196,6 +222,8 @@ var funcENUM = {
     DIAGONALIZE: '#DI',
     ROWREDUCE: '#RRD',
     SOLVAUG: '#SA',
+    ID: '#ID',
+    ZEROS: '#ZE',
     isFunction: function(str) {
         var found = false;
         $.each(this, function(key, value) {
@@ -221,6 +249,10 @@ var funcENUM = {
             case this.ROWREDUCE:
             case this.SOLVAUG:
                 return "Reduced Echelon Form";
+            case this.ID:
+                return "identity matrix";
+            case this.ZEROS:
+                return "0 matrix";
         }
         return "NOTHING";
     }
@@ -248,6 +280,11 @@ function getEnum(input) {
         case 'solveaugmented':
         case 'solveaugmentedmatrix':
             return funcENUM.SOLVAUG;
+        case 'id':
+        case 'identity':
+            return funcENUM.ID;
+        case 'zeros':
+            return funcENUM.ZEROS;
     }
     return funcENUM.NONE;
 }

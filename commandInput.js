@@ -84,8 +84,17 @@ function performCalc(cmd) {
             j--;
         }
         if (funcENUM.isFunction(theArray[j - 1])) {
-            var r = performFunction(theArray[j - 1], theArray[j + 1]);
-            theArray.splice(j, 3);
+            var args = [],
+                cnt = 0;
+
+            while (!isCloseBracket(theArray[cnt + (j + 1)])) {
+                if (theArray[cnt + (j + 1)] != ',')
+                    args.push(theArray[cnt+ (j + 1)]);
+                cnt++;
+            }
+            console.log(theArray[j - 1], args);
+            var r = performFunction(theArray[j - 1], args);
+            theArray.splice(j, cnt+2);
             theArray[j - 1] = r;
         } else {
             theArray.splice(j, 1); // get rid of (
@@ -153,7 +162,8 @@ function getArrayFromString(cmd) {
             } else
             if ((result = getEnum(identifier)) == funcENUM.NONE) {
                 if (typeof(result = variables.get(identifier)) === 'undefined')
-                    throw 'Sorry, I don\'t know what \'' + identifier + '\' is :(';
+                    if ((result = identifier) != ',')
+                        throw 'Sorry, I don\'t know what \'' + identifier + '\' is :(';
             }
 
             theArray.push(result);
@@ -174,9 +184,15 @@ function getArrayFromString(cmd) {
 }
 
 function performFunction(func, arg) {
-    if (typeof arg === 'number')
-        throw "Can't calculate " + funcENUM.getString(func) + " of " + arg;
-    return arg.performFunction(func);
+    if (typeof arg[0] == 'object')
+        return arg[0].performFunction(func);
+    else
+    {
+        if (func != funcENUM.ID && func != funcENUM.ZEROS)
+           throw "Cannot perform operation: " + funcENUM.getString(func) + " of " + arg[0];
+        return new Matrix().performFunction(func,arg);
+    }
+
 }
 
 function calculate(before, after, op) {
@@ -250,7 +266,7 @@ function isBrackets(str) {
 }
 
 function isOperatorOrBracket(str) {
-    return isOperator(str) || isBrackets(str);
+    return isOperator(str) || isBrackets(str) || str == ',';
 }
 
 function isSquiggle(str) {
