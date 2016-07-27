@@ -295,10 +295,10 @@ function endEdit(e) {
 
     //make cammel case if needed
     var inputted = makeCammelCase(input.val());
-    //console.log(variables.get(inputted) == undefined);
+    var err = false;
     if (!isValid(inputted, false)) {
-        errorHandle("Invalid Variable Name :(");
         label.text(label.closest("div").attr('id').split("-")[1]);
+        err = true;
     } else {
         label.text(inputted);
         var mat = variables.get(label.closest("div").attr('id').split("-")[1]);
@@ -309,6 +309,9 @@ function endEdit(e) {
     input.hide();
     label.show();
     input.val("");
+
+    if(err)
+      errorHandle("Invalid Variable Name :(");
 
 }
 
