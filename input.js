@@ -126,23 +126,29 @@ function newInputComp(matLbl, matrix) {
             class: "guiModifiers"
         });
 
+        var btnImg = function() {
+            return $("<img>",{
+                src: "img/arrow.png"
+            });
+        }
+
         $colbtn = $("<button>", {
-            text: ">",
             class: "addCol colButton rowColModifier noSelect"
         });
+        $colbtn.append(btnImg());
         $rowbtn = $("<button>", {
-            text: "<",
-            class: "addRow rowButton rowColModifier noSelect"
+            class: "addRow rowButton rowColModifier noSelect flipY"
         });
-        $rowbtn.css("margin-left", "15px");
+        $rowbtn.append(btnImg());
+
         $rmvColbtn = $("<button>", {
-            text: "<",
-            class: "rmvCol colButton rowColModifier noSelect"
+            class: "rmvCol colButton rowColModifier noSelect flip"
         });
+        $rmvColbtn.append(btnImg());
         $rmvRowbtn = $("<button>", {
-            text: ">",
-            class: "rmvRow rowButton rowColModifier noSelect"
+            class: "rmvRow rowButton rowColModifier noSelect addLeftMargin"
         });
+        $rmvRowbtn.append(btnImg());
 
         $colbtn.attr("data-tableid", "t" + count);
         $rowbtn.attr("data-tableid", "t" + count);
@@ -215,8 +221,8 @@ function newInputComp(matLbl, matrix) {
         });
 
         count++;
-        $modifiers.append($rowbtn);
         $modifiers.append($rmvRowbtn);
+        $modifiers.append($rowbtn);
         $modifiers.append($rmvColbtn);
         $modifiers.append($colbtn);
         $div.append($modifiers);
