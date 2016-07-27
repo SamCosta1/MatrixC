@@ -335,8 +335,8 @@ function endEdit(e) {
 }
 
 function isValid(inputted, allowDuplicate) {
-    return /^[a-z0-9]+$/i.test(inputted) && allowDuplicate ? true :
-        variables.get(inputted) === undefined &&
+    return /^[a-z0-9]+$/i.test(inputted) && (allowDuplicate ? true :
+        variables.get(inputted) === undefined) &&
         getEnum(inputted) === funcENUM.NONE;
 
 }
