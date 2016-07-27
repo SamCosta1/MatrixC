@@ -34,7 +34,6 @@ $('#cmdinput')
             $(this).val(base + comHist[histPos]);
         }
     });
-newInputComp('A', m);
 
 function commandInput(cmd) {
     try {
