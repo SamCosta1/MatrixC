@@ -4,6 +4,9 @@ function Fraction(top, bottom) {
 
     if (bottom == undefined)
         this.bottom = 1;
+    if (top == undefined) {
+        this.top = 1;
+    }
     this.parseLiteral = function(v) {
             if (v instanceof Fraction)
                 return v;
@@ -12,23 +15,31 @@ function Fraction(top, bottom) {
         },
         this.divide = function(v) {
             v = this.parseLiteral(v);
-            this.bottom *= v.top;
-            this.top *= v.bottom;
+            var result = new Fraction();
+            result.top = this.top * v.bottom;
+            result.bottom = this.bottom * v.top;
+            return result;
         },
         this.multiply = function(v) {
             v = this.parseLiteral(v);
-            this.bottom *= v.bottom;
-            this.top *= v.top;
+            var result = new Fraction();
+            result.bottom = this.bottom * v.bottom;
+            result.top = this.top * v.top;
+            return result;
         },
         this.add = function(v) {
             v = this.parseLiteral(v);
-            this.top = this.top * v.bottom + this.bottom * v.top;
-            this.bottom *= v.bottom;
+            var result = new Fraction();
+            result.top = this.top * v.bottom + this.bottom * v.top;
+            result.bottom = this.bottom * v.bottom;
+            return result
         },
         this.minus = function(v) {
             v = this.parseLiteral(v);
-            this.top = this.top * v.bottom - this.bottom * v.top;
-            this.bottom *= v.bottom;
+            var result = new Fraction();
+            result.top = this.top * v.bottom - this.bottom * v.top;
+            result.bottom = this.bottom * v.bottom;
+            return result
         },
         this.getLiteral = function() {
             return this.top / this.bottom;
