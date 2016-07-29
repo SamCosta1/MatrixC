@@ -25,7 +25,7 @@ function Fraction(top, bottom) {
             result.bottom = this.bottom * v.top;
             return result;
         },
-        this.multiply = function(v) {
+        this.times = function(v) {
             v = this.parseLiteral(v);
             var result = new Fraction();
             result.bottom = this.bottom * v.bottom;
@@ -35,11 +35,12 @@ function Fraction(top, bottom) {
         this.add = function(v) {
             v = this.parseLiteral(v);
             var result = new Fraction();
+            console.log(result.top,result.bottom,v);
             result.top = this.top * v.bottom + this.bottom * v.top;
             result.bottom = this.bottom * v.bottom;
             return result
         },
-        this.minus = function(v) {
+        this.subtract = function(v) {
             v = this.parseLiteral(v);
             var result = new Fraction();
             result.top = this.top * v.bottom - this.bottom * v.top;
@@ -48,5 +49,12 @@ function Fraction(top, bottom) {
         },
         this.getLiteral = function() {
             return this.top / this.bottom;
+        },
+        this.toString = function() {
+            if (this.top == 0)
+                return 0;
+            if (this.bottom == 1)
+                return this.top;
+            return this.top + '/' + this.bottom;
         }
 }

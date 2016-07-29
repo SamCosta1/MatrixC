@@ -1,55 +1,71 @@
 var variables = new Map();
 
 function Matrix(arrMatrix) {
-    if (arrMatrix instanceof Array)
-        this.matrix = math.matrix(arrMatrix);
-    else if (arrMatrix == null)
-        this.matrix = math.zeros(2, 2);
-    else
-        this.matrix = arrMatrix;
+    this.matrix = arrMatrix;
+    if (arrMatrix == undefined)
+        this.matrix = getZeros(3).matrix;
 
-    this.numRows = function() {
-            return this.matrix.size()[0];
+    this.update = function(row, col, val) {
+            this.matrix[parseInt(row)][parseInt(col)] = val instanceof Fraction ? val : new Fraction(val);
+        },
+        this.getCell = function(row, col) {
+            return this.matrix[row][col];
+        },
+        this.numRows = function() {
+            return this.matrix.length;
         },
         this.numCols = function() {
-            return this.matrix.size()[1];
+            return this.matrix[0].length;
         },
 
 
         // Standard functions
         this.determinant = function() {
-            return math.det(this.matrix);
+            //    return math.det(this.matrix);
         },
         this.det = function() {
             return this.determinant();
         },
         this.transpose = function() {
-            return new Matrix(math.transpose(this.matrix));
+            //    return new Matrix(math.transpose(this.matrix));
         },
         this.inverse = function() {
-            return new Matrix(math.inv(this.matrix));
+            //    return new Matrix(math.inv(this.matrix));
         },
         this.add = function(other) {
-            return new Matrix(math.add(this.matrix, other.matrix));
-        },
-        this.times = function(other) {
-            if (typeof other == 'object')
-                return new Matrix(math.multiply(this.matrix, other.matrix));
-            else
-                return new Matrix(math.multiply(this.matrix, other));
-        },
-        this.divide = function(other) {
-            if (typeof other == 'object')
-                return this.times(other.inverse());
-            else
-                return this.times(1 / other);
+            var result = [];
+            for (var i = 0; i < this.numRows(); i++) {
+                var sub = [];
+                for (var j = 0; j < this.numCols(); j++)
+                    sub.push(this.getCell(i, j).add(other.getCell(i, j)));
+                result.push(sub)
+            }
+            return new Matrix(result);
         },
         this.subtract = function(other) {
-            var minusOther = math.multiply(other.matrix, -1);
-            return new Matrix(math.add(this.matrix, minusOther));
+            var result = [];
+            for (var i = 0; i < this.numRows(); i++) {
+                var sub = [];
+                for (var j = 0; j < this.numCols(); j++)
+                sub.push(this.getCell(i, j).subtract(other.getCell(i, j)));
+                result.push(sub)
+            }
+            return new Matrix(result);
+        },
+        this.times = function(other) {
+            //    if (typeof other == 'object')
+            //        return new Matrix(math.multiply(this.matrix, other.matrix));
+            //    else
+            //        return new Matrix(math.multiply(this.matrix, other));
+        },
+        this.divide = function(other) {
+            /*    if (typeof other == 'object')
+                    return this.times(other.inverse());
+                else
+                    return this.times(1 / other);*/
         },
         this.power = function(power) {
-            if (this.numCols() != this.numRows())
+            /*if (this.numCols() != this.numRows())
                 throw "You can only calculate powers of square matricies!";
             var result;
             if (power < 0) {
@@ -62,17 +78,10 @@ function Matrix(arrMatrix) {
             }
             for (i = 1; i < power; i++)
                 result = math.multiply(result, this.matrix);
-            return new Matrix(result);
+            return new Matrix(result);*/
         },
         this.conjugate = function(power) {
             return power.inverse().times(this).times(power);
-        },
-        this.update = function(row, col, val) {
-            this.matrix = math.subset(this.matrix, math.index(parseInt(row),
-                parseInt(col)), parseFloat(val));
-        },
-        this.getCell = function(row, col) {
-            return math.subset(this.matrix, math.index(parseInt(row), parseInt(col)));
         },
         this.performFunction = function(func, args) {
             switch (func) {
@@ -107,11 +116,11 @@ function Matrix(arrMatrix) {
 
             var result = new Matrix(this.matrix);
             var takenPivots = -1;
-            for (var col = 0; col < numCols && takenPivots < numRows-1; col++) {
+            for (var col = 0; col < numCols && takenPivots < numRows - 1; col++) {
                 // Get a nonzero entry in this cell (or try to)
-                if (result.getCell(takenPivots + 1,col) === 0) {
+                if (result.getCell(takenPivots + 1, col) === 0) {
                     var nonzeroFound = false;
-                    var _row = takenPivots+1;
+                    var _row = takenPivots + 1;
                     while (!nonzeroFound && _row < result.numRows()) {
                         if (result.getCell(_row, col) !== 0) {
                             nonzeroFound = true;
@@ -158,7 +167,7 @@ function Matrix(arrMatrix) {
                     var newVal = thisVal - multiplier * pivRowVal;
 
                     if (Math.abs(newVal) < 1e-10)
-                       newVal = 0;
+                        newVal = 0;
 
                     M.update(rowDying, col, newVal);
                 }
@@ -182,7 +191,7 @@ function Matrix(arrMatrix) {
             }
         },
         this.getIdentity = function(rows, cols) {
-            console.log(rows,cols);
+            console.log(rows, cols);
             if (rows == undefined && cols != undefined)
                 rows = cols;
             if (rows != undefined && cols == undefined)
@@ -192,25 +201,28 @@ function Matrix(arrMatrix) {
                 rows = this.numRows();
             if (cols == undefined)
                 cols = this.numCols();
-            console.log("Coords" ,rows,cols);
+            console.log("Coords", rows, cols);
 
             return new Matrix(math.eye(rows, cols));
-        },
-        this.getZeros = function(rows, cols) {
-            console.log(rows,cols);
-            if (rows == undefined && cols != undefined)
-                rows = cols;
-            if (rows != undefined && cols == undefined)
-                cols = rows;
-            // If called with no arguments - use this matrix's dimensions
-            if (rows == undefined)
-                rows = this.numRows();
-            if (cols == undefined)
-                cols = this.numCols();
-            console.log("Coords" ,rows,cols);
-
-            return new Matrix(math.zeros(rows, cols));
         }
+}
+
+function getZeros(rows, cols) {
+    console.log(rows, cols);
+    if (rows == undefined && cols != undefined)
+        rows = cols;
+    if (rows != undefined && cols == undefined)
+        cols = rows;
+
+    var result = [];
+    for (var i = 0; i < rows; i++) {
+        var sub = [];
+        for (var j = 0; j < cols; j++)
+            sub.push(new Fraction(0, 1));
+        result.push(sub);
+    }
+
+    return new Matrix(result);
 }
 var funcENUM = {
     NONE: '#',

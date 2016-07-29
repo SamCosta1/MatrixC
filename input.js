@@ -114,7 +114,7 @@ function newInputComp(matLbl, matrix) {
         var $tr = $("<tr>");
         for (j = 0; j < col; j++) {
             var $td = $("<td>");
-            $td.append(getCell(i, j, isNaN(matrix) ? matrix.getCell(i, j) : matrix));
+            $td.append(getCell(i, j, isNaN(matrix) ? matrix.getCell(i, j).toString() : matrix));
             $tr.append($td);
         }
         $table.append($tr);
