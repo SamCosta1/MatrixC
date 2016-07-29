@@ -175,7 +175,7 @@ function newInputComp(matLbl, matrix) {
                     $(this).find('td').eq(n).after($td);
                 });
                 var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-                variables.get(varName).matrix.resize([parseInt(m), n + 2]);
+                variables.get(varName).resize(parseInt(m), n + 2);
             });
         $rowbtn.click(
             function(e) {
@@ -194,8 +194,7 @@ function newInputComp(matLbl, matrix) {
 
                 $table.append($tr);
                 var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-                variables.get(varName).matrix.resize(
-                    [parseInt(numRows) + 1, parseInt(numCols)]);
+                variables.get(varName).resize(parseInt(numRows) + 1, parseInt(numCols));
             });
 
         $rmvColbtn.click(function(e) {
@@ -208,7 +207,7 @@ function newInputComp(matLbl, matrix) {
                 numCols--;
                 $table.attr("data-cols", numCols);
                 var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-                variables.get(varName).matrix.resize([numRows, numCols]);
+                variables.get(varName).resize(numRows, numCols);
             }
         });
         $rmvRowbtn.click(function(e) {
@@ -221,7 +220,7 @@ function newInputComp(matLbl, matrix) {
                 numRows--;
                 $table.attr("data-rows", numRows);
                 var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-                variables.get(varName).matrix.resize([numRows, numCols]);
+                variables.get(varName).resize(numRows, numCols);
             }
         });
 
@@ -292,8 +291,9 @@ function getCell(row, col, val) {
             $c.css("color", "gray");
             variables.get(varName).update(row, col, 0);
             $(this).val("0");
-        } else
+        } else {
             variables.get(varName).update(row, col, $(this).val());
+        }
 
     });
     return $c;

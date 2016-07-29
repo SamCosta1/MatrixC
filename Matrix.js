@@ -38,7 +38,7 @@ function Matrix(arrMatrix) {
                 var sub = [];
                 for (var j = 0; j < this.numCols(); j++)
                     sub.push(this.getCell(i, j).add(other.getCell(i, j)));
-                result.push(sub)
+                result.push(sub);
             }
             return new Matrix(result);
         },
@@ -47,16 +47,25 @@ function Matrix(arrMatrix) {
             for (var i = 0; i < this.numRows(); i++) {
                 var sub = [];
                 for (var j = 0; j < this.numCols(); j++)
-                sub.push(this.getCell(i, j).subtract(other.getCell(i, j)));
-                result.push(sub)
+                    sub.push(this.getCell(i, j).subtract(other.getCell(i, j)));
+                result.push(sub);
             }
             return new Matrix(result);
         },
         this.times = function(other) {
-            //    if (typeof other == 'object')
-            //        return new Matrix(math.multiply(this.matrix, other.matrix));
-            //    else
-            //        return new Matrix(math.multiply(this.matrix, other));
+            if (this.numCols() != other.numRows() || this.numRows() != other.numCols())
+                throw "Dimension mismatch, can't multiply " + this.numRows() +
+                    "x" + this.numCols() + " by " + other.numRows() + "x" + other.numCols();
+
+            var result = new Matrix();
+            for (var row = 0; row < this.numRows(); row++)
+                for (var col = 0; col < this.numCols(); col++) {
+                    var res = new Fraction();
+                    for (var i = 0; i < this.numCols(); i++)
+                        res = res.add(this.getCell(row, i).times(other.getCell(i, col)));
+                    result.update(row, col, res);
+                }
+            return result;
         },
         this.divide = function(other) {
             /*    if (typeof other == 'object')
@@ -190,6 +199,25 @@ function Matrix(arrMatrix) {
                 }
             }
         },
+        this.resize = function(rows, cols) {
+            rows = parseInt(rows);
+            cols = parseInt(cols);
+            if (rows < this.numRows())
+                this.matrix = this.matrix.slice(0, rows);
+            else if (rows != this.numRows()) {
+                var newRow = []
+                for (var i = 0; i < cols; i++)
+                    newRow.push(new Fraction());
+                this.matrix.push(newRow);
+            }
+            if (cols < this.numCols()) {
+                for (var row = 0; row < rows; row++)
+                    this.matrix[row] = this.matrix[row].slice(0, cols);
+            } else if (cols != this.numCols())
+                for (var i = 0; i < rows; i++)
+                    this.matrix[i].push(new Fraction());
+            console.log(this.matrix, rows, cols);
+        },
         this.getIdentity = function(rows, cols) {
             console.log(rows, cols);
             if (rows == undefined && cols != undefined)
@@ -208,7 +236,6 @@ function Matrix(arrMatrix) {
 }
 
 function getZeros(rows, cols) {
-    console.log(rows, cols);
     if (rows == undefined && cols != undefined)
         rows = cols;
     if (rows != undefined && cols == undefined)
