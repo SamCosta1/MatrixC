@@ -2,10 +2,15 @@ function Fraction(top, bottom) {
     this.bottom = bottom;
     this.top = top;
 
-    if (bottom == undefined)
-        this.bottom = 1;
     if (top == undefined) {
-        this.top = 1;
+        this.top = 0;
+    }
+    if (bottom == undefined) {
+        if (typeof top === 'string' && top.includes('/')) {
+            this.top = top.split('/')[0];
+            this.bottom = top.split('/')[1];
+        } else
+            this.bottom = 1;
     }
     this.parseLiteral = function(v) {
             if (v instanceof Fraction)
