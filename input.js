@@ -23,7 +23,7 @@ function newInputComp(matLbl, matrix) {
     if (matrix == null || matrix == undefined) {
         matrix = new Matrix();
     }
-    if (isNaN(matrix)) {
+    if (matrix instanceof Matrix) {
         col = matrix.numCols();
         row = matrix.numRows();
     } else {
@@ -113,7 +113,7 @@ function newInputComp(matLbl, matrix) {
     for (i = 0; i < row; i++) {
         var $tr = $("<tr>");
         for (j = 0; j < col; j++) {
-            var $td = $("<td>");        
+            var $td = $("<td>");
             $td.append(getCell(i, j, matrix instanceof Matrix ? matrix.getCell(i, j).toString():
                                      matrix instanceof Fraction ? matrix.toString() : matrix));
             $tr.append($td);

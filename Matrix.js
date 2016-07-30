@@ -3,13 +3,16 @@ var variables = new Map();
 // creation of an empty matrix of any size;
 function Matrix(arrMatrix, cols) {
     this.matrix = arrMatrix;
+    this.multiplier = new Fraction(1, 1);
     if (arrMatrix == undefined)
         this.matrix = getZeros(3).matrix;
     else if (!isNaN(arrMatrix))
-        this.matrix = getZeros(arrMatrix,cols).matrix;
+        this.matrix = getZeros(arrMatrix, cols).matrix;
+
 
     this.update = function(row, col, val) {
-            this.matrix[parseInt(row)][parseInt(col)] = val instanceof Fraction ? val : new Fraction(val);
+            this.matrix[parseInt(row)][parseInt(col)] = val instanceof Fraction ?
+                val : new Fraction(val);
         },
         this.getCell = function(row, col) {
             return this.matrix[row][col];
@@ -20,11 +23,35 @@ function Matrix(arrMatrix, cols) {
         this.numCols = function() {
             return this.matrix[0].length;
         },
-
-
+        this.clone = function() {
+            var result = [];
+            for (var i = 0; i < this.numRows(); i++) {
+                var sub = [];
+                for (var j = 0; j < this.numCols(); j++)
+                    sub.push(this.getCell(i, j).clone());
+                result.push(sub);
+            }
+            return new Matrix(result);
+        },
         // Standard functions
         this.determinant = function() {
-            //    return math.det(this.matrix);
+            if (this.numRows() == 2)
+                return this.getCell(0, 0).times(this.getCell(1, 1))
+                    .subtract(this.getCell(1, 0).times(this.getCell(0, 1)))
+            var reduced = this.reduceToReducedEchF();
+            var multiplier = reduced.multiplier;
+
+            var lastRow = reduced.numRows() - 1;
+            var sum = new Fraction();
+            var mult = 1;
+            for (var col = 0; col < reduced.numCols(); col++, mult *= -1){
+                if (reduced.matrix[lastRow][col] != 0)
+                    sum = sum.add(determinant(subMatrix(lastRow,col)).times(mult));
+            }
+            return sum.times(multiplier);
+        },
+        this.subMatrix = function() {
+
         },
         this.det = function() {
             return this.determinant();
@@ -57,12 +84,12 @@ function Matrix(arrMatrix, cols) {
         },
         this.times = function(other) {
             if (!(other instanceof Matrix))
-               return this.timesScalar(other);
-            if (this.numCols() != other.numRows() ||  this.numRows() != other.numCols())
+                return this.timesScalar(other);
+            if (this.numCols() != other.numRows() || this.numRows() != other.numCols())
                 throw "Dimension mismatch, can't multiply " + this.numRows() +
                     "x" + this.numCols() + " by " + other.numRows() + "x" + other.numCols();
 
-            var result = new Matrix(this.numRows(),other.numCols());
+            var result = new Matrix(this.numRows(), other.numCols());
             for (var row = 0; row < this.numRows(); row++)
                 for (var col = 0; col < this.numCols(); col++) {
                     var res = new Fraction();
@@ -73,12 +100,12 @@ function Matrix(arrMatrix, cols) {
             return result;
         },
         this.timesScalar = function(val) {
-            var result = new Matrix(this.numRows(),this.numCols());
+            var result = new Matrix(this.numRows(), this.numCols());
             for (var row = 0; row < this.numRows(); row++)
                 for (var col = 0; col < this.numCols(); col++) {
-                    result.update(row,col,this.getCell(row,col).times(val));
+                    result.update(row, col, this.getCell(row, col).times(val));
                 }
-                return result;
+            return result;
         },
         this.divide = function(other) {
             if (other instanceof Matrix)
@@ -134,88 +161,71 @@ function Matrix(arrMatrix, cols) {
             throw "Something weird just happened!";
         },
         this.reduceToReducedEchF = function(numCols) {
-            if (numCols == undefined || numCols > this.numCols)
+            if (numCols == undefined || numCols > this.numCols())
                 numCols = this.numCols();
             else if (numCols == -1) // Allow func to be called with -1 for solving aug
                 numCols--;
             var numRows = this.numRows();
 
+            var result = this.clone();
 
-            var result = new Matrix(this.matrix);
-            var takenPivots = -1;
-            for (var col = 0; col < numCols && takenPivots < numRows - 1; col++) {
-                // Get a nonzero entry in this cell (or try to)
-                if (result.getCell(takenPivots + 1, col) === 0) {
-                    var nonzeroFound = false;
-                    var _row = takenPivots + 1;
-                    while (!nonzeroFound && _row < result.numRows()) {
-                        if (result.getCell(_row, col) !== 0) {
-                            nonzeroFound = true;
-                            result.swap(_row, takenPivots + 1);
-                            takenPivots++;
-                        }
-                        _row++;
-                    }
-                    // Non zero entry not found, so skip this column
-                    if (_row == result.numRows())
+            var currentPivPos = 0;
+            for (var col = 0; col < numCols && currentPivPos < numRows; col++) {
+                if (result.getCell(currentPivPos, col) == 0) {
+                    var indexToSwap = result.getNonZeroRows(currentPivPos, col);
+                    if (indexToSwap != -1)
+                        result.swap(indexToSwap, currentPivPos);
+                    else
                         continue;
-                } else {
-                    takenPivots++;
                 }
-                result.multiplyRow(takenPivots, 1 / result.getCell(takenPivots, col));
-                result.killBelow(takenPivots, col);
-                result.killAbove(takenPivots, col);
+                var mult = result.getCell(currentPivPos, col).reciprocal();
+                result.multiplier = result.multiplier.divide(mult);
+                result.matrix[currentPivPos] = result.multiplyRow(currentPivPos, mult);
+                result.kill(currentPivPos, col);
+                currentPivPos++;
             }
-
             return result;
         },
-        this.multiplyRow = function(row, multiplier) {
-            var col = 0;
-            var mat = this;
-            math.forEach(this.matrix.toArray()[row], function(val) {
-                mat.update(row, col, val * multiplier);
-                col++;
-            });
-
+        // MUTATES THE OBJECT
+        this.kill = function(row, col) {
+            for (var r = 0; r < this.numRows(); r++) {
+                if (r == row)
+                    continue;
+                var mult = this.getCell(r, col);
+                if (!mult.isZero())
+                    this.matrix[r] = this.subtractRows(this.matrix[r],
+                        this.multiplyRow(row, mult));
+            }
         },
+        this.getNonZeroRows = function(row, col) {
+            row++;
+            while (row < this.numRows() && this.getCell(row, col) == 0)
+                row++;
+            if (row == this.numRows())
+                return -1;
+            else
+                return row;
+        },
+        this.subtractRows = function(row1, row2) {
+            if (row1.length != row2.length)
+                throw "Something weird happened!";
+            var res = [];
+            for (var i = 0; i < row1.length; i++)
+                res.push(row1[i].subtract(row2[i]));
+            return res;
+        },
+        this.multiplyRow = function(row, mult) {
+            var res = [];
+            for (var col = 0; col < this.numCols(); col++)
+                res.push(this.getCell(row, col).clone().times(mult));
+            return res;
+        },
+        // MUTATES THIS OBJECT
         this.swap = function(row1, row2) {
-            this.matrix = this.matrix.swapRows(row1, row2);
-        },
-        // Kill all cells BELOW row value NOT INCLUDING row value
-        this.killBelow = function(rows, cols) {
-            var M = this;
-            for (var rowDying = rows + 1; rowDying < M.numRows(); rowDying++) {
-                var multiplier = M.getCell(rowDying, cols);
-                if (multiplier == 0) continue;
-
-                for (var col = 0; col < M.numCols(); col++) {
-                    var thisVal = M.getCell(rowDying, col);
-                    var pivRowVal = M.getCell(rows, col);
-                    var newVal = thisVal - multiplier * pivRowVal;
-
-                    if (Math.abs(newVal) < 1e-10)
-                        newVal = 0;
-
-                    M.update(rowDying, col, newVal);
-                }
-            }
-        },
-        this.killAbove = function(rows, cols) {
-            var M = this;
-            for (var rowDying = rows - 1; rowDying >= 0; rowDying--) {
-                var multiplier = M.getCell(rowDying, cols);
-                if (multiplier == 0) continue;
-
-                for (var col = 0; col < M.numCols(); col++) {
-                    var thisVal = M.getCell(rowDying, col);
-                    var pivRowVal = M.getCell(rows, col);
-                    var newVal = thisVal - multiplier * pivRowVal;
-                    if (Math.abs(newVal) < 1e-10)
-                        newVal = 0;
-
-                    M.update(rowDying, col, newVal);
-                }
-            }
+            var tmp = this.matrix[row1];
+            this.matrix[row1] = this.matrix[row2];
+            this.matrix[row2] = tmp;
+            this.multiplier = this.multiplier.times(-1);
         },
         this.resize = function(rows, cols) {
             rows = parseInt(rows);
@@ -236,7 +246,6 @@ function Matrix(arrMatrix, cols) {
                     this.matrix[i].push(new Fraction());
         },
         this.getIdentity = function(rows, cols) {
-            console.log(rows, cols);
             if (rows == undefined && cols != undefined)
                 rows = cols;
             if (rows != undefined && cols == undefined)
@@ -246,7 +255,6 @@ function Matrix(arrMatrix, cols) {
                 rows = this.numRows();
             if (cols == undefined)
                 cols = this.numCols();
-            console.log("Coords", rows, cols);
 
             var result = [];
             for (var row = 0; row < rows; row++) {

@@ -48,8 +48,8 @@ function commandInput(cmd) {
         performCalc(cmd);
         $('#cmdinput').val(base);
     //} catch (err) {
-        errorHandle(err);
-        $('#cmdinput').val($('#cmdinput').val().replace(/\n/g, ''));
+    //    errorHandle(err);
+//        $('#cmdinput').val($('#cmdinput').val().replace(/\n/g, ''));
     //}
 }
 
