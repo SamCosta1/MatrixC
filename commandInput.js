@@ -43,14 +43,14 @@ $('#cmdinput')
     });
 
 function commandInput(cmd) {
-    try {
+    //try {
         $('#errDisplay').hide();
         performCalc(cmd);
         $('#cmdinput').val(base);
-    } catch (err) {
+    //} catch (err) {
         errorHandle(err);
         $('#cmdinput').val($('#cmdinput').val().replace(/\n/g, ''));
-    }
+    //}
 }
 
 function errorHandle(err) {
