@@ -264,11 +264,12 @@ function calculate(before, after, op) {
                     result = before.conjugate(after);
                 else
                     result = before.power(after);
-            else
+            else {
                 if (!isNaN(before) || !isNaN(after))
-                   throw "That's not valid maths! ";
+                    throw "That's not valid maths! ";
 
                 result = Math.pow(before, after);
+            }
             break;
     }
     return result;
