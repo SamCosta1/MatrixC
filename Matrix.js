@@ -86,7 +86,7 @@ function Matrix(arrMatrix) {
                 result = this;
             }
             result = this.times(result);
-            for (i = 1; i < power-1; i++)
+            for (i = 1; i < power - 1; i++)
                 result = this.times(result);
             return result;
         },
@@ -206,7 +206,7 @@ function Matrix(arrMatrix) {
             if (rows < this.numRows())
                 this.matrix = this.matrix.slice(0, rows);
             else if (rows != this.numRows()) {
-                var newRow = []
+                var newRow = [];
                 for (var i = 0; i < cols; i++)
                     newRow.push(new Fraction());
                 this.matrix.push(newRow);
