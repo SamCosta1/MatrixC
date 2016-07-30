@@ -74,7 +74,7 @@ function Matrix(arrMatrix) {
                     return this.times(1 / other);*/
         },
         this.power = function(power) {
-            /*if (this.numCols() != this.numRows())
+            if (this.numCols() != this.numRows())
                 throw "You can only calculate powers of square matricies!";
             var result;
             if (power < 0) {
@@ -88,7 +88,7 @@ function Matrix(arrMatrix) {
             result = this.times(result);
             for (i = 1; i < power-1; i++)
                 result = this.times(result);
-            return result;*/
+            return result;
         },
         this.conjugate = function(power) {
             return power.inverse().times(this).times(power);

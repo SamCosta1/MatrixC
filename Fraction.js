@@ -35,7 +35,6 @@ function Fraction(top, bottom) {
         this.add = function(v) {
             v = this.parseLiteral(v);
             var result = new Fraction();
-            console.log(result.top,result.bottom,v);
             result.top = this.top * v.bottom + this.bottom * v.top;
             result.bottom = this.bottom * v.bottom;
             return result
