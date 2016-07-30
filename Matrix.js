@@ -78,16 +78,17 @@ function Matrix(arrMatrix) {
                 throw "You can only calculate powers of square matricies!";
             var result;
             if (power < 0) {
-                result = this.inverse().matrix;
+                result = this.inverse();
                 power = Math.abs(power);
             } else {
                 if (power == 0)
                     return this.getIdentity();
-                result = this.matrix;
+                result = this;
             }
-            for (i = 1; i < power; i++)
-                result = math.multiply(result, this.matrix);
-            return new Matrix(result);*/
+            result = this.times(result);
+            for (i = 1; i < power-1; i++)
+                result = this.times(result);
+            return result;*/
         },
         this.conjugate = function(power) {
             return power.inverse().times(this).times(power);
@@ -216,7 +217,6 @@ function Matrix(arrMatrix) {
             } else if (cols != this.numCols())
                 for (var i = 0; i < rows; i++)
                     this.matrix[i].push(new Fraction());
-            console.log(this.matrix, rows, cols);
         },
         this.getIdentity = function(rows, cols) {
             console.log(rows, cols);
