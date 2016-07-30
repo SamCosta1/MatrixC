@@ -44,14 +44,26 @@ function Matrix(arrMatrix, cols) {
             var lastRow = reduced.numRows() - 1;
             var sum = new Fraction();
             var mult = 1;
-            for (var col = 0; col < reduced.numCols(); col++, mult *= -1){
+            for (var col = 0; col < reduced.numCols(); col++, mult *= -1) {
                 if (reduced.matrix[lastRow][col] != 0)
-                    sum = sum.add(determinant(subMatrix(lastRow,col)).times(mult));
+                    sum = sum.add(reduced.subMatrix(lastRow, col).det().times(mult).times(reduced.matrix[lastRow][col]));
+                console.log(sum.toString());
             }
             return sum.times(multiplier);
         },
-        this.subMatrix = function() {
-
+        this.subMatrix = function(row, col) {
+            var result = [];
+            for (var r = 0; r < this.numRows(); r++) {
+                if (r != row) {
+                    var sub = [];
+                    for (var c = 0; c < this.numCols(); c++)
+                        if (c != col)
+                            sub.push(this.getCell(r, c).clone());
+                    result.push(sub);
+                }
+            }
+            newInputComp("R" + parseInt(Math.random()*60), new Matrix(result));
+            return new Matrix(result);
         },
         this.det = function() {
             return this.determinant();
