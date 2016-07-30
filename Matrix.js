@@ -231,7 +231,18 @@ function Matrix(arrMatrix) {
                 cols = this.numCols();
             console.log("Coords", rows, cols);
 
-            return new Matrix(math.eye(rows, cols));
+            var result = [];
+            for (var row = 0; row < rows; row++) {
+                var sub = [];
+                for (var col = 0; col < cols; col++)
+                    if (row == col)
+                        sub.push(new Fraction(1));
+                    else
+                        sub.push(new Fraction());
+                result.push(sub);
+            }
+
+            return new Matrix(result);
         }
 }
 
