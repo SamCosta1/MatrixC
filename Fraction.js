@@ -46,6 +46,9 @@ function Fraction(top, bottom) {
             result.bottom = this.bottom * v.bottom;
             return result
         },
+        this.reciprocal = function() {
+            return new Fraction(this.bottom, this.top);
+        },
         this.getLiteral = function() {
             return this.top / this.bottom;
         },

@@ -1,9 +1,12 @@
 var variables = new Map();
-
-function Matrix(arrMatrix) {
+// Usually an array would be supplied to be wrapped, sometimes rows,cols will be surprised to allow
+// creation of an empty matrix of any size;
+function Matrix(arrMatrix, cols) {
     this.matrix = arrMatrix;
     if (arrMatrix == undefined)
         this.matrix = getZeros(3).matrix;
+    else if (!isNaN(arrMatrix))
+        this.matrix = getZeros(arrMatrix,cols).matrix;
 
     this.update = function(row, col, val) {
             this.matrix[parseInt(row)][parseInt(col)] = val instanceof Fraction ? val : new Fraction(val);
@@ -53,11 +56,13 @@ function Matrix(arrMatrix) {
             return new Matrix(result);
         },
         this.times = function(other) {
-            if (this.numCols() != other.numRows() || this.numRows() != other.numCols())
+            if (!(other instanceof Matrix))
+               return this.timesScalar(other);
+            if (this.numCols() != other.numRows() ||  this.numRows() != other.numCols())
                 throw "Dimension mismatch, can't multiply " + this.numRows() +
                     "x" + this.numCols() + " by " + other.numRows() + "x" + other.numCols();
 
-            var result = new Matrix();
+            var result = new Matrix(this.numRows(),other.numCols());
             for (var row = 0; row < this.numRows(); row++)
                 for (var col = 0; col < this.numCols(); col++) {
                     var res = new Fraction();
@@ -67,11 +72,23 @@ function Matrix(arrMatrix) {
                 }
             return result;
         },
+        this.timesScalar = function(val) {
+            var result = new Matrix(this.numRows(),this.numCols());
+            for (var row = 0; row < this.numRows(); row++)
+                for (var col = 0; col < this.numCols(); col++) {
+                    result.update(row,col,this.getCell(row,col).times(val));
+                }
+                return result;
+        },
         this.divide = function(other) {
-            /*    if (typeof other == 'object')
-                    return this.times(other.inverse());
+            if (other instanceof Matrix)
+                return this.times(other.inverse());
+            else {
+                if (other instanceof Fraction)
+                    return this.times(other.reciprocal());
                 else
-                    return this.times(1 / other);*/
+                    return this.times(new Fraction(1, other));
+            }
         },
         this.power = function(power) {
             if (this.numCols() != this.numRows())

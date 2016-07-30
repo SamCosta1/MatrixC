@@ -175,12 +175,12 @@ function getArrayFromString(cmd) {
 
             var result;
             if (!isNaN(identifier)) {
-                result = parseInt(identifier);
+                result = new Fraction(identifier);
                 // Allow correct parsing of sign
                 if (theArray[theArray.length - 1] == '-' &&
                     isNaN(theArray[theArray.length - 2])) {
                     theArray.pop();
-                    result *= -1;
+                    result = result.times(-1);
                 }
                 if (theArray[theArray.length - 1] == '+' &&
                     isNaN(theArray[theArray.length - 2])) {
@@ -207,12 +207,12 @@ function getArrayFromString(cmd) {
         throw "Unexpected character (";
     else if (closeBktCnt > openBktCnt)
         throw "Unexpected character )";
-
+console.log(theArray);
     return theArray;
 }
 
 function performFunction(func, arg) {
-    if (typeof arg[0] == 'object')
+    if (arg[0] instanceof Matrix)
         return arg[0].performFunction(func);
     else
     {

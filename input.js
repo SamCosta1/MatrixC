@@ -113,8 +113,9 @@ function newInputComp(matLbl, matrix) {
     for (i = 0; i < row; i++) {
         var $tr = $("<tr>");
         for (j = 0; j < col; j++) {
-            var $td = $("<td>");
-            $td.append(getCell(i, j, isNaN(matrix) ? matrix.getCell(i, j).toString() : matrix));
+            var $td = $("<td>");        
+            $td.append(getCell(i, j, matrix instanceof Matrix ? matrix.getCell(i, j).toString():
+                                     matrix instanceof Fraction ? matrix.toString() : matrix));
             $tr.append($td);
         }
         $table.append($tr);
