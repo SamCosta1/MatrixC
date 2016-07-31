@@ -86,10 +86,14 @@ function Matrix(arrMatrix, cols) {
         this.inverse = function() {
             var aug = this.concat(this.getIdentity(this.numCols()))
                 .reduceToReducedEchF(this.numCols());
-                console.log(aug);
-            for (var r = 0; r < this.numRows(); r++)
-                aug.matrix[r] = aug.matrix[r].slice(this.numCols(), this.numCols() * 2);
+            for (var r = 0; r < this.numRows(); r++) {
+                // Check first part of augmented is identity
+                for (var c = 0; c < this.numCols(); c++)
+                    if (c != r && !aug.getCell(r, c).isZero() || !aug.getCell(r, c).isOne())
+                        throw ("Matrix non invertible");
 
+                aug.matrix[r] = aug.matrix[r].slice(this.numCols(), this.numCols() * 2);
+            }
             return aug;
 
         },
