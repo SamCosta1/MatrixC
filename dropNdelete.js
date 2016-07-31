@@ -17,8 +17,12 @@ interact('.dropzone').dropzone({
 
     },
     ondrop: function(event) {
-
         deleteMatrix(event.relatedTarget);
+
+        // Remove from list if it was selected at time of deleation
+        var index = selected.indexOf($(event.relatedTarget).attr("id"));
+        if (index != -1)
+            selected.splice(index,1);
     },
 });
 function deleteMatrix(obj) {
