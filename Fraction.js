@@ -12,17 +12,27 @@ function Fraction(top, bottom) {
         } else
             this.bottom = 1;
     }
+    var gcd = GCD(this.top,this.bottom);
+    this.top /= gcd;
+    this.bottom /= gcd;
+
     this.parseLiteral = function(v) {
             if (v instanceof Fraction)
                 return v;
             else
                 return new Fraction(v);
         },
+        this.simplify = function() {
+            var gcd = GCD(this.top,this.bottom);
+            this.top /= gcd;
+            this.bottom /= gcd;
+        },
         this.divide = function(v) {
             v = this.parseLiteral(v);
             var result = new Fraction();
             result.top = this.top * v.bottom;
             result.bottom = this.bottom * v.top;
+            result.simplify();
             return result;
         },
         this.times = function(v) {
@@ -32,6 +42,7 @@ function Fraction(top, bottom) {
             var result = new Fraction();
             result.bottom = this.bottom * v.bottom;
             result.top = this.top * v.top;
+            result.simplify();
             return result;
         },
         this.add = function(v) {
@@ -39,6 +50,7 @@ function Fraction(top, bottom) {
             var result = new Fraction();
             result.top = this.top * v.bottom + this.bottom * v.top;
             result.bottom = this.bottom * v.bottom;
+            result.simplify();
             return result
         },
         this.subtract = function(v) {
@@ -46,6 +58,7 @@ function Fraction(top, bottom) {
             var result = new Fraction();
             result.top = this.top * v.bottom - this.bottom * v.top;
             result.bottom = this.bottom * v.bottom;
+            result.simplify();
             return result
         },
         this.reciprocal = function() {
@@ -71,4 +84,13 @@ function Fraction(top, bottom) {
         this.clone = function() {
             return new Fraction(this.top, this.bottom);
         }
+}
+
+function GCD(big,small){
+    var r = big % small;
+    if (r == 0)
+        return small;
+    else {
+        return GCD(small,r);
+    }
 }
