@@ -62,14 +62,20 @@ function Matrix(arrMatrix, cols) {
                     result.push(sub);
                 }
             }
-            newInputComp("R" + parseInt(Math.random()*60), new Matrix(result));
             return new Matrix(result);
         },
         this.det = function() {
             return this.determinant();
         },
         this.transpose = function() {
-            //    return new Matrix(math.transpose(this.matrix));
+            var result = [];
+            for (var col = 0; col < this.numCols(); col++) {
+                var sub = [];
+                for (var row = 0; row < this.numRows(); row++)
+                    sub.push(this.getCell(row, col));
+                result.push(sub);
+            }
+            return new Matrix(result);
         },
         this.inverse = function() {
             //    return new Matrix(math.inv(this.matrix));

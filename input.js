@@ -365,7 +365,7 @@ function makeCammelCase(inputted) {
 function updateGUI(lbl, matrix) {
     variables.set(lbl, matrix);
 
-    if (isNaN(matrix)) {
+    if (matrix instanceof Matrix) {
         var dRow = parseInt(matrix.numRows() - $('#MAT-' + lbl).find('table').attr('data-rows'));
         var dCol = parseInt(matrix.numCols() - $('#MAT-' + lbl).find('table').attr('data-cols'));
         if (dRow !== 0 || dCol !== 0) {
@@ -398,7 +398,7 @@ function updateGUI(lbl, matrix) {
             var row = $input.attr("data-row");
             var col = $input.attr("data-col");
 
-            $input.val(isNaN(matrix) ? matrix.getCell(row, col) : matrix);
+            $input.val(matrix instanceof Matrix ? matrix.getCell(row, col) : matrix.toString());
         });
     });
 
