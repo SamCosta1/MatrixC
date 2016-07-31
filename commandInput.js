@@ -44,9 +44,11 @@ $('#cmdinput')
 
 function commandInput(cmd) {
     //try {
+    console.time('performCalc');
         $('#errDisplay').hide();
         performCalc(cmd);
         $('#cmdinput').val(base);
+        console.timeEnd('performCalc');
     //} catch (err) {
     //    errorHandle(err);
 //        $('#cmdinput').val($('#cmdinput').val().replace(/\n/g, ''));
@@ -144,6 +146,7 @@ function performCalc(cmd) {
 
         }
     }
+
 }
 
 function getArrayFromString(cmd) {
