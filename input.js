@@ -23,7 +23,7 @@ function newInputComp(matLbl, matrix) {
     if (matrix == null || matrix == undefined) {
         matrix = new Matrix();
     }
-    if (isNaN(matrix)) {
+    if (matrix instanceof Matrix) {
         col = matrix.numCols();
         row = matrix.numRows();
     } else {
@@ -114,7 +114,8 @@ function newInputComp(matLbl, matrix) {
         var $tr = $("<tr>");
         for (j = 0; j < col; j++) {
             var $td = $("<td>");
-            $td.append(getCell(i, j, isNaN(matrix) ? matrix.getCell(i, j) : matrix));
+            $td.append(getCell(i, j, matrix instanceof Matrix ? matrix.getCell(i, j).toString():
+                                     matrix instanceof Fraction ? matrix.toString() : matrix));
             $tr.append($td);
         }
         $table.append($tr);
@@ -175,7 +176,7 @@ function newInputComp(matLbl, matrix) {
                     $(this).find('td').eq(n).after($td);
                 });
                 var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-                variables.get(varName).matrix.resize([parseInt(m), n + 2]);
+                variables.get(varName).resize(parseInt(m), n + 2);
             });
         $rowbtn.click(
             function(e) {
@@ -194,8 +195,7 @@ function newInputComp(matLbl, matrix) {
 
                 $table.append($tr);
                 var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-                variables.get(varName).matrix.resize(
-                    [parseInt(numRows) + 1, parseInt(numCols)]);
+                variables.get(varName).resize(parseInt(numRows) + 1, parseInt(numCols));
             });
 
         $rmvColbtn.click(function(e) {
@@ -208,7 +208,7 @@ function newInputComp(matLbl, matrix) {
                 numCols--;
                 $table.attr("data-cols", numCols);
                 var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-                variables.get(varName).matrix.resize([numRows, numCols]);
+                variables.get(varName).resize(numRows, numCols);
             }
         });
         $rmvRowbtn.click(function(e) {
@@ -221,7 +221,7 @@ function newInputComp(matLbl, matrix) {
                 numRows--;
                 $table.attr("data-rows", numRows);
                 var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-                variables.get(varName).matrix.resize([numRows, numCols]);
+                variables.get(varName).resize(numRows, numCols);
             }
         });
 
@@ -292,8 +292,9 @@ function getCell(row, col, val) {
             $c.css("color", "gray");
             variables.get(varName).update(row, col, 0);
             $(this).val("0");
-        } else
+        } else {
             variables.get(varName).update(row, col, $(this).val());
+        }
 
     });
     return $c;
@@ -364,7 +365,7 @@ function makeCammelCase(inputted) {
 function updateGUI(lbl, matrix) {
     variables.set(lbl, matrix);
 
-    if (isNaN(matrix)) {
+    if (matrix instanceof Matrix) {
         var dRow = parseInt(matrix.numRows() - $('#MAT-' + lbl).find('table').attr('data-rows'));
         var dCol = parseInt(matrix.numCols() - $('#MAT-' + lbl).find('table').attr('data-cols'));
         if (dRow !== 0 || dCol !== 0) {
@@ -397,7 +398,7 @@ function updateGUI(lbl, matrix) {
             var row = $input.attr("data-row");
             var col = $input.attr("data-col");
 
-            $input.val(isNaN(matrix) ? matrix.getCell(row, col) : matrix);
+            $input.val(matrix instanceof Matrix ? matrix.getCell(row, col) : matrix.toString());
         });
     });
 

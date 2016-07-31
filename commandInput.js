@@ -43,14 +43,16 @@ $('#cmdinput')
     });
 
 function commandInput(cmd) {
-    try {
+    //try {
+    console.time('performCalc');
         $('#errDisplay').hide();
         performCalc(cmd);
         $('#cmdinput').val(base);
-    } catch (err) {
-        errorHandle(err);
-        $('#cmdinput').val($('#cmdinput').val().replace(/\n/g, ''));
-    }
+        console.timeEnd('performCalc');
+    //} catch (err) {
+    //    errorHandle(err);
+//        $('#cmdinput').val($('#cmdinput').val().replace(/\n/g, ''));
+    //}
 }
 
 function errorHandle(err) {
@@ -144,6 +146,7 @@ function performCalc(cmd) {
 
         }
     }
+
 }
 
 function getArrayFromString(cmd) {
@@ -175,12 +178,12 @@ function getArrayFromString(cmd) {
 
             var result;
             if (!isNaN(identifier)) {
-                result = parseInt(identifier);
+                result = new Fraction(identifier);
                 // Allow correct parsing of sign
                 if (theArray[theArray.length - 1] == '-' &&
                     isNaN(theArray[theArray.length - 2])) {
                     theArray.pop();
-                    result *= -1;
+                    result = result.times(-1);
                 }
                 if (theArray[theArray.length - 1] == '+' &&
                     isNaN(theArray[theArray.length - 2])) {
@@ -207,12 +210,12 @@ function getArrayFromString(cmd) {
         throw "Unexpected character (";
     else if (closeBktCnt > openBktCnt)
         throw "Unexpected character )";
-
+console.log(theArray);
     return theArray;
 }
 
 function performFunction(func, arg) {
-    if (typeof arg[0] == 'object')
+    if (arg[0] instanceof Matrix)
         return arg[0].performFunction(func);
     else
     {
@@ -264,11 +267,12 @@ function calculate(before, after, op) {
                     result = before.conjugate(after);
                 else
                     result = before.power(after);
-            else
+            else {
                 if (!isNaN(before) || !isNaN(after))
-                   throw "That's not valid maths! ";
+                    throw "That's not valid maths! ";
 
                 result = Math.pow(before, after);
+            }
             break;
     }
     return result;
