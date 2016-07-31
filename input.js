@@ -17,6 +17,7 @@ function drawButton() {
     ctx.stroke();
 }
 var count = 0;
+var selected = [];
 
 function newInputComp(matLbl, matrix) {
     var row, col;
