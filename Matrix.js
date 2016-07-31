@@ -37,7 +37,7 @@ function Matrix(arrMatrix, cols) {
         this.determinant = function() {
             if (this.numRows() == 2)
                 return this.getCell(0, 0).times(this.getCell(1, 1))
-                    .subtract(this.getCell(1, 0).times(this.getCell(0, 1)))
+                    .subtract(this.getCell(1, 0).times(this.getCell(0, 1)));
             var reduced = this.reduceToReducedEchF();
             var multiplier = reduced.multiplier;
 
@@ -77,8 +77,21 @@ function Matrix(arrMatrix, cols) {
             }
             return new Matrix(result);
         },
+        this.concat = function(other) {
+            var result = this.clone().matrix;
+            for (var r = 0; r < result.length; r++)
+                result[r] = result[r].concat(other.matrix[r]);
+            return new Matrix(result);
+        },
         this.inverse = function() {
-            //    return new Matrix(math.inv(this.matrix));
+            var aug = this.concat(this.getIdentity(this.numCols()))
+                .reduceToReducedEchF(this.numCols());
+                console.log(aug);
+            for (var r = 0; r < this.numRows(); r++)
+                aug.matrix[r] = aug.matrix[r].slice(this.numCols(), this.numCols() * 2);
+
+            return aug;
+
         },
         this.add = function(other) {
             var result = [];
