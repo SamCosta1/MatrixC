@@ -227,12 +227,15 @@ function newInputComp(matLbl, matrix) {
 
         $div.click(function(e) {
             e.stopImmediatePropagation();
+            var id =$(this).attr('id');
             if ($(this).attr("data-clicked") == 1) {
                 $(this).css("background-color", "rgba(204, 204, 204, 0.2)");
                 $(this).attr("data-clicked", 0);
+                selected.splice(selected.indexOf(id),1);
             } else {
                 $(this).css("background-color", "rgba(99, 182, 255, 0.2)");
                 $(this).attr("data-clicked", 1)
+                selected.push(id);
             }
             $selectedMatrix = this;
         });
@@ -295,8 +298,10 @@ function getCell(row, col, val) {
         } else {
             variables.get(varName).update(row, col, $(this).val());
         }
-
     });
+    $c.keyup(function(e) {
+        e.stopImmediatePropagation();
+    })
     return $c;
 }
 

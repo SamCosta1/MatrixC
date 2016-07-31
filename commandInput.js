@@ -23,6 +23,7 @@ $('#cmdinput')
         }
     })
     .keyup(function(e) {
+        e.stopImmediatePropagation();
         var code = e.keyCode ? e.keyCode : e.which;
         if (code == 13) {
             // Enter key pressed

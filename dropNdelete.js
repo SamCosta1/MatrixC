@@ -6,7 +6,7 @@ interact('.dropzone').dropzone({
     // only accept elements matching this CSS selector
     accept: '.matInput',
     // Require a 75% element overlap for a drop to be possible
-    overlap: 'pointer',
+    //overlap: 'pointer',
 
     ondragenter: function(event) {
         $('#bin').attr("src","img/openBin.png");
@@ -17,10 +17,20 @@ interact('.dropzone').dropzone({
 
     },
     ondrop: function(event) {
-        variables.delete($(event.relatedTarget).attr("id").split('-')[1]);
-        event.relatedTarget.remove();
-        $('#bin').attr("src","img/bin.png");
 
+        deleteMatrix(event.relatedTarget);
     },
-
+});
+function deleteMatrix(obj) {
+    variables.delete($(obj).attr("id").split('-')[1]);
+    obj.remove();
+    $('#bin').attr("src","img/bin.png");
+}
+$(document).keyup(function (e) {
+    console.log(selected);
+    if (e.keyCode == 46)
+        for (var i in selected){
+            deleteMatrix($('#' + selected[i]));
+        }
+        selected = [];
 });
