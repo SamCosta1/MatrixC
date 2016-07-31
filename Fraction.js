@@ -71,6 +71,9 @@ function Fraction(top, bottom) {
         },
         this.isZero = function() {
             return this.top == 0;
+        },
+        this.isOne = function() {
+            return this.bottom == this.top == 1;
         }
         this.toString = function() {
             if (this.top == 0)
