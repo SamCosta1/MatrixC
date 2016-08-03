@@ -5,3 +5,5 @@ getFont
 build
 work
 dist/*
+build
+node_modules

@@ -1,9 +1,3 @@
-var m = new Matrix([
-    [1, 0, 0],
-    [0, 1, 0],
-    [0, 0, 1]
-]);
-
 // Take input from commandLine
 var base = 'MatCalculator >> ';
 var regex = new RegExp('^' + base, 'i');
@@ -14,34 +8,21 @@ comHist.add = function(toAdd) {
 }
 var histPos = 0;
 
-$('#cmdinput')
-    .on('input', function(ev) {
-        var query = $(this).val();
-        if (!regex.test(query)) {
-            //ev.preventDefault();
-            $(this).val(base);
-        }
-    })
-    .keyup(function(e) {
-        e.stopImmediatePropagation();
-        var code = e.keyCode ? e.keyCode : e.which;
-        if (code == 13) {
-            // Enter key pressed
-            var input = $(this).val().slice(base.length);
-            comHist.add(input.replace(/\n/g, ''));
-            histPos++;
-            commandInput(input);
-        } else if (code == 38 && comHist.length > 0) {
-            if (histPos > 0) histPos--;
-            $(this).val(base + comHist[histPos]);
-        } else if (code == 40 && comHist.length > 0) {
-            if (histPos < comHist.length - 1) histPos++;
-            $(this).val(base + comHist[histPos]);
-        }
-        else {
-            histPos = comHist.length;
-        }
-    });
+var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+var letterIndex = -1;
+function getNextFreeLetter() {
+    letterIndex++;
+    if (letterIndex >= alphabet.length)
+    letterIndex = 0;
+    if (isValid(alphabet[letterIndex]))
+    return alphabet[letterIndex];
+
+    var withRndm = alphabet[letterIndex] + parseInt(Math.random() * 100);
+    if (isValid(withRndm))
+    return withRndm;
+    else
+    getNextFreeLetter();
+}
 
 function commandInput(cmd) {
     //try {
