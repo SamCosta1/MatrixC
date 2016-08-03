@@ -87,10 +87,14 @@ function Matrix(arrMatrix, cols) {
             var aug = this.concat(this.getIdentity(this.numCols()))
                 .reduceToReducedEchF(this.numCols());
             for (var r = 0; r < this.numRows(); r++) {
-                // Check first part of augmented is identity
-                for (var c = 0; c < this.numCols(); c++)
-                    if (c != r && !aug.getCell(r, c).isZero() || !aug.getCell(r, c).isOne())
+                // Check first part of augmented is identity (otherwise noninvertible)
+                for (var c = 0; c < this.numCols(); c++) {
+                    if (c == r) {
+                        if (!aug.getCell(r, c).isOne())
+                            throw ("Matrix non invertible");
+                    } else if (!aug.getCell(r, c).isZero())
                         throw ("Matrix non invertible");
+                }
 
                 aug.matrix[r] = aug.matrix[r].slice(this.numCols(), this.numCols() * 2);
             }
