@@ -19,7 +19,7 @@ $col2: gray;
     margin-left: 10px;
 }
 textarea {
-    font-size: 25px;
+    font-size: 19px;
 }
 .thanks {
     text-align: center;
@@ -133,6 +133,7 @@ $binsize: 50px;
     cursor: pointer;
     margin-left: 5px;
     user-select: none;
+    padding: 3;
 }
 .noSelect {
     -webkit-touch-callout: none;
@@ -154,10 +155,9 @@ $binsize: 50px;
     -o-transform: rotate(-90deg);
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
     position: relative;
-    width: 22px;
 }
-.colButton {
-    height: 22px;
+.addLeftMargin {
+    margin-left: 15px;
 }
 #header {
     margin-top: 0;
@@ -177,6 +177,9 @@ $binsize: 50px;
 }
 .flip {
     transform: scaleX(-1);
+}
+.flipY {
+    transform: rotate(90deg);
 }
 .bracket {
     margin-top: 3px;
@@ -227,7 +230,6 @@ $commandlineBorder: 7px;
 }
 #errDisplay {
     word-wrap: break-word;
-    color: red;
     display: none;
 }
 .errContainer {
@@ -238,6 +240,7 @@ $commandlineBorder: 7px;
     display: flex;
     align-items: center;
     margin: 6px;
+    min-height: 102px
 }
 hr {
     margin-top: 0;

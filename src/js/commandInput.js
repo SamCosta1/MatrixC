@@ -1,63 +1,77 @@
-var m = new Matrix([
-    [1, 0, 0],
-    [0, 1, 0],
-    [0, 0, 1]
-]);
-
 // Take input from commandLine
 var base = 'MatCalculator >> ';
 var regex = new RegExp('^' + base, 'i');
 var comHist = [];
+comHist.add = function(toAdd) {
+    if (this.indexOf(toAdd) < 0)
+        this.push(toAdd);
+}
 var histPos = 0;
 
-$('#cmdinput')
-    .on('input', function(ev) {
-        var query = $(this).val();
-        if (!regex.test(query)) {
-            //ev.preventDefault();
-            $(this).val(base);
-        }
-    })
-    .keyup(function(e) {
-        var code = e.keyCode ? e.keyCode : e.which;
-        if (code == 13) {
-            // Enter key pressed
-            var input = $(this).val().slice(base.length);
-            commandInput(input);
-            comHist.push(input.replace(/\n/g, ''));
-            histPos++;
-        } else if (code == 38 && comHist.length > 0) {
-            if (histPos > 0) histPos--;
-            $(this).val(base + comHist[histPos]);
-        } else if (code == 40 && comHist.length > 0) {
-            if (histPos < comHist.length - 1) histPos++;
-            $(this).val(base + comHist[histPos]);
-        }
-    });
-newInputComp('A', m);
+var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+var letterIndex = -1;
+
+function getNextFreeLetter() {
+    letterIndex++;
+    if (letterIndex >= alphabet.length)
+        letterIndex = 0;
+    if (isValid(alphabet[letterIndex]))
+        return alphabet[letterIndex];
+
+    var withRndm = alphabet[letterIndex] + parseInt(Math.random() * 100);
+    if (isValid(withRndm))
+        return withRndm;
+    else
+        getNextFreeLetter();
+}
 
 function commandInput(cmd) {
     try {
+        var start = Date.now();
+
         $('#errDisplay').hide();
         performCalc(cmd);
         $('#cmdinput').val(base);
+
+        var end = Date.now() - start;
+        successHandle(end);
+        console.log("Operation done in " + end + "ms");
     } catch (err) {
         errorHandle(err);
         $('#cmdinput').val($('#cmdinput').val().replace(/\n/g, ''));
     }
 }
-
 function errorHandle(err) {
     console.log(err);
-    $('#errDisplay').text(err)
-        .show();
+    $('#errDisplay').css('color', 'red');
+    $('#errDisplay').text(err).show();
+}
+
+function successHandle(msg) {
+    $('#errDisplay').css('color', '#008e0d');
+    $('#errDisplay').text('Command Successful! (' + msg + ' ms' + ')').show(200);
+    setTimeout(function() {
+        $('#errDisplay').hide(500);
+    }, 2000);
 }
 
 function performCalc(cmd) {
     cmd = cmd.replace(/ /g, '').replace(/\n/g, '');
 
+    // Split lines by semi colon and run each command seperatly
+    if (cmd.includes(';')) {
+        var commands = cmd.split(';');
+        for (var c in commands)
+            performCalc(commands[c]);
+        return;
+    }
+
+
+    var org = cmd;
     var lbl = '';
+    var containsEqs = false;
     if (cmd.includes('=')) {
+        containsEqs = true;
         lbl = cmd.split('=')[0];
         if (isValid(lbl, true))
             cmd = cmd.split('=')[1];
@@ -69,6 +83,11 @@ function performCalc(cmd) {
     cmd = '(' + cmd + ')';
 
     var theArray = getArrayFromString(cmd);
+    if (!containsEqs && theArray.length == 3 && typeof theArray[1] == 'object') {
+        $("#MAT-" + org).trigger("click");
+        $("#MAT-" + org).get(0).scrollIntoView();
+        return;
+    }
 
     for (var i = 0; i < theArray.length; i++) {
         if (!isCloseBracket(theArray[i]))
@@ -84,8 +103,17 @@ function performCalc(cmd) {
             j--;
         }
         if (funcENUM.isFunction(theArray[j - 1])) {
-            var r = performFunction(theArray[j - 1], theArray[j + 1]);
-            theArray.splice(j, 3);
+            var args = [],
+                cnt = 0;
+
+            while (!isCloseBracket(theArray[cnt + (j + 1)])) {
+                if (theArray[cnt + (j + 1)] != ',')
+                    args.push(theArray[cnt + (j + 1)]);
+                cnt++;
+            }
+
+            var r = performFunction(theArray[j - 1], args);
+            theArray.splice(j, cnt + 2);
             theArray[j - 1] = r;
         } else {
             theArray.splice(j, 1); // get rid of (
@@ -110,6 +138,7 @@ function performCalc(cmd) {
 
         }
     }
+
 }
 
 function getArrayFromString(cmd) {
@@ -127,7 +156,6 @@ function getArrayFromString(cmd) {
 
     theArray.push('(');
 
-    console.log(cmd);
     var highPrecendeces = [];
     for (var i = 1; i < cmd.length; i++) {
         if (isOperatorOrBracket(cmd[i]) &&
@@ -141,12 +169,24 @@ function getArrayFromString(cmd) {
             }
 
             var result;
-            if (!isNaN(identifier))
-                result = parseInt(identifier);
-            else
+            if (!isNaN(identifier)) {
+                result = new Fraction(identifier);
+                // Allow correct parsing of sign
+                if (theArray[theArray.length - 1] == '-' &&
+                    isNaN(theArray[theArray.length - 2])) {
+                    theArray.pop();
+                    result = result.times(-1);
+                }
+                if (theArray[theArray.length - 1] == '+' &&
+                    isNaN(theArray[theArray.length - 2])) {
+                    theArray.pop();
+                }
+
+            } else
             if ((result = getEnum(identifier)) == funcENUM.NONE) {
                 if (typeof(result = variables.get(identifier)) === 'undefined')
-                    throw 'Sorry, I don\'t know what \'' + identifier + '\' is :(';
+                    if ((result = identifier) != ',')
+                        throw 'Sorry, I don\'t know what \'' + identifier + '\' is :(';
             }
 
             theArray.push(result);
@@ -162,59 +202,63 @@ function getArrayFromString(cmd) {
         throw "Unexpected character (";
     else if (closeBktCnt > openBktCnt)
         throw "Unexpected character )";
-    console.log('#1', theArray);
     return theArray;
 }
 
 function performFunction(func, arg) {
-    if (typeof arg === 'number')
-        throw "Can't calculate " + funcENUM.getString(func) + " of " + arg;
-    return arg.performFunction(func);
+    if (arg[0] instanceof Matrix)
+        return arg[0].performFunction(func);
+    else {
+        if (func != funcENUM.ID && func != funcENUM.ZEROS)
+            throw "Cannot perform operation: " + funcENUM.getString(func) + " of " + arg[0];
+        return new Matrix().performFunction(func, arg);
+    }
+
 }
 
 function calculate(before, after, op) {
     var result;
     switch (op) {
         case '+':
-            if (typeof before !== typeof after)
+            if (before instanceof Matrix && !(after instanceof Matrix) ||
+                after instanceof Matrix && !(before instanceof Matrix))
                 throw "You can't add a matrix and number sorry!";
-            if (typeof before == 'object')
-                result = before.add(after);
-            else
-                result = before + after;
+
+            result = before.add(after);
             break;
         case '-':
-            if (typeof before !== typeof after)
-                throw "You can't subtract a matrix and number sorry!";
-            if (typeof before == 'object')
-                result = before.subtract(after);
-            else
-                result = before - after;
+            if (before instanceof Matrix && !(after instanceof Matrix) ||
+                after instanceof Matrix && !(before instanceof Matrix))
+                throw "You can't add a matrix and number sorry!";
+
+            result = before.subtract(after);
             break;
         case '/':
-            if (typeof before == 'object')
-                result = before.divide(after);
-            else if (typeof after == 'object')
-                result = after.divide(before);
+            if (!(before instanceof Matrix) && after instanceof Matrix)
+                throw "You can't divide a number by a matrix!"
             else
-                result = before / after;
+                result = before.divide(after);
             break;
         case '*':
-            if (typeof before == 'object')
+            if (before instanceof Matrix)
                 result = before.times(after);
-            else if (typeof after == 'object')
+            else if (after instanceof Matrix)
                 result = after.times(before);
             else
-                result = before * after;
+                result = before.times(after);
             break;
         case '^':
-            if (typeof before == 'object')
-                if (typeof after == 'object')
+            if (before instanceof Matrix)
+                if (after instanceof Matrix)
                     result = before.conjugate(after);
                 else
                     result = before.power(after);
-            else
-                result = Math.pow(before, after);
+            else {
+                if (!(before instanceof Fraction) || !(after instanceof Fraction))
+                    throw "That's not valid maths! ";
+
+                result = before.power(after);
+            }
             break;
     }
     return result;
@@ -243,7 +287,7 @@ function isBrackets(str) {
 }
 
 function isOperatorOrBracket(str) {
-    return isOperator(str) || isBrackets(str);
+    return isOperator(str) || isBrackets(str) || str == ',';
 }
 
 function isSquiggle(str) {

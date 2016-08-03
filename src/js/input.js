@@ -17,13 +17,14 @@ function drawButton() {
     ctx.stroke();
 }
 var count = 0;
+var selected = [];
 
 function newInputComp(matLbl, matrix) {
     var row, col;
-    if (matrix == null|| matrix == undefined) {
+    if (matrix == null || matrix == undefined) {
         matrix = new Matrix();
     }
-    if (isNaN(matrix)) {
+    if (matrix instanceof Matrix) {
         col = matrix.numCols();
         row = matrix.numRows();
     } else {
@@ -33,7 +34,8 @@ function newInputComp(matLbl, matrix) {
     variables.set(matLbl, matrix);
     var $div = $("<div>", {
         id: "MAT-" + matLbl,
-        class: "matInput draggable drag-drop"
+        class: "matInput draggable drag-drop",
+        'data-clicked': 0
     });
     var $img = $("<img>", {
         class: "handle noSelect",
@@ -113,7 +115,8 @@ function newInputComp(matLbl, matrix) {
         var $tr = $("<tr>");
         for (j = 0; j < col; j++) {
             var $td = $("<td>");
-            $td.append(getCell(i, j, isNaN(matrix) ? matrix.getCell(i, j) : matrix));
+            $td.append(getCell(i, j, matrix instanceof Matrix ? matrix.getCell(i, j).toString():
+                                     matrix instanceof Fraction ? matrix.toString() : matrix));
             $tr.append($td);
         }
         $table.append($tr);
@@ -126,23 +129,29 @@ function newInputComp(matLbl, matrix) {
             class: "guiModifiers"
         });
 
+        var btnImg = function() {
+            return $("<img>", {
+                src: "img/arrow.png"
+            });
+        }
+
         $colbtn = $("<button>", {
-            text: ">",
             class: "addCol colButton rowColModifier noSelect"
         });
+        $colbtn.append(btnImg());
         $rowbtn = $("<button>", {
-            text: "<",
-            class: "addRow rowButton rowColModifier noSelect"
+            class: "addRow rowButton rowColModifier noSelect flipY"
         });
-        $rowbtn.css("margin-left", "15px");
+        $rowbtn.append(btnImg());
+
         $rmvColbtn = $("<button>", {
-            text: "<",
-            class: "rmvCol colButton rowColModifier noSelect"
+            class: "rmvCol colButton rowColModifier noSelect flip"
         });
+        $rmvColbtn.append(btnImg());
         $rmvRowbtn = $("<button>", {
-            text: ">",
-            class: "rmvRow rowButton rowColModifier noSelect"
+            class: "rmvRow rowButton rowColModifier noSelect addLeftMargin"
         });
+        $rmvRowbtn.append(btnImg());
 
         $colbtn.attr("data-tableid", "t" + count);
         $rowbtn.attr("data-tableid", "t" + count);
@@ -154,7 +163,8 @@ function newInputComp(matLbl, matrix) {
 
 
         $colbtn.click(
-            function() {
+            function(e) {
+                e.stopImmediatePropagation();
                 var rowCount = 0;
                 $table = $("#" + $(this).attr("data-tableid"));
                 var n = $table.attr("data-cols") - 1;
@@ -167,10 +177,11 @@ function newInputComp(matLbl, matrix) {
                     $(this).find('td').eq(n).after($td);
                 });
                 var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-                variables.get(varName).matrix.resize([parseInt(m), n + 2]);
+                variables.get(varName).resize(parseInt(m), n + 2);
             });
         $rowbtn.click(
-            function() {
+            function(e) {
+                e.stopImmediatePropagation();
                 $table = $("#" + $(this).attr("data-tableid"));
                 var numCols = $table.attr("data-cols");
                 var numRows = $table.attr("data-rows");
@@ -185,11 +196,11 @@ function newInputComp(matLbl, matrix) {
 
                 $table.append($tr);
                 var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-                variables.get(varName).matrix.resize(
-                    [parseInt(numRows) + 1, parseInt(numCols)]);
+                variables.get(varName).resize(parseInt(numRows) + 1, parseInt(numCols));
             });
 
-        $rmvColbtn.click(function() {
+        $rmvColbtn.click(function(e) {
+            e.stopImmediatePropagation();
             var $table = $("#" + $(this).attr("data-tableid"));
             var numCols = parseInt($table.attr("data-cols"));
             var numRows = parseInt($table.attr("data-rows"));
@@ -198,10 +209,11 @@ function newInputComp(matLbl, matrix) {
                 numCols--;
                 $table.attr("data-cols", numCols);
                 var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-                variables.get(varName).matrix.resize([numRows, numCols]);
+                variables.get(varName).resize(numRows, numCols);
             }
         });
-        $rmvRowbtn.click(function() {
+        $rmvRowbtn.click(function(e) {
+            e.stopImmediatePropagation();
             var $table = $("#" + $(this).attr("data-tableid"));
             var numRows = parseInt($table.attr("data-rows"));
             var numCols = parseInt($table.attr("data-cols"));
@@ -210,13 +222,28 @@ function newInputComp(matLbl, matrix) {
                 numRows--;
                 $table.attr("data-rows", numRows);
                 var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-                variables.get(varName).matrix.resize([numRows, numCols]);
+                variables.get(varName).resize(numRows, numCols);
             }
         });
 
+        $div.click(function(e) {
+            e.stopImmediatePropagation();
+            var id =$(this).attr('id');
+            if ($(this).attr("data-clicked") == 1) {
+                $(this).css("background-color", "rgba(204, 204, 204, 0.2)");
+                $(this).attr("data-clicked", 0);
+                selected.splice(selected.indexOf(id),1);
+            } else {
+                $(this).css("background-color", "rgba(99, 182, 255, 0.2)");
+                $(this).attr("data-clicked", 1)
+                selected.push(id);
+            }
+            $selectedMatrix = this;
+        });
+
         count++;
-        $modifiers.append($rowbtn);
         $modifiers.append($rmvRowbtn);
+        $modifiers.append($rowbtn);
         $modifiers.append($rmvColbtn);
         $modifiers.append($colbtn);
         $div.append($modifiers);
@@ -228,7 +255,7 @@ function newInputComp(matLbl, matrix) {
     $('.clickedit').hide()
         .focusout(endEdit)
         .keyup(function(e) {
-
+            e.stopImmediatePropagation();
             if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
                 endEdit(e);
                 return false;
@@ -236,7 +263,8 @@ function newInputComp(matLbl, matrix) {
                 return true;
             }
         })
-        .prev().click(function() {
+        .prev().click(function(e) {
+            e.stopImmediatePropagation();
             $(this).hide();
             $(this).next().show().focus();
         });
@@ -253,12 +281,14 @@ function getCell(row, col, val) {
     $c.attr('data-row', row);
     $c.attr('data-col', col);
 
-    $c.click(function() {
+    $c.click(function(e) {
+        e.stopImmediatePropagation();
         if ($(this).val() == "0")
             $(this).val("");
         $(this).css("color", "black");
     });
-    $c.change(function() {
+    $c.change(function(e) {
+        e.stopImmediatePropagation();
         var varName = $(this).closest(".matInput").attr("id").split("-")[1];
         var row = $(this).attr("data-row");
         var col = $(this).attr("data-col");
@@ -266,10 +296,13 @@ function getCell(row, col, val) {
             $c.css("color", "gray");
             variables.get(varName).update(row, col, 0);
             $(this).val("0");
-        } else
+        } else {
             variables.get(varName).update(row, col, $(this).val());
-
+        }
     });
+    $c.keyup(function(e) {
+        e.stopImmediatePropagation();
+    })
     return $c;
 }
 
@@ -290,15 +323,17 @@ function dragMoveListener(event) {
 }
 
 function endEdit(e) {
+    e.stopImmediatePropagation();
+
     var input = $(e.target),
         label = input && input.prev();
 
     //make cammel case if needed
     var inputted = makeCammelCase(input.val());
-    //console.log(variables.get(inputted) == undefined);
+    var err = false;
     if (!isValid(inputted, false)) {
-        errorHandle("Invalid Variable Name :(");
         label.text(label.closest("div").attr('id').split("-")[1]);
+        err = true;
     } else {
         label.text(inputted);
         var mat = variables.get(label.closest("div").attr('id').split("-")[1]);
@@ -310,11 +345,14 @@ function endEdit(e) {
     label.show();
     input.val("");
 
+    if (err)
+        errorHandle("Invalid Variable Name :(");
+
 }
 
 function isValid(inputted, allowDuplicate) {
-    return /^[a-z0-9]+$/i.test(inputted) && allowDuplicate ? true :
-        variables.get(inputted) === undefined &&
+    return /^[a-z0-9]+$/i.test(inputted) && (allowDuplicate ? true :
+            variables.get(inputted) === undefined) &&
         getEnum(inputted) === funcENUM.NONE;
 
 }
@@ -333,9 +371,9 @@ function makeCammelCase(inputted) {
 function updateGUI(lbl, matrix) {
     variables.set(lbl, matrix);
 
-    if (isNaN(matrix)) {
-        var dRow = parseInt(matrix.numCols() - $('#MAT-' + lbl).find('table').attr('data-rows'));
-        var dCol = parseInt(matrix.numRows() - $('#MAT-' + lbl).find('table').attr('data-cols'));
+    if (matrix instanceof Matrix) {
+        var dRow = parseInt(matrix.numRows() - $('#MAT-' + lbl).find('table').attr('data-rows'));
+        var dCol = parseInt(matrix.numCols() - $('#MAT-' + lbl).find('table').attr('data-cols'));
         if (dRow !== 0 || dCol !== 0) {
 
             var $guiMods = $('#MAT-' + lbl).find('.guiModifiers');
@@ -366,7 +404,7 @@ function updateGUI(lbl, matrix) {
             var row = $input.attr("data-row");
             var col = $input.attr("data-col");
 
-            $input.val(isNaN(matrix) ?  matrix.getCell(row, col) : matrix);
+            $input.val(matrix instanceof Matrix ? matrix.getCell(row, col) : matrix.toString());
         });
     });
 

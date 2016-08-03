@@ -1,0 +1,29 @@
+{
+  "name": "matrixc",
+  "version": "1.0.0",
+  "description": "Matrix Calculator",
+  "main": "index.html",
+  "dependencies": {
+    "gulp": "^3.9.1"
+  },
+  "devDependencies": {
+    "gulp-compress": "0.0.8",
+    "gulp-concat": "^2.6.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.2",
+    "gulp-uglify": "^2.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SamCosta1/MatrixC.git"
+  },
+  "author": "Sam Costa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SamCosta1/MatrixC/issues"
+  },
+  "homepage": "https://github.com/SamCosta1/MatrixC#readme"
+}

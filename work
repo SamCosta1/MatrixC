@@ -1,2 +1,0 @@
-while true; do sleep 1; sass main.scss dependencies/main.css; done
-
