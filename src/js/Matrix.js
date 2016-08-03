@@ -47,7 +47,6 @@ function Matrix(arrMatrix, cols) {
             for (var col = 0; col < reduced.numCols(); col++, mult *= -1) {
                 if (reduced.matrix[lastRow][col] != 0)
                     sum = sum.add(reduced.subMatrix(lastRow, col).det().times(mult).times(reduced.matrix[lastRow][col]));
-                console.log(sum.toString());
             }
             return sum.times(multiplier);
         },

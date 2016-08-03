@@ -31,7 +31,6 @@ function deleteMatrix(obj) {
     $('#bin').attr("src","img/bin.png");
 }
 $(document).keyup(function (e) {
-    console.log(selected);
     if (e.keyCode == 46)
         for (var i in selected){
             deleteMatrix($('#' + selected[i]));

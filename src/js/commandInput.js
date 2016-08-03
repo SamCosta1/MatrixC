@@ -25,22 +25,34 @@ function getNextFreeLetter() {
 }
 
 function commandInput(cmd) {
-    //try {
-    console.time('performCalc');
+    try {
+        var start = Date.now();
+
         $('#errDisplay').hide();
         performCalc(cmd);
         $('#cmdinput').val(base);
-        console.timeEnd('performCalc');
-    //} catch (err) {
-    //    errorHandle(err);
-//        $('#cmdinput').val($('#cmdinput').val().replace(/\n/g, ''));
-    //}
+
+        var end = Date.now() - start;
+        successHandle(end);
+        console.log("Operation done in " + end + "ms");
+    } catch (err) {
+        errorHandle(err);
+        $('#cmdinput').val($('#cmdinput').val().replace(/\n/g, ''));
+    }
 }
 
 function errorHandle(err) {
     console.log(err);
-    $('#errDisplay').text(err)
-        .show();
+    $('#errDisplay').css('color','red');
+    $('#errDisplay').text(err).show();
+}
+
+function successHandle(msg) {
+    $('#errDisplay').css('color','#008e0d');
+    $('#errDisplay').text('Command Successful! (' + msg + ' ms' + ')').show(200);
+    setTimeout(function() {
+        $('#errDisplay').hide(200);
+    },2000);
 }
 
 function performCalc(cmd) {
@@ -72,7 +84,6 @@ function performCalc(cmd) {
     cmd = '(' + cmd + ')';
 
     var theArray = getArrayFromString(cmd);
-    console.log("#MAT-" + org);
     if (!containsEqs && theArray.length == 3 && typeof theArray[1] == 'object'){
         $("#MAT-" + org).trigger("click");
         $("#MAT-" + org).get(0).scrollIntoView();
@@ -192,7 +203,6 @@ function getArrayFromString(cmd) {
         throw "Unexpected character (";
     else if (closeBktCnt > openBktCnt)
         throw "Unexpected character )";
-console.log(theArray);
     return theArray;
 }
 
