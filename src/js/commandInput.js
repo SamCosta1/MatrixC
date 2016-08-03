@@ -10,18 +10,19 @@ var histPos = 0;
 
 var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 var letterIndex = -1;
+
 function getNextFreeLetter() {
     letterIndex++;
     if (letterIndex >= alphabet.length)
-    letterIndex = 0;
+        letterIndex = 0;
     if (isValid(alphabet[letterIndex]))
-    return alphabet[letterIndex];
+        return alphabet[letterIndex];
 
     var withRndm = alphabet[letterIndex] + parseInt(Math.random() * 100);
     if (isValid(withRndm))
-    return withRndm;
+        return withRndm;
     else
-    getNextFreeLetter();
+        getNextFreeLetter();
 }
 
 function commandInput(cmd) {
@@ -40,27 +41,25 @@ function commandInput(cmd) {
         $('#cmdinput').val($('#cmdinput').val().replace(/\n/g, ''));
     }
 }
-
 function errorHandle(err) {
     console.log(err);
-    $('#errDisplay').css('color','red');
+    $('#errDisplay').css('color', 'red');
     $('#errDisplay').text(err).show();
 }
 
 function successHandle(msg) {
-    $('#errDisplay').css('color','#008e0d');
+    $('#errDisplay').css('color', '#008e0d');
     $('#errDisplay').text('Command Successful! (' + msg + ' ms' + ')').show(200);
     setTimeout(function() {
         $('#errDisplay').hide(500);
-    },2000);
+    }, 2000);
 }
 
 function performCalc(cmd) {
     cmd = cmd.replace(/ /g, '').replace(/\n/g, '');
 
     // Split lines by semi colon and run each command seperatly
-    if (cmd.includes(';'))
-    {
+    if (cmd.includes(';')) {
         var commands = cmd.split(';');
         for (var c in commands)
             performCalc(commands[c]);
@@ -84,7 +83,7 @@ function performCalc(cmd) {
     cmd = '(' + cmd + ')';
 
     var theArray = getArrayFromString(cmd);
-    if (!containsEqs && theArray.length == 3 && typeof theArray[1] == 'object'){
+    if (!containsEqs && theArray.length == 3 && typeof theArray[1] == 'object') {
         $("#MAT-" + org).trigger("click");
         $("#MAT-" + org).get(0).scrollIntoView();
         return;
@@ -109,12 +108,12 @@ function performCalc(cmd) {
 
             while (!isCloseBracket(theArray[cnt + (j + 1)])) {
                 if (theArray[cnt + (j + 1)] != ',')
-                    args.push(theArray[cnt+ (j + 1)]);
+                    args.push(theArray[cnt + (j + 1)]);
                 cnt++;
             }
 
             var r = performFunction(theArray[j - 1], args);
-            theArray.splice(j, cnt+2);
+            theArray.splice(j, cnt + 2);
             theArray[j - 1] = r;
         } else {
             theArray.splice(j, 1); // get rid of (
@@ -209,11 +208,10 @@ function getArrayFromString(cmd) {
 function performFunction(func, arg) {
     if (arg[0] instanceof Matrix)
         return arg[0].performFunction(func);
-    else
-    {
+    else {
         if (func != funcENUM.ID && func != funcENUM.ZEROS)
-           throw "Cannot perform operation: " + funcENUM.getString(func) + " of " + arg[0];
-        return new Matrix().performFunction(func,arg);
+            throw "Cannot perform operation: " + funcENUM.getString(func) + " of " + arg[0];
+        return new Matrix().performFunction(func, arg);
     }
 
 }
@@ -222,48 +220,44 @@ function calculate(before, after, op) {
     var result;
     switch (op) {
         case '+':
-            if (typeof before !== typeof after)
+            if (before instanceof Matrix && !(after instanceof Matrix) ||
+                after instanceof Matrix && !(before instanceof Matrix))
                 throw "You can't add a matrix and number sorry!";
-            if (typeof before == 'object')
-                result = before.add(after);
-            else
-                result = before + after;
+
+            result = before.add(after);
             break;
         case '-':
-            if (typeof before !== typeof after)
-                throw "You can't subtract a matrix and number sorry!";
-            if (typeof before == 'object')
-                result = before.subtract(after);
-            else
-                result = before - after;
+            if (before instanceof Matrix && !(after instanceof Matrix) ||
+                after instanceof Matrix && !(before instanceof Matrix))
+                throw "You can't add a matrix and number sorry!";
+
+            result = before.subtract(after);
             break;
         case '/':
-            if (typeof before == 'object')
-                result = before.divide(after);
-            else if (typeof after == 'object')
-                result = after.divide(before);
+            if (!(before instanceof Matrix) && after instanceof Matrix)
+                throw "You can't divide a number by a matrix!"
             else
-                result = before / after;
+                result = before.divide(after);
             break;
         case '*':
-            if (typeof before == 'object')
+            if (before instanceof Matrix)
                 result = before.times(after);
-            else if (typeof after == 'object')
+            else if (after instanceof Matrix)
                 result = after.times(before);
             else
-                result = before * after;
+                result = before.times(after);
             break;
         case '^':
-            if (typeof before == 'object')
-                if (typeof after == 'object')
+            if (before instanceof Matrix)
+                if (after instanceof Matrix)
                     result = before.conjugate(after);
                 else
                     result = before.power(after);
             else {
-                if (!isNaN(before) || !isNaN(after))
+                if (!(before instanceof Fraction) || !(after instanceof Fraction))
                     throw "That's not valid maths! ";
 
-                result = Math.pow(before, after);
+                result = before.power(after);
             }
             break;
     }
