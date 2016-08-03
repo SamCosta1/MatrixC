@@ -51,7 +51,7 @@ function successHandle(msg) {
     $('#errDisplay').css('color','#008e0d');
     $('#errDisplay').text('Command Successful! (' + msg + ' ms' + ')').show(200);
     setTimeout(function() {
-        $('#errDisplay').hide(200);
+        $('#errDisplay').hide(500);
     },2000);
 }
 
