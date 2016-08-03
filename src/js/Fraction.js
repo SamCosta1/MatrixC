@@ -15,6 +15,10 @@ function Fraction(top, bottom) {
     var gcd = GCD(this.top,this.bottom);
     this.top /= gcd;
     this.bottom /= gcd;
+    if (this.bottom < 0) {
+        this.top *= -1;
+        this.bottom *= -1;
+    }
 
     this.parseLiteral = function(v) {
             if (v instanceof Fraction)
@@ -26,6 +30,11 @@ function Fraction(top, bottom) {
             var gcd = GCD(this.top,this.bottom);
             this.top /= gcd;
             this.bottom /= gcd;
+
+            if (this.bottom < 0) {
+                this.top *= -1;
+                this.bottom *= -1;
+            }
         },
         this.divide = function(v) {
             v = this.parseLiteral(v);
