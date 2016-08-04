@@ -83,7 +83,7 @@ function performCalc(cmd) {
     cmd = '(' + cmd + ')';
 
     var theArray = getArrayFromString(cmd);
-    if (!containsEqs && theArray.length == 3 && typeof theArray[1] == 'object') {
+    if (!containsEqs && theArray.length == 3) {
         $("#MAT-" + org).trigger("click");
         $("#MAT-" + org).get(0).scrollIntoView();
         return;
@@ -262,12 +262,6 @@ function calculate(before, after, op) {
             break;
     }
     return result;
-}
-
-function getOperand(oprnd) {
-    if (!isNaN(oprnd)) return parseInt(oprnd);
-    else if (typeof oprnd == 'object') return oprnd;
-    else return variables.get(oprnd);
 }
 
 function isOperator(str) {
