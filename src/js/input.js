@@ -1,21 +1,3 @@
-function drawButton() {
-    var c = document.getElementById("cvsNewBtn");
-    var ctx = c.getContext("2d");
-    ctx.fillStyle = "black";
-    ctx.moveTo(0, 0);
-    ctx.beginPath();
-    var radius = 20;
-    ctx.arc(radius, radius, radius, 0, 2 * Math.PI);
-
-    ctx.fill();
-    ctx.strokeStyle = "white";
-    ctx.lineWidth = 3;
-    ctx.moveTo(radius, 5);
-    ctx.lineTo(radius, 2 * radius - 5);
-    ctx.moveTo(5, radius);
-    ctx.lineTo(2 * radius - 5, radius);
-    ctx.stroke();
-}
 var count = 0;
 var selected = [];
 
