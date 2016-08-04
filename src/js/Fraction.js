@@ -12,10 +12,11 @@ function Fraction(top, bottom) {
         } else
             this.bottom = 1;
     }
-    var topFrac,botFrac;
-    if ((topFrac = this.top % 1 != 0) || (botFrac = this.bottom % 1 != 0)) {
-        var noDigtsTop = topFrac? this.top.toString().split('.')[1].length : 0;
-        var noDigtsBot = botFrac? this.bottom.toString().split('.')[1].length : 0;
+    var topDec = this.top % 1 !== 0,
+        botDec = this.bottom % 1 !== 0;
+    if (topDec || botDec) {
+        var noDigtsTop = topDec? this.top.toString().split('.')[1].length : 0;
+        var noDigtsBot = botDec? this.bottom.toString().split('.')[1].length : 0;
         var multiplier = Math.pow(10,noDigtsBot > noDigtsTop ? noDigtsBot : noDigtsTop);
         this.top *= multiplier;
         this.bottom *= multiplier;
