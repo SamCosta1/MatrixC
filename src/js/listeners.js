@@ -28,8 +28,6 @@ $(document).ready(function() {
             }
         });
 
-        drawButton();
-
         $('#btnNewMat')
             .hover(function() {
                 $('#newLabel').show();

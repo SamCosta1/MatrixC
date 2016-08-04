@@ -3,7 +3,7 @@ var variables = new Map();
 // creation of an empty matrix of any size;
 function Matrix(arrMatrix, cols) {
     this.matrix = arrMatrix;
-    this.multiplier = new Fraction(1, 1);
+    this.multiplier = new Fraction('1');
     if (arrMatrix == undefined)
         this.matrix = getZeros(3).matrix;
     else if (!isNaN(arrMatrix))
@@ -319,7 +319,7 @@ function getZeros(rows, cols) {
     for (var i = 0; i < rows; i++) {
         var sub = [];
         for (var j = 0; j < cols; j++)
-            sub.push(new Fraction(0, 1));
+            sub.push(new Fraction());
         result.push(sub);
     }
 

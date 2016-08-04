@@ -1,32 +1,31 @@
-function Fraction(top, bottom) {
-    this.bottom = bottom;
-    this.top = top;
+function Fraction(top = '0', bottom = '1') {
+    this.bottom = bottom.toString();
+    this.top = top.toString();
 
-    if (top == undefined) {
-        this.top = 0;
+    if (this.top.includes('/')) {
+        this.top = top.split('/')[0];
+        this.bottom = top.split('/')[1];
     }
-    if (bottom == undefined) {
-        if (typeof top === 'string' && top.includes('/')) {
-            this.top = parseFloat(top.split('/')[0]);
-            this.bottom = parseFloat(top.split('/')[1]);
-        } else
-            this.bottom = 1;
-    }
-    var topFrac,botFrac;
-    if ((topFrac = this.top % 1 != 0) || (botFrac = this.bottom % 1 != 0)) {
-        var noDigtsTop = topFrac? this.top.toString().split('.')[1].length : 0;
-        var noDigtsBot = botFrac? this.bottom.toString().split('.')[1].length : 0;
-        var multiplier = Math.pow(10,noDigtsBot > noDigtsTop ? noDigtsBot : noDigtsTop);
-        this.top *= multiplier;
-        this.bottom *= multiplier;
+
+    this.top = new Big(this.top);
+    this.bottom = new Big(this.bottom);
+
+    var topDec = !this.top.mod(1).eq(0);
+        botDec = !this.bottom.mod(1).eq(0);
+    if (topDec || botDec) {
+        var noDigtsTop = topDec? this.top.toString().split('.')[1].length : 0;
+        var noDigtsBot = botDec? this.bottom.toString().split('.')[1].length : 0;
+        var multiplier = Big(10).pow(noDigtsBot > noDigtsTop ? noDigtsBot : noDigtsTop);
+        this.top = this.top.times(multiplier);
+        this.bottom = this.bottom.times(multiplier);
     }
 
     var gcd = GCD(this.top, this.bottom);
-    this.top /= gcd;
-    this.bottom /= gcd;
-    if (this.bottom < 0) {
-        this.top *= -1;
-        this.bottom *= -1;
+    this.top = this.top.div(gcd);
+    this.bottom = this.bottom.div(gcd);
+    if (this.bottom.lt(0)) {
+        this.top = this.top.times(-1);
+        this.bottom = this.bottom.times(-1);
     }
 
     this.parseLiteral = function(v) {
@@ -37,35 +36,34 @@ function Fraction(top, bottom) {
         },
         this.simplify = function() {
             var gcd = GCD(this.top, this.bottom);
-            this.top /= gcd;
-            this.bottom /= gcd;
-
-            if (this.bottom < 0) {
-                this.top *= -1;
-                this.bottom *= -1;
+            this.top = this.top.div(gcd);
+            this.bottom = this.bottom.div(gcd);
+            if (this.bottom.lt(0)) {
+                this.top = this.top.times(-1);
+                this.bottom = this.bottom.times(-1);
             }
         },
         this.divide = function(v) {
             v = this.parseLiteral(v);
             var result = new Fraction();
-            result.top = this.top * v.bottom;
-            result.bottom = this.bottom * v.top;
+            result.top = this.top.times(v.bottom);
+            result.bottom = this.bottom.times(v.top);
             result.simplify();
             return result;
         },
         this.times = function(v) {
             v = this.parseLiteral(v);
-            if (this.top == 0 || v.top == 0)
-                return new Fraction(0, 1);
+            if (this.top.eq(0) || v.top.eq(0))
+                return new Fraction();
             var result = new Fraction();
-            result.bottom = this.bottom * v.bottom;
-            result.top = this.top * v.top;
+            result.bottom = this.bottom.times(v.bottom);
+            result.top = this.top.times(v.top);
             result.simplify();
             return result;
         },
         this.power = function(v) {
             v = this.parseLiteral(v);
-            var pow = v.top;
+            var pow = parseInt(v.top.valueOf());
             var result = this.clone();
             for (var p = 1; p < pow; p++)
                 result = result.times(this);
@@ -74,41 +72,41 @@ function Fraction(top, bottom) {
     this.add = function(v) {
             v = this.parseLiteral(v);
             var result = new Fraction();
-            result.top = this.top * v.bottom + this.bottom * v.top;
-            result.bottom = this.bottom * v.bottom;
+            result.top = this.top.times(v.bottom).add(this.bottom.times(v.top));
+            result.bottom = this.bottom.times(v.bottom);
             result.simplify();
             return result
         },
         this.subtract = function(v) {
             v = this.parseLiteral(v);
             var result = new Fraction();
-            result.top = this.top * v.bottom - this.bottom * v.top;
-            result.bottom = this.bottom * v.bottom;
+            result.top = this.top.times(v.bottom).minus(this.bottom.times(v.top));
+            result.bottom = this.bottom.times(v.bottom);
             result.simplify();
             return result
         },
         this.reciprocal = function() {
             if (this.top != 0)
                 return new Fraction(this.bottom, this.top);
-            else return new Fraction(0, 1);
+            else return new Fraction();
         },
         this.getLiteral = function() {
-            return this.top / this.bottom;
+            return parseInt(this.top.div(this.bottom).valueOf());
         },
         this.isZero = function() {
-            return this.top == 0;
+            return this.top.eq(0);
         },
         this.isOne = function() {
-            return this.bottom == this.top == 1;
+            return this.bottom.eq(this.top);
         }
     this.toString = function() {
-            if (this.top == 0)
-                return 0;
-            if (this.bottom == 1)
-                return this.top;
-            if (this.top == this.bottom)
-                return 1;
-            return this.top + '/' + this.bottom;
+            if (this.top.eq(0))
+                return '0';
+            if (this.bottom.eq(1))
+                return this.top.toString();
+            if (this.isOne())
+                return '1';
+            return this.top.toString() + '/' + this.bottom.toString();
         },
         this.clone = function() {
             return new Fraction(this.top, this.bottom);
@@ -116,8 +114,8 @@ function Fraction(top, bottom) {
 }
 
 function GCD(big, small) {
-    var r = big % small;
-    if (r == 0)
+    var r = big.mod(small);
+    if (r.eq(0))
         return small;
     else {
         return GCD(small, r);
