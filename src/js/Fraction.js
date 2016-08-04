@@ -1,6 +1,14 @@
-function Fraction(top = '0', bottom = '1') {
-    this.bottom = bottom.toString();
-    this.top = top.toString();
+function Fraction(top, bottom) {
+    this.top = top;
+    this.bottom = bottom;
+    if (top == undefined) {
+        this.top = '0';
+        this.bottom = '1';
+    } else if (bottom == undefined) {
+        this.bottom = '1';
+    }
+    this.bottom = this.bottom.toString();
+    this.top = this.top.toString();
 
     if (this.top.includes('/')) {
         this.top = top.split('/')[0];
@@ -11,10 +19,10 @@ function Fraction(top = '0', bottom = '1') {
     this.bottom = new Big(this.bottom);
 
     var topDec = !this.top.mod(1).eq(0);
-        botDec = !this.bottom.mod(1).eq(0);
+    botDec = !this.bottom.mod(1).eq(0);
     if (topDec || botDec) {
-        var noDigtsTop = topDec? this.top.toString().split('.')[1].length : 0;
-        var noDigtsBot = botDec? this.bottom.toString().split('.')[1].length : 0;
+        var noDigtsTop = topDec ? this.top.toString().split('.')[1].length : 0;
+        var noDigtsBot = botDec ? this.bottom.toString().split('.')[1].length : 0;
         var multiplier = Big(10).pow(noDigtsBot > noDigtsTop ? noDigtsBot : noDigtsTop);
         this.top = this.top.times(multiplier);
         this.bottom = this.bottom.times(multiplier);
@@ -68,14 +76,14 @@ function Fraction(top = '0', bottom = '1') {
             for (var p = 1; p < pow; p++)
                 result = result.times(this);
             return result;
-        }
-    this.add = function(v) {
+        },
+        this.add = function(v) {
             v = this.parseLiteral(v);
             var result = new Fraction();
             result.top = this.top.times(v.bottom).add(this.bottom.times(v.top));
             result.bottom = this.bottom.times(v.bottom);
             result.simplify();
-            return result
+            return result;
         },
         this.subtract = function(v) {
             v = this.parseLiteral(v);
@@ -83,7 +91,7 @@ function Fraction(top = '0', bottom = '1') {
             result.top = this.top.times(v.bottom).minus(this.bottom.times(v.top));
             result.bottom = this.bottom.times(v.bottom);
             result.simplify();
-            return result
+            return result;
         },
         this.reciprocal = function() {
             if (this.top != 0)
@@ -98,7 +106,7 @@ function Fraction(top = '0', bottom = '1') {
         },
         this.isOne = function() {
             return this.bottom.eq(this.top);
-        }
+        },
     this.toString = function() {
             if (this.top.eq(0))
                 return '0';
