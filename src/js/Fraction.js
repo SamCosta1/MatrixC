@@ -89,7 +89,7 @@ Fraction.prototype.subtract = function(v) {
     return result;
 }
 Fraction.prototype.reciprocal = function() {
-    if (this.top.eq(0))
+    if (!this.top.eq(0))
         return new Fraction(this.bottom, this.top);
     else return new Fraction();
 }
@@ -116,6 +116,10 @@ Fraction.prototype.clone = function() {
 }
 
 function GCD(big, small) {
+    //HACK Not sure if it's best to do this here
+    if (small.eq(0))
+        return 1;
+
     var r = big.mod(small);
     if (r.eq(0))
         return small;
