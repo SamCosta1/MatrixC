@@ -94,7 +94,7 @@ function Fraction(top, bottom) {
             return result;
         },
         this.reciprocal = function() {
-            if (this.top != 0)
+            if (this.top.eq(0))
                 return new Fraction(this.bottom, this.top);
             else return new Fraction();
         },
