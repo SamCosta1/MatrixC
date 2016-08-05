@@ -389,6 +389,4 @@ function updateGUI(lbl, matrix) {
             $input.val(matrix instanceof Matrix ? matrix.getCell(row, col) : matrix.toString());
         });
     });
-
-
 }
