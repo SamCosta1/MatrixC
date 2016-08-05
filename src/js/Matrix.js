@@ -44,7 +44,7 @@ Matrix.prototype.determinant = function() {
     var sum = new Fraction();
     var mult = 1;
     for (var col = 0; col < reduced.numCols(); col++, mult *= -1) {
-        if (reduced.matrix[lastRow][col] != 0)
+        if (!reduced.matrix[lastRow][col].isZero())
             sum = sum.add(reduced.subMatrix(lastRow, col).det().times(mult).times(reduced.matrix[lastRow][col]));
     }
     return sum.times(multiplier);
