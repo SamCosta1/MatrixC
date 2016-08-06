@@ -1,6 +1,6 @@
 $handleWidth: 16px;
 .sidebar {
-    position: absolute;
+    position: fixed;
     min-width: $handleWidth;
     width: $handleWidth;
     overflow: hidden;
@@ -20,7 +20,7 @@ $handleWidth: 16px;
 
         .dragHandleLabel {
         	transform: rotate(90deg);
-                right: 34px;
+            right: 34px;
             position: relative;
         }
 
