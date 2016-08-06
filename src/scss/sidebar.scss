@@ -1,47 +1,66 @@
 $handleWidth: 16px;
+$gridCol: rgba(128, 128, 128, 0.1);
+$gridDim: 100px;
 .sidebar {
     position: fixed;
     min-width: $handleWidth;
     width: $handleWidth;
     overflow: hidden;
     height: 100%;
-    background-color: blue;
-    right: 0px;
-    top:0px;
-
+    right: 0;
+    top: 0;
+    background-color: white;
+    background-size: $gridDim $gridDim;
+    background-image: linear-gradient(to right, $gridCol 1px, transparent 1px), linear-gradient(to bottom, $gridCol 1px, transparent 1px);
     .handle {
         height: 100%;
         width: $handleWidth;
-        background-color: red;
+        background-color: #333333;
         position: absolute;
         margin: 0;
         display: flex;
-        align-items: center;
-
+        border-color: #777777;
+        border-style: solid;
+        border-width: 1px;
+        border-right: none;
         .dragHandleLabel {
-        	transform: rotate(90deg);
+            transform: rotate(90deg);
             right: 34px;
             position: relative;
+            color: white;
+            display: flex;
+            align-items: center;
         }
-
         &:hover {
             cursor: col-resize;
         }
-    }
+        .snapHandle {
+            height: 9px;
+            position: absolute;
+            left: 0;
+            padding: 3px;
+            content: url("../img/collapse.png");
+            cursor: e-resize;
 
+            &.expand {
+                cursor: w-resize;
+                transform: scaleX(-1);
+            }
+        }
+    }
     .header {
-        background-color: green;
-        width:100%;
+        font-size: 25px;
+        width: 100%;
     }
-
     .sidebarBody {
         overflow-y: scroll;
         height: 100%;
     }
-
     .offsetHandle {
         margin-left: $handleWidth;
     }
-
-
+    hr {
+        padding: 0;
+        border-width: 1px;
+    }
 }
