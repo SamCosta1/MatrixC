@@ -174,7 +174,8 @@ Matrix.prototype.power = function(power) {
 Matrix.prototype.conjugate = function(power) {
     return power.inverse().times(this).times(power);
 },
-Matrix.prototype.performFunction = function(func, args) {
+Matrix.prototype.performFunction = function(func, args, step) {
+    this.step = step;
     switch (func) {
         case funcENUM.TRANSPOSE:
             return this.transpose();

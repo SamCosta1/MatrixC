@@ -29,6 +29,9 @@ var Parser = function() {
             lbl = getNextFreeLetter();
         cmd = '(' + cmd + ')';
 
+        var calcSteps = [];
+        calculations.set(lbl, calcSteps);
+
         var theArray = getArrayFromString(cmd);
         if (!containsEqs && theArray.length == 3) {
             $("#MAT-" + org).trigger("click");
@@ -43,7 +46,8 @@ var Parser = function() {
             var j = i;
             while (!isOpenBracket(theArray[j])) {
                 if (isOperator(theArray[j])) {
-                    var res = calculate(theArray[j - 1], theArray[j + 1], theArray[j]);
+                    var res = calculate( theArray[j], theArray[j - 1], theArray[j + 1]);
+                    calcSteps.push(new CalculationStep(theArray[j], theArray[j - 1], res, theArray[j + 1]))
                     theArray.splice(j, 2);
                     theArray[j - 1] = res;
                 }
@@ -58,8 +62,10 @@ var Parser = function() {
                         args.push(theArray[cnt + (j + 1)]);
                     cnt++;
                 }
-
-                var r = performFunction(theArray[j - 1], args);
+                var step = new CalculationStep(theArray[j - 1], args[0],null);
+                var r = performFunction(theArray[j - 1], args,step);
+                step.result = r;
+                calcSteps.push(step);
                 theArray.splice(j, cnt + 2);
                 theArray[j - 1] = r;
             } else {
@@ -152,9 +158,9 @@ var Parser = function() {
         return theArray;
     }
 
-    function performFunction(func, arg) {
+    function performFunction(func, arg, step) {
         if (arg[0] instanceof Matrix)
-            return arg[0].performFunction(func);
+            return arg[0].performFunction(func, step);
         else {
             if (func != funcENUM.ID && func != funcENUM.ZEROS)
                 throw "Cannot perform operation: " + funcENUM.getString(func) + " of " + arg[0];
@@ -163,7 +169,7 @@ var Parser = function() {
 
     }
 
-    function calculate(before, after, op) {
+    function calculate(op, before, after) {
         var result;
         switch (op) {
             case '+':
