@@ -6,46 +6,81 @@
     <link href="dependencies/headerfont" rel="stylesheet">
     <script src="dist/scripts.min.js" type="text/javascript"></script>
     <link rel="stylesheet" href="dist/main.css">
+    <link rel="stylesheet" href="dist/sidebar.css">
     <link rel="prefetch" href="img/openBin.png">
     <link rel="icon" href="img/icon.png">
 </head>
 
 <body>
-    <div id="header">
-        <div class="middleTitle center noSelect" onclick="window.location.href='index.html'">
-            <img class="Lbracket bracket" src="img/bracketWhite.png">
-            <div id="headerText">
-                M&#945;trix
-                <br>C&#945;lculator
+    <div class="mainContentContainer">
+        <div id="header">
+            <div class="middleTitle center noSelect" onclick="window.location.href='index.html'">
+                <img class="Lbracket bracket" src="img/bracketWhite.png">
+                <div id="headerText">
+                    M&#945;trix
+                    <br>C&#945;lculator
+                </div>
+                <img class="Rbracket flip" src="img/bracketWhite.png">
             </div>
-            <img class="Rbracket flip" src="img/bracketWhite.png">
+            <div class="credit noSelect"><a class="credit" href="refrences.html">Other Stuff</a></div>
         </div>
-        <div class="credit noSelect"><a class="credit" href="refrences.html">Other Stuff</a></div>
+        <hr>
+        <div id="mainBody">
+            <div class="controlContainer">
+                <div id="commandLine">
+                    <textarea id="cmdinput" rows="3" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">MatCalculator &gt&gt </textarea>
+                    <div class="errContainer">
+                        <label id="errDisplay">Error: </label>
+                    </div>
+                </div>
+                <div id="newMatGroup">
+                    <div id="btnNewMat" class="center">
+                        <img src="img/newMatrixbtn.png" height="40px"></img>
+                    </div>
+                    <div id="newLabel" hidden> New Matrix!! </div>
+                </div>
+                <img id="bin" class="bin dropzone noSelect" src="img/bin.png"></img>
+            </div>
+            <div id="matDefinitions">
+            </div>
+        </div>
     </div>
-    <hr>
-    <div id="mainBody">
-        <div class="controlContainer">
-            <div id="commandLine">
-                <textarea id="cmdinput" rows="3" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">MatCalculator &gt&gt </textarea>
-                <div class="errContainer">
-                    <label id="errDisplay">Error: </label>
-                </div>
-            </div>
-            <div id="newMatGroup">
-                <div id="btnNewMat" class="center">
-                    <img src="img/newMatrixbtn.png" height="40px"></img>
-                </div>
-                <div id="newLabel" hidden> New Matrix!! </div>
-            </div>
-            <img id="bin" class="bin dropzone noSelect" src="img/bin.png"></img>
+    <div class="sidebar">
+        <div class="handle">
+            <div class="dragHandleLabel noSelect">Calculations</div>
         </div>
-        <div id="matDefinitions">
+        <div class="header offsetHandle">
+            Calculations
         </div>
-        <br>
-        <br>
-        <script>
-
-        </script>
+        <div class="sidebarBody offsetHandle">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur lobortis sollicitudin dictum. Proin sem ante, finibus at ipsum a, luctus dictum libero. Phasellus eu dolor hendrerit, volutpat augue tempus, fermentum nisi. Aliquam auctor, dui sit amet
+            pellentesque viverra, augue nunc dapibus urna, eu efficitur quam ante sed risus. Phasellus a magna eget sem placerat congue non sed sem. Phasellus ornare odio eget libero imperdiet, ac consequat nunc porttitor. Aliquam fermentum ultricies
+            maximus. Suspendisse tristique nulla tellus, sit amet tincidunt sapien aliquam non. Aenean ac magna vitae dui pellentesque blandit. Nullam aliquet tincidunt mauris sed volutpat. Suspendisse luctus erat et urna consectetur, eu mollis massa
+            posuere. Donec non semper risus, et interdum ex. Duis molestie purus quis semper facilisis. Duis congue, nisl a iaculis commodo, tellus velit aliquam lacus, id fringilla nibh arcu a lectus. Nunc nec nisi eros. Mauris ac mi quam. Aenean pulvinar
+            augue faucibus enim pharetra, at pulvinar nunc molestie. Cras non luctus magna. Fusce sed diam sed felis dignissim eleifend nec et ipsum. Duis euismod sit amet nunc a placerat. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+            Cras ultrices vitae risus id rutrum. Pellentesque in quam elit. Fusce tincidunt velit vitae ex scelerisque, quis accumsan velit hendrerit. Fusce cursus tincidunt est sed consequat. Phasellus egestas tristique elit vel tempus. Lorem ipsum dolor
+            sit amet, consectetur adipiscing elit. Nullam semLorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur lobortis sollicitudin dictum. Proin sem ante, finibus at ipsum a, luctus dictum libero. Phasellus eu dolor hendrerit, volutpat augue tempus, fermentum nisi. Aliquam auctor, dui sit amet
+            pellentesque viverra, augue nunc dapibus urna, eu efficitur quam ante sed risus. Phasellus a magna eget sem placerat congue non sed sem. Phasellus ornare odio eget libero imperdiet, ac consequat nunc porttitor. Aliquam fermentum ultricies
+            maximus. Suspendisse tristique nulla tellus, sit amet tincidunt sapien aliquam non. Aenean ac magna vitae dui pellentesque blandit. Nullam aliquet tincidunt mauris sed volutpat. Suspendisse luctus erat et urna consectetur, eu mollis massa
+            posuere. Donec non semper risus, et interdum ex. Duis molestie purus quis semper facilisis. Duis congue, nisl a iaculis commodo, tellus velit aliquam lacus, id fringilla nibh arcu a lectus. Nunc nec nisi eros. Mauris ac mi quam. Aenean pulvinar
+            augue faucibus enim pharetra, at pulvinar nunc molestie. Cras non luctus magna. Fusce sed diam sed felis dignissim eleifend nec et ipsum. Duis euismod sit amet nunc a placerat. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+            Cras ultrices vitae risus id rutrum. Pellentesque in quam elit. Fusce tincidunt velit vitae ex scelerisque, quis accumsan velit hendrerit. Fusce cursus tincidunt est sed consequat. Phasellus egestas tristique elit vel tempus. Lorem ipsum dolor
+            sit amet, consectetur adipiscing elit. Nullam sem urna, bibendum eu tempus vitae, pellentesque eget ligula. Quisque tincidunt felis sed urna convallis sodales. Sed accumsan malesuada facilisis. In condimentum felis quis elit elementum, quis
+            maximus sapien varius. Nulla efficitur porta tortor sit amet tincidunt. Integer ut tempus ante. Maecenas non metus enim. Nunc eget odio eget velit feugiat condimentum. Nullam placerat ligula eros, a elementum ligula egestas vel. Phasellus
+            pellentesque nulla vitae lacus imperdiet euismod. Nulla pretium blandit risuLorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur lobortis sollicitudin dictum. Proin sem ante, finibus at ipsum a, luctus dictum libero. Phasellus eu dolor hendrerit, volutpat augue tempus, fermentum nisi. Aliquam auctor, dui sit amet
+            pellentesque viverra, augue nunc dapibus urna, eu efficitur quam ante sed risus. Phasellus a magna eget sem placerat congue non sed sem. Phasellus ornare odio eget libero imperdiet, ac consequat nunc porttitor. Aliquam fermentum ultricies
+            maximus. Suspendisse tristique nulla tellus, sit amet tincidunt sapien aliquam non. Aenean ac magna vitae dui pellentesque blandit. Nullam aliquet tincidunt mauris sed volutpat. Suspendisse luctus erat et urna consectetur, eu mollis massa
+            posuere. Donec non semper risus, et interdum ex. Duis molestie purus quis semper facilisis. Duis congue, nisl a iaculis commodo, tellus velit aliquam lacus, id fringilla nibh arcu a lectus. Nunc nec nisi eros. Mauris ac mi quam. Aenean pulvinar
+            augue faucibus enim pharetra, at pulvinar nunc molestie. Cras non luctus magna. Fusce sed diam sed felis dignissim eleifend nec et ipsum. Duis euismod sit amet nunc a placerat. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+            Cras ultrices vitae risus id rutrum. Pellentesque in quam elit. Fusce tincidunt velit vitae ex scelerisque, quis accumsan velit hendrerit. Fusce cursus tincidunt est sed consequat. Phasellus egestas tristique elit vel tempus. Lorem ipsum dolor
+            sit amet, consectetur adipiscing elit. Nullam sem urna, bibendum eu tempus vitae, pellentesque eget ligula. Quisque tincidunt felis sed urna convallis sodales. Sed accumsan malesuada facilisis. In condimentum felis quis elit elementum, quis
+            maximus sapien varius. Nulla efficitur porta tortor sit amet tincidunt. Integer ut tempus ante. Maecenas non metus enim. Nunc eget odio eget velit feugiat condimentum. Nullam placerat ligula eros, a elementum ligula egestas vel. Phasellus
+            pellentesque nulla vitae lacus imperdiet euismod. Nulla pretium blandit risu urna, bibendum eu tempus vitae, pellentesque eget ligula. Quisque tincidunt felis sed urna convallis sodales. Sed accumsan malesuada facilisis. In condimentum felis quis elit elementum, quis
+            maximus sapien varius. Nulla efficitur porta tortor sit amet tincidunt. Integer ut tempus ante. Maecenas non metus enim. Nunc eget odio eget velit feugiat condimentum. Nullam placerat ligula eros, a elementum ligula egestas vel. Phasellus
+            pellentesque nulla vitae lacus imperdiet euismod. Nulla pretium blandit risus et bibendum. Aliquam erat volutpat. Morbi malesuada nunc tellus, eget venenatis felis eleifend at. Maecenas ut mauris libero. Ut suscipit in mi ut malesuada. In
+            eleifend mattis imperdiet. Nulla eget libero molestie, vehicula nisi in, faucibus sem. Etiam euismod urna at neque efficitur suscipit.
+        </div>
     </div>
 </body>
+
 </html>

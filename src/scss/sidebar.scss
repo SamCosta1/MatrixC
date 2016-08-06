@@ -1,0 +1,47 @@
+$handleWidth: 16px;
+.sidebar {
+    position: absolute;
+    min-width: $handleWidth;
+    width: $handleWidth;
+    overflow: hidden;
+    height: 100%;
+    background-color: blue;
+    right: 0px;
+    top:0px;
+
+    .handle {
+        height: 100%;
+        width: $handleWidth;
+        background-color: red;
+        position: absolute;
+        margin: 0;
+        display: flex;
+        align-items: center;
+
+        .dragHandleLabel {
+        	transform: rotate(90deg);
+                right: 34px;
+            position: relative;
+        }
+
+        &:hover {
+            cursor: col-resize;
+        }
+    }
+
+    .header {
+        background-color: green;
+        width:100%;
+    }
+
+    .sidebarBody {
+        overflow-y: scroll;
+        height: 100%;
+    }
+
+    .offsetHandle {
+        margin-left: $handleWidth;
+    }
+
+
+}
