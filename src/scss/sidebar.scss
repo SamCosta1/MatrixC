@@ -35,14 +35,14 @@ $gridDim: 100px;
             cursor: col-resize;
         }
         .snapHandle {
-            height: 9px;
-            position: absolute;
-            left: 0;
-            padding: 3px;
-            content: url("../img/collapse.png");
+            &::before {
+                content: url("../img/collapse.png");
+                position: absolute;
+                left: 0;
+                padding: 3px;
+            }
             cursor: e-resize;
-
-            &.expand {
+            &.expand:before {
                 cursor: w-resize;
                 transform: scaleX(-1);
             }
@@ -51,6 +51,26 @@ $gridDim: 100px;
     .header {
         font-size: 25px;
         width: 100%;
+        display: flex;
+        align-items: center;
+        .title {
+            margin-left: 17px;
+        }
+        .fullScreen {
+            &:before {
+                content: url("../img/fullscreen.png");
+            }
+            margin-left: auto;
+            margin-right: 26px;
+            height: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin-top: 2px;
+            &.unfullScreen::before {
+                content: url("../img/unfullscreen.png");
+            }
+        }
     }
     .sidebarBody {
         overflow-y: scroll;
