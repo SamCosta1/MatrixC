@@ -82,9 +82,9 @@ Matrix.prototype.concat = function(other) {
     return new Matrix(result);
 };
 Matrix.prototype.inverse = function() {
-    var aug = this.concat(this.getIdentity(this.numCols()))
-        .reduceToReducedEchF(this.numCols());
-    this.step.push(new CalculationStep('augment', null, aug.clone()));
+    var id = this.getIdentity(this.numCols());
+    var aug = this.concat(id).reduceToReducedEchF(this.numCols());
+    this.step.push(new CalculationStep('augment', this, aug.clone(), id, "(the identity matrix)"));
     for (var r = 0; r < this.numRows(); r++) {
         // Check first part of augmented is identity (otherwise noninvertible)
         for (var c = 0; c < this.numCols(); c++) {
@@ -177,7 +177,6 @@ Matrix.prototype.conjugate = function(power) {
 };
 Matrix.prototype.performFunction = function(func, args, step) {
     this.step = step;
-    console.log(step);
     switch (func) {
         case funcENUM.TRANSPOSE:
             return this.transpose();
@@ -334,7 +333,7 @@ Matrix.prototype.getTex = function() {
     }
     str += "\\end{bmatrix}";
     return str;
-}
+};
 
 var funcENUM = {
     NONE: '#',

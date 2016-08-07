@@ -44,20 +44,26 @@ CalculationStep.prototype.renderThis = function($parent) {
     switch (this.operator) {
         case funcENUM.INVERSE:
             tex += "\\text{inverse} \\Bigg(" + this.op1.getTex() + "\\Bigg) = " + this.result.getTex();
-        break;
+            break;
         case funcENUM.DET:
             tex += "\\text{determinant} \\Bigg(" + this.op1.getTex() + "\\Bigg) = " + this.result.getTex();
-        break;
+            break;
         case funcENUM.ROWREDUCE:
             tex += "\\text{reduced row echelon form of }" + this.op1.getTex() + " is " + this.result.getTex();
-        break;
+            break;
         case '+':
         case '-':
             tex += this.op1.getTex() + this.operator + this.op2.getTex() + '=' + this.result.getTex();
-        break;
+            break;
         case '*':
             tex += this.op1.getTex() + '\\times' + this.op2.getTex() + '=' + this.result.getTex();
-        break;
+            break;
+        /*case 'swap':
+
+            break;*/
+        case 'augment':
+            tex += "\\text{augment } " + this.op1.getTex() + " \\text{with} " + this.op2.getTex() + " \\text{" + this.other + "}" + " \\\\ =>" + this.result.getTex();
+            break;
 
     }
     tex += '$$';
