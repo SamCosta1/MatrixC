@@ -46,8 +46,10 @@ var Parser = function() {
             var j = i;
             while (!isOpenBracket(theArray[j])) {
                 if (isOperator(theArray[j])) {
-                    var res = calculate( theArray[j], theArray[j - 1], theArray[j + 1]);
-                    calcSteps.push(new CalculationStep(theArray[j], theArray[j - 1], res, theArray[j + 1]))
+                    var stp = new CalculationStep(theArray[j], theArray[j - 1], null, theArray[j + 1])
+                    var res = calculate( theArray[j], theArray[j - 1], theArray[j + 1], stp);
+                    stp.result = res;
+                    calcSteps.push(stp);
                     theArray.splice(j, 2);
                     theArray[j - 1] = res;
                 }
@@ -171,7 +173,7 @@ var Parser = function() {
 
     }
 
-    function calculate(op, before, after) {
+    function calculate(op, before, after, stp) {
         var result;
         switch (op) {
             case '+':
@@ -203,12 +205,13 @@ var Parser = function() {
                     result = before.times(after);
                 break;
             case '^':
-                if (before instanceof Matrix)
+                if (before instanceof Matrix) {
+                    before.step = stp;
                     if (after instanceof Matrix)
                         result = before.conjugate(after);
                     else
                         result = before.power(after);
-                else {
+                }   else {
                     if (!(before instanceof Fraction) || !(after instanceof Fraction))
                         throw "That's not valid maths! ";
 

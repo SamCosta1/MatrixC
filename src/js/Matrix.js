@@ -83,8 +83,9 @@ Matrix.prototype.concat = function(other) {
 };
 Matrix.prototype.inverse = function() {
     var id = this.getIdentity(this.numCols());
-    var aug = this.concat(id).reduceToReducedEchF(this.numCols());
+    var aug = this.concat(id);
     this.step.push(new CalculationStep('augment', this, aug.clone(), id, "(the identity matrix)"));
+    aug = aug.reduceToReducedEchF(this.numCols());
     for (var r = 0; r < this.numRows(); r++) {
         // Check first part of augmented is identity (otherwise noninvertible)
         for (var c = 0; c < this.numCols(); c++) {
