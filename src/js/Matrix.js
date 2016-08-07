@@ -12,16 +12,16 @@ function Matrix(arrMatrix, cols) {
 Matrix.prototype.update = function(row, col, val) {
     this.matrix[parseInt(row)][parseInt(col)] = val instanceof Fraction ?
         val : new Fraction(val);
-},
+};
 Matrix.prototype.getCell = function(row, col) {
     return this.matrix[row][col];
-},
+};
 Matrix.prototype.numRows = function() {
     return this.matrix.length;
-},
+};
 Matrix.prototype.numCols = function() {
     return this.matrix[0].length;
-},
+};
 Matrix.prototype.clone = function() {
     var result = [];
     for (var i = 0; i < this.numRows(); i++) {
@@ -31,7 +31,7 @@ Matrix.prototype.clone = function() {
         result.push(sub);
     }
     return new Matrix(result);
-},
+};
 // Standard functions
 Matrix.prototype.determinant = function() {
     if (this.numRows() == 2)
@@ -48,7 +48,7 @@ Matrix.prototype.determinant = function() {
             sum = sum.add(reduced.subMatrix(lastRow, col).det().times(mult).times(reduced.matrix[lastRow][col]));
     }
     return sum.times(multiplier);
-},
+};
 Matrix.prototype.subMatrix = function(row, col) {
     var result = [];
     for (var r = 0; r < this.numRows(); r++) {
@@ -61,10 +61,10 @@ Matrix.prototype.subMatrix = function(row, col) {
         }
     }
     return new Matrix(result);
-},
+};
 Matrix.prototype.det = function() {
     return this.determinant();
-},
+};
 Matrix.prototype.transpose = function() {
     var result = [];
     for (var col = 0; col < this.numCols(); col++) {
@@ -74,16 +74,17 @@ Matrix.prototype.transpose = function() {
         result.push(sub);
     }
     return new Matrix(result);
-},
+};
 Matrix.prototype.concat = function(other) {
     var result = this.clone().matrix;
     for (var r = 0; r < result.length; r++)
         result[r] = result[r].concat(other.matrix[r]);
     return new Matrix(result);
-},
+};
 Matrix.prototype.inverse = function() {
     var aug = this.concat(this.getIdentity(this.numCols()))
         .reduceToReducedEchF(this.numCols());
+    this.step.push(new CalculationStep('augment', null, aug.clone()));
     for (var r = 0; r < this.numRows(); r++) {
         // Check first part of augmented is identity (otherwise noninvertible)
         for (var c = 0; c < this.numCols(); c++) {
@@ -98,7 +99,7 @@ Matrix.prototype.inverse = function() {
     }
     return aug;
 
-},
+};
 Matrix.prototype.add = function(other) {
     var result = [];
     for (var i = 0; i < this.numRows(); i++) {
@@ -108,7 +109,7 @@ Matrix.prototype.add = function(other) {
         result.push(sub);
     }
     return new Matrix(result);
-},
+};
 Matrix.prototype.subtract = function(other) {
     var result = [];
     for (var i = 0; i < this.numRows(); i++) {
@@ -118,7 +119,7 @@ Matrix.prototype.subtract = function(other) {
         result.push(sub);
     }
     return new Matrix(result);
-},
+};
 Matrix.prototype.times = function(other) {
     if (!(other instanceof Matrix))
         return this.timesScalar(other);
@@ -135,7 +136,7 @@ Matrix.prototype.times = function(other) {
             result.update(row, col, res);
         }
     return result;
-},
+};
 Matrix.prototype.timesScalar = function(val) {
     var result = new Matrix(this.numRows(), this.numCols());
     for (var row = 0; row < this.numRows(); row++)
@@ -143,7 +144,7 @@ Matrix.prototype.timesScalar = function(val) {
             result.update(row, col, this.getCell(row, col).times(val));
         }
     return result;
-},
+};
 Matrix.prototype.divide = function(other) {
     if (other instanceof Matrix)
         return this.times(other.inverse());
@@ -153,7 +154,7 @@ Matrix.prototype.divide = function(other) {
         else
             return this.times(new Fraction(1, other));
     }
-},
+};
 Matrix.prototype.power = function(power) {
     if (this.numCols() != this.numRows())
         throw "You can only calculate powers of square matricies!";
@@ -170,12 +171,13 @@ Matrix.prototype.power = function(power) {
     for (i = 1; i < power - 1; i++)
         result = this.times(result);
     return result;
-},
+};
 Matrix.prototype.conjugate = function(power) {
     return power.inverse().times(this).times(power);
-},
+};
 Matrix.prototype.performFunction = function(func, args, step) {
     this.step = step;
+    console.log(step);
     switch (func) {
         case funcENUM.TRANSPOSE:
             return this.transpose();
@@ -197,7 +199,7 @@ Matrix.prototype.performFunction = function(func, args, step) {
             return this.getZeros(args[0], args[1]);
     }
     throw "Something weird just happened!";
-},
+};
 Matrix.prototype.reduceToReducedEchF = function(numCols) {
     if (numCols == undefined || numCols > this.numCols())
         numCols = this.numCols();
@@ -223,7 +225,7 @@ Matrix.prototype.reduceToReducedEchF = function(numCols) {
         currentPivPos++;
     }
     return result;
-},
+};
 // MUTATES THE OBJECT
 Matrix.prototype.kill = function(row, col) {
     for (var r = 0; r < this.numRows(); r++) {
@@ -234,7 +236,7 @@ Matrix.prototype.kill = function(row, col) {
             this.matrix[r] = this.subtractRows(this.matrix[r],
                 this.multiplyRow(row, mult));
     }
-},
+};
 Matrix.prototype.getNonZeroRows = function(row, col) {
     row++;
     while (row < this.numRows() && this.getCell(row, col) == 0)
@@ -243,7 +245,7 @@ Matrix.prototype.getNonZeroRows = function(row, col) {
         return -1;
     else
         return row;
-},
+};
 Matrix.prototype.subtractRows = function(row1, row2) {
     if (row1.length != row2.length)
         throw "Something weird happened!";
@@ -251,20 +253,20 @@ Matrix.prototype.subtractRows = function(row1, row2) {
     for (var i = 0; i < row1.length; i++)
         res.push(row1[i].subtract(row2[i]));
     return res;
-},
+};
 Matrix.prototype.multiplyRow = function(row, mult) {
     var res = [];
     for (var col = 0; col < this.numCols(); col++)
         res.push(this.getCell(row, col).clone().times(mult));
     return res;
-},
+};
 // MUTATES THIS OBJECT
 Matrix.prototype.swap = function(row1, row2) {
     var tmp = this.matrix[row1];
     this.matrix[row1] = this.matrix[row2];
     this.matrix[row2] = tmp;
     this.multiplier = this.multiplier.times(-1);
-},
+};
 Matrix.prototype.resize = function(rows, cols) {
     rows = parseInt(rows);
     cols = parseInt(cols);
@@ -282,7 +284,7 @@ Matrix.prototype.resize = function(rows, cols) {
     } else if (cols != this.numCols())
         for (var i = 0; i < rows; i++)
             this.matrix[i].push(new Fraction());
-},
+};
 Matrix.prototype.getIdentity = function(rows, cols) {
     if (rows == undefined && cols != undefined)
         rows = cols;
@@ -306,7 +308,7 @@ Matrix.prototype.getIdentity = function(rows, cols) {
     }
 
     return new Matrix(result);
-},
+};
 Matrix.prototype.getZeros = function(rows, cols) {
     if (rows == undefined && cols != undefined)
         rows = cols;
@@ -322,7 +324,18 @@ Matrix.prototype.getZeros = function(rows, cols) {
     }
 
     return new Matrix(result);
+};
+Matrix.prototype.getTex = function() {
+    var str = "\\begin{bmatrix}";
+    for (var row = 0; row < this.numRows(); row++) {
+        for (var col = 0; col < this.numCols(); col++)
+            str += this.getCell(row,col).getTex() + ((col+1 < this.numCols()) ? "&" : '');
+        str += "\\\\";
+    }
+    str += "\\end{bmatrix}";
+    return str;
 }
+
 var funcENUM = {
     NONE: '#',
     TRANSPOSE: '#T',
@@ -367,7 +380,7 @@ var funcENUM = {
         }
         return "NOTHING";
     }
-}
+};
 
 function getEnum(input) {
     switch (input.toLowerCase()) {

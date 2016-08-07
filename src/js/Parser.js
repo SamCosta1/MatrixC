@@ -29,7 +29,7 @@ var Parser = function() {
             lbl = getNextFreeLetter();
         cmd = '(' + cmd + ')';
 
-        var calcSteps = [];
+        var calcSteps = new CalculationArray();
         calculations.set(lbl, calcSteps);
 
         var theArray = getArrayFromString(cmd);
@@ -77,6 +77,8 @@ var Parser = function() {
             else
                 break;
         }
+
+        calculations.get(lbl).render($('.sidebarBody'));
 
         if (!variables.get(lbl))
             newInputComp(lbl, theArray[0]);
@@ -160,11 +162,11 @@ var Parser = function() {
 
     function performFunction(func, arg, step) {
         if (arg[0] instanceof Matrix)
-            return arg[0].performFunction(func, step);
+            return arg[0].performFunction(func, null,step);
         else {
             if (func != funcENUM.ID && func != funcENUM.ZEROS)
                 throw "Cannot perform operation: " + funcENUM.getString(func) + " of " + arg[0];
-            return new Matrix().performFunction(func, arg);
+            return new Matrix().performFunction(func, arg, step);
         }
 
     }
