@@ -9,6 +9,7 @@ CalculationArray.prototype.render = function($parent) {
         class: 'calculation'
     });
     for (var step = 0; step < this.array.length; step++)
-        this.array[step].render($thisCalc);    
+        this.array[step].render($thisCalc);
     $parent.prepend($thisCalc);
+    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 }

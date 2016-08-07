@@ -38,16 +38,29 @@ CalculationStep.prototype.render = function($parent) {
     this.renderThis($resultContainer);
     $container.append($resultContainer);
     $parent.append($container);
-    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 };
 CalculationStep.prototype.renderThis = function($parent) {
     var tex = "$$";
     switch (this.operator) {
         case funcENUM.INVERSE:
             tex += "\\text{inverse} \\Bigg(" + this.op1.getTex() + "\\Bigg) = " + this.result.getTex();
-
         break;
+        case funcENUM.DET:
+            tex += "\\text{determinant} \\Bigg(" + this.op1.getTex() + "\\Bigg) = " + this.result.getTex();
+        break;
+        case funcENUM.ROWREDUCE:
+            tex += "\\text{reduced row echelon form of }" + this.op1.getTex() + " is " + this.result.getTex();
+        break;
+        case '+':
+        case '-':
+            tex += this.op1.getTex() + this.operator + this.op2.getTex() + '=' + this.result.getTex();
+        break;
+        case '*':
+            tex += this.op1.getTex() + '\\times' + this.op2.getTex() + '=' + this.result.getTex();
+        break;
+
     }
     tex += '$$';
+    console.log(this.operator);
     $parent.append(tex);
 };
