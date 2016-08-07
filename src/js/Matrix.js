@@ -149,7 +149,9 @@ Matrix.prototype.timesScalar = function(val) {
         }
     return result;
 };
-Matrix.prototype.divide = function(other) {
+Matrix.prototype.divide = function(other,stp) {
+    this.step = stp;
+    other.step = stp;
     if (other instanceof Matrix)
         return this.times(other.inverse());
     else {

@@ -194,7 +194,7 @@ var Parser = function() {
                 if (!(before instanceof Matrix) && after instanceof Matrix)
                     throw "You can't divide a number by a matrix!"
                 else
-                    result = before.divide(after);
+                    result = before.divide(after,stp);
                 break;
             case '*':
                 if (before instanceof Matrix)

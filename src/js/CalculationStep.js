@@ -58,6 +58,9 @@ CalculationStep.prototype.renderThis = function($parent) {
         case '*':
             tex += this.op1.getTex() + '\\times' + this.op2.getTex() + '=' + this.result.getTex();
             break;
+        case '/':
+            tex += "\\frac{" + this.op1.getTex() + "}{" + this.op2.getTex() + "}" + '=' + this.result.getTex();
+            break;
         case '^':
             tex += this.op1.getTex() + "^{" + this.op2.getTex() + "} = " + this.result.getTex();
             break;
