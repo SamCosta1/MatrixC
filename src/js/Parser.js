@@ -83,10 +83,10 @@ var Parser = function() {
         calculations.get(lbl).render($('.sidebarBody'));
 
         if (!variables.get(lbl))
-            newInputComp(lbl, theArray[0]);
+            newInputComp(lbl, theArray[0].clone());
         else {
             if (typeof variables.get(lbl) == typeof theArray[0])
-                updateGUI(lbl, theArray[0]);
+                updateGUI(lbl, theArray[0].clone());
             else {
                 if (typeof theArray[0] === 'object')
                     throw "You can't assign a matrix to a number";
