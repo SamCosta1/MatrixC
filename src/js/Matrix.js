@@ -84,8 +84,10 @@ Matrix.prototype.concat = function(other) {
 Matrix.prototype.inverse = function() {
     var id = this.getIdentity(this.numCols());
     var aug = this.concat(id);
-    this.step.push(new CalculationStep('augment', this, aug.clone(), id, "(the identity matrix)"));
+    var augCopy = aug.clone();
+    this.step.push(new CalculationStep('augment', this, augCopy, id, "(the identity matrix)"));
     aug = aug.reduceToReducedEchF(this.numCols());
+    this.step.push(new CalculationStep(funcENUM.ROWREDUCE,augCopy,aug.clone()));
     for (var r = 0; r < this.numRows(); r++) {
         // Check first part of augmented is identity (otherwise noninvertible)
         for (var c = 0; c < this.numCols(); c++) {
@@ -98,6 +100,7 @@ Matrix.prototype.inverse = function() {
 
         aug.matrix[r] = aug.matrix[r].slice(this.numCols(), this.numCols() * 2);
     }
+    this.step.push(new CalculationStep('splitAug', aug));
     return aug;
 
 };
@@ -163,14 +166,19 @@ Matrix.prototype.power = function(power) {
     if (power < 0) {
         result = this.inverse();
         power = Math.abs(power);
-    } else {
-        if (power == 0)
-            return this.getIdentity();
+    } else if (power == 0)
+        return this.getIdentity();
+    else {
         result = this;
     }
-    result = this.times(result);
-    for (i = 1; i < power - 1; i++)
-        result = this.times(result);
+    var base = result.clone();
+
+    for (i = 1; i < power; i++) {
+        var stp = new CalculationStep('*', result.clone(), null, base);
+        result = base.times(result);
+        stp.result = result.clone();
+        this.step.push(stp);
+    }
     return result;
 };
 Matrix.prototype.conjugate = function(power) {

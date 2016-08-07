@@ -61,6 +61,9 @@ CalculationStep.prototype.renderThis = function($parent) {
         case '^':
             tex += this.op1.getTex() + "^{" + this.op2.getTex() + "} = " + this.result.getTex();
             break;
+        case 'splitAug':
+            tex += "\\text{Take the right hand side as the inverse: }" + this.op1.getTex();
+            break;
         /*case 'swap':
 
             break;*/
