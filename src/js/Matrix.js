@@ -161,14 +161,12 @@ Matrix.prototype.power = function(power) {
     if (power < 0) {
         result = this.inverse();
         power = Math.abs(power);
-    } else {
-        if (power == 0)
-            return this.getIdentity();
-        result = this;
-    }
-    result = this.times(result);
-    for (i = 1; i < power - 1; i++)
-        result = this.times(result);
+    } else if (power == 0)
+        return this.getIdentity();
+    else
+        result = this.clone();
+    for (i = 1; i < power; i++)
+        result = result.times(result);
     return result;
 },
 Matrix.prototype.conjugate = function(power) {
