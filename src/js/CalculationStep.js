@@ -40,16 +40,16 @@ CalculationStep.prototype.render = function($parent) {
     $parent.append($container);
 };
 CalculationStep.prototype.renderThis = function($parent) {
-    var tex = "$$";
+    var tex = '$$';
     switch (this.operator) {
         case funcENUM.INVERSE:
-            tex += "\\text{inverse} \\Bigg(" + this.op1.getTex() + "\\Bigg) = " + this.result.getTex();
+            tex += '\\text{inverse} \\Bigg(' + this.op1.getTex() + '\\Bigg) = ' + this.result.getTex();
             break;
         case funcENUM.DET:
-            tex += "\\text{determinant} \\Bigg(" + this.op1.getTex() + "\\Bigg) = " + this.result.getTex();
+            tex += '\\text{determinant} \\Bigg(' + this.op1.getTex() + '\\Bigg) = ' + this.result.getTex();
             break;
         case funcENUM.ROWREDUCE:
-            tex += "\\text{reduced row echelon form of }" + this.op1.getTex() + " is " + this.result.getTex();
+            tex += '\\text{reduced row echelon form of }' + this.op1.getTex() + ' is ' + this.result.getTex();
             break;
         case '+':
         case '-':
@@ -59,19 +59,22 @@ CalculationStep.prototype.renderThis = function($parent) {
             tex += this.op1.getTex() + '\\times' + this.op2.getTex() + '=' + this.result.getTex();
             break;
         case '/':
-            tex += "\\frac{" + this.op1.getTex() + "}{" + this.op2.getTex() + "}" + '=' + this.result.getTex();
+            tex += '\\frac{' + this.op1.getTex() + '}{' + this.op2.getTex() + '}' + '=' + this.result.getTex();
             break;
         case '^':
-            tex += this.op1.getTex() + "^{" + this.op2.getTex() + "} = " + this.result.getTex();
+            tex += '(' + this.op1.getTex() + ')^{' + this.op2.getTex() + '} = ' + this.result.getTex();
             break;
         case 'splitAug':
-            tex += "\\text{Take the right hand side as the inverse: }" + this.op1.getTex();
+            tex += '\\text{Take the right hand side as the inverse: }' + this.op1.getTex();
             break;
-        /*case 'swap':
-
-            break;*/
+        case 'swap':
+            tex += '\\text{Swap } R_'+ (this.op1+1) +'\\text{ and }R_ ' + (this.op2+1) + ' => ' + this.result.getTex();
+            break;
         case 'augment':
-            tex += "\\text{augment } " + this.op1.getTex() + " \\text{with} " + this.op2.getTex() + " \\text{" + this.other + "}" + " \\\\ =>" + this.result.getTex();
+            tex += '\\text{augment } ' + this.op1.getTex() + ' \\text{with} ' + this.op2.getTex() + ' \\text{' + this.other + '}' + ' \\\\ =>' + this.result.getTex();
+            break;
+        case 'multiplyRow':
+            tex += '\\text{Multiply } R_' + (this.other+1) + '\\text{ by }' + this.op2.getTex() + '\\\\' + this.op1.getRowTex(this.other) + '\\times' + this.op2.getTex() + '=' + this.result.getTex();
             break;
 
     }

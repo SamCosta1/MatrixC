@@ -3,7 +3,7 @@
 function Matrix(arrMatrix, cols) {
     this.matrix = arrMatrix;
     this.multiplier = new Fraction('1');
-    if (arrMatrix == undefined)
+    if (arrMatrix === undefined)
         this.matrix = this.getZeros(3).matrix;
     else if (!isNaN(arrMatrix))
         this.matrix = this.getZeros(arrMatrix, cols).matrix;
@@ -86,7 +86,7 @@ Matrix.prototype.inverse = function() {
     var aug = this.concat(id);
     var augCopy = aug.clone();
     this.step.push(new CalculationStep('augment', this, augCopy, id, "(the identity matrix)"));
-    aug = aug.reduceToReducedEchF(this.numCols());
+    aug = aug.reduceToReducedEchF(this.numCols(), this.step);
     this.step.push(new CalculationStep(funcENUM.ROWREDUCE,augCopy,aug.clone()));
     for (var r = 0; r < this.numRows(); r++) {
         // Check first part of augmented is identity (otherwise noninvertible)
@@ -168,7 +168,7 @@ Matrix.prototype.power = function(power) {
     if (power < 0) {
         result = this.inverse();
         power = Math.abs(power);
-    } else if (power == 0)
+    } else if (power === 0)
         return this.getIdentity();
     else {
         result = this;
@@ -210,8 +210,8 @@ Matrix.prototype.performFunction = function(func, args, step) {
     }
     throw "Something weird just happened!";
 };
-Matrix.prototype.reduceToReducedEchF = function(numCols) {
-    if (numCols == undefined || numCols > this.numCols())
+Matrix.prototype.reduceToReducedEchF = function(numCols, step) {
+    if (numCols === undefined || numCols > this.numCols())
         numCols = this.numCols();
     else if (numCols == -1) // Allow func to be called with -1 for solving aug
         numCols--;
@@ -221,16 +221,24 @@ Matrix.prototype.reduceToReducedEchF = function(numCols) {
 
     var currentPivPos = 0;
     for (var col = 0; col < numCols && currentPivPos < numRows; col++) {
-        if (result.getCell(currentPivPos, col) == 0) {
+        if (result.getCell(currentPivPos, col).isZero()) {
             var indexToSwap = result.getNonZeroRows(currentPivPos, col);
-            if (indexToSwap != -1)
+            if (indexToSwap != -1) {
                 result.swap(indexToSwap, currentPivPos);
+                step.push(new CalculationStep('swap', indexToSwap, this.clone(), currentPivPos));
+            }
             else
                 continue;
         }
         var mult = result.getCell(currentPivPos, col).reciprocal();
-        result.multiplier = result.multiplier.divide(mult);
-        result.matrix[currentPivPos] = result.multiplyRow(currentPivPos, mult);
+        if (mult !== 1) {
+            result.multiplier = result.multiplier.divide(mult);
+            var calcStep = new CalculationStep('multiplyRow', result.clone(), null, mult, currentPivPos);
+            result.matrix[currentPivPos] = result.multiplyRow(currentPivPos, mult);
+            calcStep.result = result.clone();
+            step.push(calcStep);
+        }
+
         result.kill(currentPivPos, col);
         currentPivPos++;
     }
@@ -249,7 +257,7 @@ Matrix.prototype.kill = function(row, col) {
 };
 Matrix.prototype.getNonZeroRows = function(row, col) {
     row++;
-    while (row < this.numRows() && this.getCell(row, col) == 0)
+    while (row < this.numRows() && this.getCell(row, col).isZero())
         row++;
     if (row == this.numRows())
         return -1;
@@ -344,6 +352,12 @@ Matrix.prototype.getTex = function() {
     }
     str += "\\end{bmatrix}";
     return str;
+};
+Matrix.prototype.getRowTex = function (row) {
+    var str = '\\begin{bmatrix}';
+    for (var col = 0; col < this.numCols(); col++)
+        str += this.getCell(row,col).getTex() + ((col+1 < this.numCols()) ? "&" : '');
+    return str + '\\end{bmatrix}';
 };
 
 var funcENUM = {
