@@ -88,9 +88,19 @@ Matrix.prototype.inverse = function() {
     var id = this.getIdentity(this.numCols());
     var aug = this.concat(id);
     var augCopy = aug.clone();
-    this.step.push(new CalculationStep('augment', this, augCopy, id, "(the identity matrix)"));
+    this.step.push(new CalculationStep({
+        type: 'augment',
+        op1: this.clone(),
+        result: augCopy,
+        op2: id,
+        message: "(the identity matrix)"
+    }));
     aug = aug.reduceToReducedEchF(this.numCols(), this.step);
-    this.step.push(new CalculationStep(funcENUM.ROWREDUCE, augCopy, aug.clone()));
+    this.step.push(new CalculationStep({
+        type: funcENUM.ROWREDUCE,
+        op1: augCopy,
+        result: aug.clone()
+    }));
     for (var r = 0; r < this.numRows(); r++) {
         // Check first part of augmented is identity (otherwise noninvertible)
         for (var c = 0; c < this.numCols(); c++) {
@@ -103,7 +113,7 @@ Matrix.prototype.inverse = function() {
 
         aug.matrix[r] = aug.matrix[r].slice(this.numCols(), this.numCols() * 2);
     }
-    this.step.push(new CalculationStep('splitAug', aug));
+    this.step.push(new CalculationStep({type:'splitAug', op1:aug}));
     return aug;
 
 };
@@ -179,10 +189,14 @@ Matrix.prototype.power = function(power) {
     var base = result.clone();
 
     for (i = 1; i < power; i++) {
-        var stp = new CalculationStep('*', result.clone(), null, base);
+        var data = {
+            type: '*',
+            op1: result.clone(),
+            op2: base
+        };
         result = base.times(result);
-        stp.result = result.clone();
-        this.step.push(stp);
+        data.result = result.clone();
+        this.step.push(new CalculationStep(data));
     }
     return result;
 };
@@ -230,17 +244,27 @@ Matrix.prototype.reduceToReducedEchF = function(numCols, step) {
             var indexToSwap = result.getNonZeroRows(currentPivPos, col);
             if (indexToSwap != -1) {
                 result.swap(indexToSwap, currentPivPos);
-                step.push(new CalculationStep('swap', indexToSwap, result.clone(), currentPivPos));
+                step.push(new CalculationStep({
+                    type: 'swap',
+                    op1: indexToSwap,
+                    result: result.clone(),
+                    op2: currentPivPos
+                }));
             } else
                 continue;
         }
         var mult = result.getCell(currentPivPos, col).reciprocal();
         if (!mult.isOne()) {
             result.multiplier = result.multiplier.divide(mult);
-            var calcStep = new CalculationStep('multiplyRow', result.clone(), null, mult, currentPivPos);
+            var data = {
+                type: 'multiplyRow',
+                op1: result.clone(),
+                op2: mult,
+                rowNum: currentPivPos
+            };
             result.matrix[currentPivPos] = result.multiplyRow(currentPivPos, mult);
-            calcStep.result = result.clone();
-            step.push(calcStep);
+            data.result = result.clone();
+            step.push(new CalculationStep(data));
         }
 
         result.kill(currentPivPos, col, step);
@@ -255,11 +279,18 @@ Matrix.prototype.kill = function(row, col, step) {
             continue;
         var mult = this.getCell(r, col);
         if (!mult.isZero()) {
-            var subStep = new CalculationStep('subtractRows', new Matrix(this.matrix[r]).clone(), null, new Matrix(this.matrix[row]).clone(), mult, row, r);
+            var data = {
+                type: 'subtractRows',
+                op1: new Matrix(this.matrix[r]).clone(),
+                op2: new Matrix(this.matrix[row]).clone(),
+                multiplier: mult,
+                row1Num: row,
+                row2Num: r
+            };
             this.matrix[r] = this.subtractRows(this.matrix[r],
                 this.multiplyRow(row, mult), step);
-            subStep.result = new Matrix(this.matrix[r]).clone();
-            step.push(subStep);
+            data.result = new Matrix(this.matrix[r]).clone();
+            step.push(new CalculationStep(data));
         }
     }
 };

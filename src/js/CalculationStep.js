@@ -1,14 +1,7 @@
 var calculations = new Map();
 
-function CalculationStep(operator, op1, result, op2, other, other1, other2) {
-    this.operator = operator;
-    this.op1 = op1;
-    this.result = result;
-    this.op2 = op2;
-    this.other = other;
-    this.other1 = other1;
-    this.other2 = other2;
-
+function CalculationStep(_data) {
+    this.data = _data;
     this.subSteps = [];
 }
 
@@ -42,53 +35,53 @@ CalculationStep.prototype.render = function($parent) {
     $parent.append($container);
 };
 CalculationStep.prototype.renderThis = function($parent) {
+    console.log(this.data);
     var tex = '$$';
-    switch (this.operator) {
+    switch (this.data.type) {
         case funcENUM.INVERSE:
-            tex += '\\text{inverse} \\Bigg(' + this.op1.getTex() + '\\Bigg) = ' + this.result.getTex();
+            tex += '\\text{inverse} \\Bigg(' + this.data.op1.getTex() + '\\Bigg) = ' + this.data.result.getTex();
             break;
         case funcENUM.DET:
-            tex += '\\text{determinant} \\Bigg(' + this.op1.getTex() + '\\Bigg) = ' + this.result.getTex();
+            tex += '\\text{determinant} \\Bigg(' + this.data.op1.getTex() + '\\Bigg) = ' + this.data.result.getTex();
             break;
         case funcENUM.ROWREDUCE:
-            tex += '\\text{reduced row echelon form of }' + this.op1.getTex() + ' is ' + this.result.getTex();
+            tex += '\\text{reduced row echelon form of }' + this.data.op1.getTex() + ' is ' + this.data.result.getTex();
             break;
         case '+':
         case '-':
-            tex += this.op1.getTex() + this.operator + this.op2.getTex() + '=' + this.result.getTex();
+            tex += this.data.op1.getTex() + this.data.type + this.data.op2.getTex() + '=' + this.data.result.getTex();
             break;
         case '*':
-            tex += this.op1.getTex() + '\\times' + this.op2.getTex() + '=' + this.result.getTex();
+            tex += this.data.op1.getTex() + '\\times' + this.data.op2.getTex() + '=' + this.data.result.getTex();
             break;
         case '/':
-            tex += '\\frac{' + this.op1.getTex() + '}{' + this.op2.getTex() + '}' + '=' + this.result.getTex();
+            tex += '\\frac{' + this.data.op1.getTex() + '}{' + this.data.op2.getTex() + '}' + '=' + this.data.result.getTex();
             break;
         case '^':
-            tex += '(' + this.op1.getTex() + ')^{' + this.op2.getTex() + '} = ' + this.result.getTex();
+            tex += '(' + this.data.op1.getTex() + ')^{' + this.data.op2.getTex() + '} = ' + this.data.result.getTex();
             break;
         case 'splitAug':
-            tex += '\\text{Take the right hand side as the inverse: }' + this.op1.getTex();
+            tex += '\\text{Take the right hand side as the inverse: }' + this.data.op1.getTex();
             break;
         case 'swap':
-            tex += '\\text{Swap } R_'+ (this.op1+1) +'\\text{ and }R_ ' + (this.op2+1) + ' => ' + this.result.getTex();
+            tex += '\\text{Swap } R_'+ (this.data.op1+1) +'\\text{ and }R_ ' + (this.data.op2+1) + ' => ' + this.data.result.getTex();
             break;
         case 'augment':
-            tex += '\\text{augment } ' + this.op1.getTex() + ' \\text{with} ' + this.op2.getTex() + ' \\text{' + this.other + '}' + ' \\\\ =>' + this.result.getTex();
+            tex += '\\text{augment } ' + this.data.op1.getTex() + ' \\text{with} ' + this.data.op2.getTex() + ' \\text{' + this.data.message + '}' + ' \\\\ =>' + this.data.result.getTex();
             break;
         case 'multiplyRow':
-            tex += '\\text{Multiply } R_' + (this.other+1) + '\\text{ by }' + this.op2.getTex() + '\\\\' + this.op1.getRowTex(this.other) + '\\times' + this.op2.getTex() + '\\rightarrow' + this.result.getTex();
+            tex += '\\text{Multiply } R_' + (this.data.rowNum+1) + '\\text{ by }' + this.data.op2.getTex() + '\\\\' + this.data.op1.getRowTex(this.data.rowNum) + '\\times' + this.data.op2.getTex() + '\\rightarrow' + this.data.result.getTex();
             break;
         case 'subtractRows':
         console.log(this);
-            var multOp = (this.other.isPositive() ? '-' : '+'),
-                mult = this.other.isOne() ? '' : '\\times' + this.other.abs();
-            tex += 'R_' + (this.other2+1) + '\\leftarrow R_' + (this.other2+1) + multOp + 'R_' + (this.other1+1) + mult +
-                        '\\\\' + this.op1.getTex() + multOp + this.op2.getTex() + mult + '=' +
-                         this.result.getTex();
+            var multOp = (this.data.multiplier.isPositive() ? '-' : '+'),
+                mult = this.data.multiplier.isOne() ? '' : '\\times' + this.data.multiplier.abs();
+            tex += 'R_' + (this.data.row2Num+1) + '\\leftarrow R_' + (this.data.row2Num+1) + multOp + 'R_' + (this.data.row1Num+1) + mult +
+                        '\\\\' + this.data.op1.getTex() + multOp + this.data.op2.getTex() + mult + '=' +
+                         this.data.result.getTex();
             break;
 
     }
     tex += '$$';
-    console.log(this.operator);
     $parent.append(tex);
 };

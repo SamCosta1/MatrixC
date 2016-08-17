@@ -46,9 +46,13 @@ var Parser = function() {
             var j = i;
             while (!isOpenBracket(theArray[j])) {
                 if (isOperator(theArray[j])) {
-                    var stp = new CalculationStep(theArray[j], theArray[j - 1], null, theArray[j + 1])
+                    var stp = new CalculationStep({
+                        type: theArray[j],
+                        op1: theArray[j - 1],
+                        op2: theArray[j + 1]
+                    })
                     var res = calculate( theArray[j], theArray[j - 1], theArray[j + 1], stp);
-                    stp.result = res;
+                    stp.data.result = res;
                     calcSteps.push(stp);
                     theArray.splice(j, 2);
                     theArray[j - 1] = res;
@@ -64,9 +68,12 @@ var Parser = function() {
                         args.push(theArray[cnt + (j + 1)]);
                     cnt++;
                 }
-                var step = new CalculationStep(theArray[j - 1], args[0],null);
+                var step = new CalculationStep({
+                    type: theArray[j - 1],
+                    op1: args[0],
+                });
                 var r = performFunction(theArray[j - 1], args,step);
-                step.result = r;
+                step.data.result = r;                
                 calcSteps.push(step);
                 theArray.splice(j, cnt + 2);
                 theArray[j - 1] = r;
