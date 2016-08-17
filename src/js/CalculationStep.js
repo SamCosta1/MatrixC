@@ -1,11 +1,13 @@
 var calculations = new Map();
 
-function CalculationStep(operator, op1, result, op2, other) {
+function CalculationStep(operator, op1, result, op2, other, other1, other2) {
     this.operator = operator;
     this.op1 = op1;
     this.result = result;
     this.op2 = op2;
     this.other = other;
+    this.other1 = other1;
+    this.other2 = other2;
 
     this.subSteps = [];
 }
@@ -74,7 +76,15 @@ CalculationStep.prototype.renderThis = function($parent) {
             tex += '\\text{augment } ' + this.op1.getTex() + ' \\text{with} ' + this.op2.getTex() + ' \\text{' + this.other + '}' + ' \\\\ =>' + this.result.getTex();
             break;
         case 'multiplyRow':
-            tex += '\\text{Multiply } R_' + (this.other+1) + '\\text{ by }' + this.op2.getTex() + '\\\\' + this.op1.getRowTex(this.other) + '\\times' + this.op2.getTex() + '=' + this.result.getTex();
+            tex += '\\text{Multiply } R_' + (this.other+1) + '\\text{ by }' + this.op2.getTex() + '\\\\' + this.op1.getRowTex(this.other) + '\\times' + this.op2.getTex() + '\\rightarrow' + this.result.getTex();
+            break;
+        case 'subtractRows':
+        console.log(this);
+            var multOp = (this.other.isPositive() ? '-' : '+'),
+                mult = this.other.isOne() ? '' : '\\times' + this.other.abs();
+            tex += 'R_' + (this.other2+1) + '\\leftarrow R_' + (this.other2+1) + multOp + 'R_' + (this.other1+1) + mult +
+                        '\\\\' + this.op1.getTex() + multOp + this.op2.getTex() + mult + '=' +
+                         this.result.getTex();
             break;
 
     }

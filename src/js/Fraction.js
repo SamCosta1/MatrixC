@@ -96,6 +96,12 @@ Fraction.prototype.reciprocal = function() {
 Fraction.prototype.getLiteral = function() {
     return parseInt(this.top.div(this.bottom).valueOf());
 };
+Fraction.prototype.isPositive = function() {
+    return this.top.gt(0);
+};
+Fraction.prototype.abs = function() {
+    return new Fraction(this.top.abs(), this.bottom.abs());
+};
 Fraction.prototype.isZero = function() {
     return this.top.eq(0);
 };

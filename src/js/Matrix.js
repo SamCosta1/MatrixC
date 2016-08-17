@@ -2,6 +2,9 @@
 // creation of an empty matrix of any size;
 function Matrix(arrMatrix, cols) {
     this.matrix = arrMatrix;
+    if (arrMatrix && arrMatrix[0] instanceof Fraction) {
+        this.matrix = [this.matrix];
+    }
     this.multiplier = new Fraction('1');
     if (arrMatrix === undefined)
         this.matrix = this.getZeros(3).matrix;
@@ -87,7 +90,7 @@ Matrix.prototype.inverse = function() {
     var augCopy = aug.clone();
     this.step.push(new CalculationStep('augment', this, augCopy, id, "(the identity matrix)"));
     aug = aug.reduceToReducedEchF(this.numCols(), this.step);
-    this.step.push(new CalculationStep(funcENUM.ROWREDUCE,augCopy,aug.clone()));
+    this.step.push(new CalculationStep(funcENUM.ROWREDUCE, augCopy, aug.clone()));
     for (var r = 0; r < this.numRows(); r++) {
         // Check first part of augmented is identity (otherwise noninvertible)
         for (var c = 0; c < this.numCols(); c++) {
@@ -149,7 +152,7 @@ Matrix.prototype.timesScalar = function(val) {
         }
     return result;
 };
-Matrix.prototype.divide = function(other,stp) {
+Matrix.prototype.divide = function(other, stp) {
     this.step = stp;
     other.step = stp;
     if (other instanceof Matrix)
@@ -213,6 +216,8 @@ Matrix.prototype.performFunction = function(func, args, step) {
 Matrix.prototype.reduceToReducedEchF = function(numCols, step) {
     if (numCols === undefined || numCols > this.numCols())
         numCols = this.numCols();
+    if (step === undefined)
+        step = this.step;
     else if (numCols == -1) // Allow func to be called with -1 for solving aug
         numCols--;
     var numRows = this.numRows();
@@ -225,13 +230,12 @@ Matrix.prototype.reduceToReducedEchF = function(numCols, step) {
             var indexToSwap = result.getNonZeroRows(currentPivPos, col);
             if (indexToSwap != -1) {
                 result.swap(indexToSwap, currentPivPos);
-                step.push(new CalculationStep('swap', indexToSwap, this.clone(), currentPivPos));
-            }
-            else
+                step.push(new CalculationStep('swap', indexToSwap, result.clone(), currentPivPos));
+            } else
                 continue;
         }
         var mult = result.getCell(currentPivPos, col).reciprocal();
-        if (mult !== 1) {
+        if (!mult.isOne()) {
             result.multiplier = result.multiplier.divide(mult);
             var calcStep = new CalculationStep('multiplyRow', result.clone(), null, mult, currentPivPos);
             result.matrix[currentPivPos] = result.multiplyRow(currentPivPos, mult);
@@ -239,20 +243,24 @@ Matrix.prototype.reduceToReducedEchF = function(numCols, step) {
             step.push(calcStep);
         }
 
-        result.kill(currentPivPos, col);
+        result.kill(currentPivPos, col, step);
         currentPivPos++;
     }
     return result;
 };
 // MUTATES THE OBJECT
-Matrix.prototype.kill = function(row, col) {
+Matrix.prototype.kill = function(row, col, step) {
     for (var r = 0; r < this.numRows(); r++) {
         if (r == row)
             continue;
         var mult = this.getCell(r, col);
-        if (!mult.isZero())
+        if (!mult.isZero()) {
+            var subStep = new CalculationStep('subtractRows', new Matrix(this.matrix[r]).clone(), null, new Matrix(this.matrix[row]).clone(), mult, row, r);
             this.matrix[r] = this.subtractRows(this.matrix[r],
-                this.multiplyRow(row, mult));
+                this.multiplyRow(row, mult), step);
+            subStep.result = new Matrix(this.matrix[r]).clone();
+            step.push(subStep);
+        }
     }
 };
 Matrix.prototype.getNonZeroRows = function(row, col) {
@@ -347,16 +355,16 @@ Matrix.prototype.getTex = function() {
     var str = "\\begin{bmatrix}";
     for (var row = 0; row < this.numRows(); row++) {
         for (var col = 0; col < this.numCols(); col++)
-            str += this.getCell(row,col).getTex() + ((col+1 < this.numCols()) ? "&" : '');
+            str += this.getCell(row, col).getTex() + ((col + 1 < this.numCols()) ? "&" : '');
         str += "\\\\";
     }
     str += "\\end{bmatrix}";
     return str;
 };
-Matrix.prototype.getRowTex = function (row) {
+Matrix.prototype.getRowTex = function(row) {
     var str = '\\begin{bmatrix}';
     for (var col = 0; col < this.numCols(); col++)
-        str += this.getCell(row,col).getTex() + ((col+1 < this.numCols()) ? "&" : '');
+        str += this.getCell(row, col).getTex() + ((col + 1 < this.numCols()) ? "&" : '');
     return str + '\\end{bmatrix}';
 };
 

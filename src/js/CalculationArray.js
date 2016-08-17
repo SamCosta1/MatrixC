@@ -1,5 +1,5 @@
 function CalculationArray() {
-    this.array = [];
+    this.steps = [];
 }
 CalculationArray.prototype.push = function(obj) {
     this.steps.push(obj);
