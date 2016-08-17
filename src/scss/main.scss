@@ -100,22 +100,13 @@ $binsize: 50px;
     border-radius: 5px;
     border-color: black;
     background-color: white;
+    border-style: solid;
     cursor: pointer;
     margin-left: 5px;
     user-select: none;
     padding: 3;
 }
 .noSelect {
-    -webkit-touch-callout: none;
-    /* iOS Safari */
-    -webkit-user-select: none;
-    /* Chrome/Safari/Opera */
-    -khtml-user-select: none;
-    /* Konqueror */
-    -moz-user-select: none;
-    /* Firefox */
-    -ms-user-select: none;
-    /* Internet Explorer/Edge */
     user-select: none;
 }
 .rowButton {
