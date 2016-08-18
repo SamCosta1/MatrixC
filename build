@@ -1,1 +1,4 @@
-sass main.scss dependencies/main.css
+gulp styles
+gulp scripts
+gulp libraryScripts
+while true;do gulp; done

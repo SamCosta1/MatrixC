@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     $('#cmdinput')
         .on('input', function(ev) {
             var query = $(this).val();
@@ -38,4 +37,4 @@ $(document).ready(function() {
             .click(function() {
                 newInputComp(getNextFreeLetter());
             });
-})
+});

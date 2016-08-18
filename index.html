@@ -2,50 +2,66 @@
 
 <head>
     <title>Matrix Calculator</title>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+    MathJax.Hub.Config({
+        jax: ["input/TeX","output/HTML-CSS"],
+        displayAlign: "left"
+    });
+</script>
     <script src="dist/dep.min.js" type="text/javascript"></script>
     <link href="dependencies/headerfont" rel="stylesheet">
     <script src="dist/scripts.min.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="dist/main.css">
+    <link rel="stylesheet" href="dist/styles.css">
     <link rel="prefetch" href="img/openBin.png">
     <link rel="icon" href="img/icon.png">
 </head>
 
 <body>
-    <div id="header">
-        <div class="middleTitle center noSelect" onclick="window.location.href='index.html'">
-            <img class="Lbracket bracket" src="img/bracketWhite.png">
-            <div id="headerText">
-                M&#945;trix
-                <br>C&#945;lculator
+    <div class="mainContentContainer">
+        <div id="header">
+            <div class="middleTitle center noSelect" onclick="window.location.href='index.html'">
+                <img class="Lbracket bracket" src="img/bracketWhite.png">
+                <div id="headerText">
+                    M&#945;trix
+                    <br>C&#945;lculator
+                </div>
+                <img class="Rbracket flip" src="img/bracketWhite.png">
             </div>
-            <img class="Rbracket flip" src="img/bracketWhite.png">
+            <div class="credit noSelect"><a class="credit" href="refrences.html">Other Stuff</a></div>
         </div>
-        <div class="credit noSelect"><a class="credit" href="refrences.html">Other Stuff</a></div>
+        <hr>
+        <div id="mainBody">
+            <div class="controlContainer">
+                <div id="commandLine">
+                    <textarea id="cmdinput" rows="3" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">MatCalculator &gt&gt </textarea>
+                    <div class="errContainer">
+                        <label id="errDisplay">Error: </label>
+                    </div>
+                </div>
+                <div id="newMatGroup">
+                    <div id="btnNewMat" class="center">
+                        <img src="img/newMatrixbtn.png" height="40px"></img>
+                    </div>
+                    <div id="newLabel" hidden> New Matrix!! </div>
+                </div>
+                <img id="bin" class="bin dropzone noSelect" src="img/bin.png"></img>
+            </div>
+            <div id="matDefinitions">
+            </div>
+        </div>
     </div>
-    <hr>
-    <div id="mainBody">
-        <div class="controlContainer">
-            <div id="commandLine">
-                <textarea id="cmdinput" rows="3" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">MatCalculator &gt&gt </textarea>
-                <div class="errContainer">
-                    <label id="errDisplay">Error: </label>
-                </div>
-            </div>
-            <div id="newMatGroup">
-                <div id="btnNewMat" class="center">
-                    <img src="img/newMatrixbtn.png" height="40px"></img>
-                </div>
-                <div id="newLabel" hidden> New Matrix!! </div>
-            </div>
-            <img id="bin" class="bin dropzone noSelect" src="img/bin.png"></img>
+    <div class="sidebar">
+        <div class="handle">
+            <div class="dragHandleLabel noSelect">Calculations</div>
+            <div class="snapHandle expand noSelect"></div>
         </div>
-        <div id="matDefinitions">
+        <div class="header offsetHandle noSelect">
+            <div class="title">Calculations</div>
+            <div class="fullScreen"></div>
         </div>
-        <br>
-        <br>
-        <script>
-
-        </script>
+        <hr>
+        <div class="sidebarBody offsetHandle"></div>
     </div>
 </body>
+
 </html>
