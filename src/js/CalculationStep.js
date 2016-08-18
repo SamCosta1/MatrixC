@@ -35,7 +35,6 @@ CalculationStep.prototype.render = function($parent) {
     $parent.append($container);
 };
 CalculationStep.prototype.renderThis = function($parent) {
-    console.log(this.data);
     var tex = '$$';
     switch (this.data.type) {
         case funcENUM.INVERSE:
@@ -46,6 +45,9 @@ CalculationStep.prototype.renderThis = function($parent) {
             break;
         case funcENUM.ROWREDUCE:
             tex += '\\text{reduced row echelon form of }' + this.data.op1.getTex() + ' is ' + this.data.result.getTex();
+            break;
+        case funcENUM.TRANSPOSE:
+            tex += '\\text{transpose} \\Bigg(' + this.data.op1.getTex() + '\\Bigg) = ' + this.data.result.getTex();
             break;
         case '+':
         case '-':
@@ -73,7 +75,6 @@ CalculationStep.prototype.renderThis = function($parent) {
             tex += '\\text{Multiply } R_' + (this.data.rowNum+1) + '\\text{ by }' + this.data.op2.getTex() + '\\\\' + this.data.op1.getRowTex(this.data.rowNum) + '\\times' + this.data.op2.getTex() + '\\rightarrow' + this.data.result.getTex();
             break;
         case 'subtractRows':
-        console.log(this);
             var multOp = (this.data.multiplier.isPositive() ? '-' : '+'),
                 mult = this.data.multiplier.isOne() ? '' : '\\times' + this.data.multiplier.abs();
             tex += 'R_' + (this.data.row2Num+1) + '\\leftarrow R_' + (this.data.row2Num+1) + multOp + 'R_' + (this.data.row1Num+1) + mult +
