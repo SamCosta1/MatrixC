@@ -36,7 +36,7 @@ Fraction.prototype.parseLiteral = function(v) {
         return v;
     else
         return new Fraction(v);
-}
+};
 Fraction.prototype.simplify = function() {
     var gcd = GCD(this.top, this.bottom);
     this.top = this.top.div(gcd);
@@ -45,7 +45,7 @@ Fraction.prototype.simplify = function() {
         this.top = this.top.times(-1);
         this.bottom = this.bottom.times(-1);
     }
-}
+};
 Fraction.prototype.divide = function(v) {
     v = this.parseLiteral(v);
     var result = new Fraction();
@@ -53,7 +53,7 @@ Fraction.prototype.divide = function(v) {
     result.bottom = this.bottom.times(v.top);
     result.simplify();
     return result;
-}
+};
 Fraction.prototype.times = function(v) {
     v = this.parseLiteral(v);
     if (this.top.eq(0) || v.top.eq(0))
@@ -63,7 +63,7 @@ Fraction.prototype.times = function(v) {
     result.top = this.top.times(v.top);
     result.simplify();
     return result;
-}
+};
 Fraction.prototype.power = function(v) {
     v = this.parseLiteral(v);
     var pow = parseInt(v.top.valueOf());
@@ -71,7 +71,7 @@ Fraction.prototype.power = function(v) {
     for (var p = 1; p < pow; p++)
         result = result.times(this);
     return result;
-}
+};
 Fraction.prototype.add = function(v) {
     v = this.parseLiteral(v);
     var result = new Fraction();
@@ -79,7 +79,7 @@ Fraction.prototype.add = function(v) {
     result.bottom = this.bottom.times(v.bottom);
     result.simplify();
     return result;
-}
+};
 Fraction.prototype.subtract = function(v) {
     v = this.parseLiteral(v);
     var result = new Fraction();
@@ -87,21 +87,27 @@ Fraction.prototype.subtract = function(v) {
     result.bottom = this.bottom.times(v.bottom);
     result.simplify();
     return result;
-}
+};
 Fraction.prototype.reciprocal = function() {
     if (!this.top.eq(0))
         return new Fraction(this.bottom, this.top);
     else return new Fraction();
-}
+};
 Fraction.prototype.getLiteral = function() {
     return parseInt(this.top.div(this.bottom).valueOf());
-}
+};
+Fraction.prototype.isPositive = function() {
+    return this.top.gt(0);
+};
+Fraction.prototype.abs = function() {
+    return new Fraction(this.top.abs(), this.bottom.abs());
+};
 Fraction.prototype.isZero = function() {
     return this.top.eq(0);
-}
+};
 Fraction.prototype.isOne = function() {
     return this.bottom.eq(this.top);
-}
+};
 Fraction.prototype.toString = function() {
     if (this.top.eq(0))
         return '0';
@@ -110,9 +116,19 @@ Fraction.prototype.toString = function() {
     if (this.isOne())
         return '1';
     return this.top.toString() + '/' + this.bottom.toString();
-}
+};
 Fraction.prototype.clone = function() {
     return new Fraction(this.top, this.bottom);
+};
+Fraction.prototype.getTex = function() {
+    if (this.isOne())
+        return '1';
+    else if (this.isZero())
+        return '0';
+    else if (this.bottom.eq(1))
+        return this.top.toString();
+    else
+        return "\\frac{" + this.top.toString() + "}{" + this.bottom.toString() + "}";
 }
 
 function GCD(big, small) {

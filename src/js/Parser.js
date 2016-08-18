@@ -29,6 +29,9 @@ var Parser = function() {
             lbl = getNextFreeLetter();
         cmd = '(' + cmd + ')';
 
+        var calcSteps = new CalculationArray();
+        calculations.set(lbl, calcSteps);
+
         var theArray = getArrayFromString(cmd);
         if (!containsEqs && theArray.length == 3) {
             $("#MAT-" + org).trigger("click");
@@ -43,7 +46,14 @@ var Parser = function() {
             var j = i;
             while (!isOpenBracket(theArray[j])) {
                 if (isOperator(theArray[j])) {
-                    var res = calculate(theArray[j - 1], theArray[j + 1], theArray[j]);
+                    var stp = new CalculationStep({
+                        type: theArray[j],
+                        op1: theArray[j - 1],
+                        op2: theArray[j + 1]
+                    })
+                    var res = calculate( theArray[j], theArray[j - 1], theArray[j + 1], stp);
+                    stp.data.result = res;
+                    calcSteps.push(stp);
                     theArray.splice(j, 2);
                     theArray[j - 1] = res;
                 }
@@ -58,8 +68,13 @@ var Parser = function() {
                         args.push(theArray[cnt + (j + 1)]);
                     cnt++;
                 }
-
-                var r = performFunction(theArray[j - 1], args);
+                var step = new CalculationStep({
+                    type: theArray[j - 1],
+                    op1: args[0],
+                });
+                var r = performFunction(theArray[j - 1], args,step);
+                step.data.result = r;                
+                calcSteps.push(step);
                 theArray.splice(j, cnt + 2);
                 theArray[j - 1] = r;
             } else {
@@ -72,11 +87,13 @@ var Parser = function() {
                 break;
         }
 
+        calculations.get(lbl).render($('.sidebarBody'));
+
         if (!variables.get(lbl))
-            newInputComp(lbl, theArray[0]);
+            newInputComp(lbl, theArray[0].clone());
         else {
             if (typeof variables.get(lbl) == typeof theArray[0])
-                updateGUI(lbl, theArray[0]);
+                updateGUI(lbl, theArray[0].clone());
             else {
                 if (typeof theArray[0] === 'object')
                     throw "You can't assign a matrix to a number";
@@ -152,18 +169,18 @@ var Parser = function() {
         return theArray;
     }
 
-    function performFunction(func, arg) {
+    function performFunction(func, arg, step) {
         if (arg[0] instanceof Matrix)
-            return arg[0].performFunction(func);
+            return arg[0].performFunction(func, null,step);
         else {
             if (func != funcENUM.ID && func != funcENUM.ZEROS)
                 throw "Cannot perform operation: " + funcENUM.getString(func) + " of " + arg[0];
-            return new Matrix().performFunction(func, arg);
+            return new Matrix().performFunction(func, arg, step);
         }
 
     }
 
-    function calculate(before, after, op) {
+    function calculate(op, before, after, stp) {
         var result;
         switch (op) {
             case '+':
@@ -184,7 +201,7 @@ var Parser = function() {
                 if (!(before instanceof Matrix) && after instanceof Matrix)
                     throw "You can't divide a number by a matrix!"
                 else
-                    result = before.divide(after);
+                    result = before.divide(after,stp);
                 break;
             case '*':
                 if (before instanceof Matrix)
@@ -195,12 +212,13 @@ var Parser = function() {
                     result = before.times(after);
                 break;
             case '^':
-                if (before instanceof Matrix)
+                if (before instanceof Matrix) {
+                    before.step = stp;
                     if (after instanceof Matrix)
                         result = before.conjugate(after);
                     else
                         result = before.power(after);
-                else {
+                }   else {
                     if (!(before instanceof Fraction) || !(after instanceof Fraction))
                         throw "That's not valid maths! ";
 

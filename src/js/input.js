@@ -106,7 +106,7 @@ function newInputComp(matLbl, matrix) {
     $contnr.append($table);
 
     $div.append($contnr);
-    if (isNaN(matrix)) {
+    if (matrix instanceof Matrix) {
         $modifiers = $("<span>", {
             class: "guiModifiers"
         });

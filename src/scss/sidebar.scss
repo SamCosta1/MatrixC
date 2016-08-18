@@ -53,6 +53,7 @@ $gridDim: 100px;
         width: 100%;
         display: flex;
         align-items: center;
+        height: 8%;
         .title {
             margin-left: 17px;
         }
@@ -74,7 +75,7 @@ $gridDim: 100px;
     }
     .sidebarBody {
         overflow-y: scroll;
-        height: 100%;
+        height: 92%;
     }
     .offsetHandle {
         margin-left: $handleWidth;
@@ -83,4 +84,10 @@ $gridDim: 100px;
         padding: 0;
         border-width: 1px;
     }
+}
+
+.calculation {
+    background-color: rgba(195, 204, 255, 0.37);
+    padding: 10px 10px;
+    margin: 10px 0px;
 }
