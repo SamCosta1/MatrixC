@@ -1,10 +1,10 @@
 function Fraction(top, bottom) {
     this.top = top;
     this.bottom = bottom;
-    if (top == undefined) {
+    if (top === undefined) {
         this.top = '0';
         this.bottom = '1';
-    } else if (bottom == undefined) {
+    } else if (bottom === undefined) {
         this.bottom = '1';
     }
     this.bottom = this.bottom.toString();
@@ -129,7 +129,7 @@ Fraction.prototype.getTex = function() {
         return this.top.toString();
     else
         return "\\frac{" + this.top.toString() + "}{" + this.bottom.toString() + "}";
-}
+};
 
 function GCD(big, small) {
     //HACK Not sure if it's best to do this here

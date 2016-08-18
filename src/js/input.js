@@ -3,7 +3,7 @@ var selected = [];
 
 function newInputComp(matLbl, matrix) {
     var row, col;
-    if (matrix == null || matrix == undefined) {
+    if (matrix === null || matrix === undefined) {
         matrix = new Matrix();
     }
     if (matrix instanceof Matrix) {
@@ -115,7 +115,7 @@ function newInputComp(matLbl, matrix) {
             return $("<img>", {
                 src: "img/arrow.png"
             });
-        }
+        };
 
         $colbtn = $("<button>", {
             class: "addCol colButton rowColModifier noSelect"
@@ -217,7 +217,7 @@ function newInputComp(matLbl, matrix) {
                 selected.splice(selected.indexOf(id),1);
             } else {
                 $(this).css("background-color", "rgba(99, 182, 255, 0.2)");
-                $(this).attr("data-clicked", 1)
+                $(this).attr("data-clicked", 1);
                 selected.push(id);
             }
             $selectedMatrix = this;
@@ -284,7 +284,7 @@ function getCell(row, col, val) {
     });
     $c.keyup(function(e) {
         e.stopImmediatePropagation();
-    })
+    });
     return $c;
 }
 

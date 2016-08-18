@@ -343,14 +343,14 @@ Matrix.prototype.resize = function(rows, cols) {
             this.matrix[i].push(new Fraction());
 };
 Matrix.prototype.getIdentity = function(rows, cols) {
-    if (rows == undefined && cols != undefined)
+    if (rows === undefined && cols !== undefined)
         rows = cols;
-    if (rows != undefined && cols == undefined)
+    if (rows !== undefined && cols === undefined)
         cols = rows;
     // If called with no arguments - use this matrix's dimensions
-    if (rows == undefined)
+    if (rows === undefined)
         rows = this.numRows();
-    if (cols == undefined)
+    if (cols === undefined)
         cols = this.numCols();
 
     var result = [];
@@ -367,9 +367,9 @@ Matrix.prototype.getIdentity = function(rows, cols) {
     return new Matrix(result);
 };
 Matrix.prototype.getZeros = function(rows, cols) {
-    if (rows == undefined && cols != undefined)
+    if (rows === undefined && cols !== undefined)
         rows = cols;
-    if (rows != undefined && cols == undefined)
+    if (rows !== undefined && cols === undefined)
         cols = rows;
 
     var result = [];

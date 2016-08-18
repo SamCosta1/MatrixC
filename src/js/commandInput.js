@@ -5,7 +5,7 @@ var comHist = [];
 comHist.add = function(toAdd) {
     if (this.indexOf(toAdd) < 0)
         this.push(toAdd);
-}
+};
 var histPos = 0;
 
 function commandInput(cmd) {

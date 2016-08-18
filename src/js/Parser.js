@@ -11,7 +11,7 @@ var Parser = function() {
             return;
         }
 
-        if (cmd == '')
+        if (cmd === '')
             return;
 
         var org = cmd;
@@ -50,7 +50,7 @@ var Parser = function() {
                         type: theArray[j],
                         op1: theArray[j - 1],
                         op2: theArray[j + 1]
-                    })
+                    });
                     var res = calculate( theArray[j], theArray[j - 1], theArray[j + 1], stp);
                     stp.data.result = res;
                     calcSteps.push(stp);
@@ -73,7 +73,7 @@ var Parser = function() {
                     op1: args[0],
                 });
                 var r = performFunction(theArray[j - 1], args,step);
-                step.data.result = r;                
+                step.data.result = r;
                 calcSteps.push(step);
                 theArray.splice(j, cnt + 2);
                 theArray[j - 1] = r;
@@ -199,7 +199,7 @@ var Parser = function() {
                 break;
             case '/':
                 if (!(before instanceof Matrix) && after instanceof Matrix)
-                    throw "You can't divide a number by a matrix!"
+                    throw "You can't divide a number by a matrix!";
                 else
                     result = before.divide(after,stp);
                 break;
@@ -255,5 +255,5 @@ var Parser = function() {
 
     return {
         parse: performCalc
-    }
-}
+    };
+};

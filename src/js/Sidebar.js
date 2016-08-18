@@ -47,7 +47,7 @@ $(window).resize(function() {
 
 function expandSidebar() {
     $('.sidebar').width($(window).width() * 0.75);
-    $('.snapHandle').removeClass('expand')
+    $('.snapHandle').removeClass('expand');
 }
 
 function collapseSidebar() {
