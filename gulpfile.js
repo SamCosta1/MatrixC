@@ -4,6 +4,7 @@ var concat = require('gulp-concat');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
 var cleanCSS = require('gulp-clean-css');
+var autoprefixer = require('gulp-autoprefixer');
 
 options = {
        src: '.',
@@ -20,7 +21,11 @@ jsDest = 'dist/';
 
 gulp.task('styles', function() {
     gulp.src('src/scss/styleSheets/*.scss')
-    .pipe(sass().on('error', sass.logError))    
+    .pipe(sass().on('error', sass.logError))
+        .pipe(autoprefixer({
+            browsers: ['last 2 versions'],
+            cascade: false
+        }))
         .pipe(cleanCSS())
         .pipe(gulp.dest(jsDest));
 });
