@@ -19,10 +19,8 @@ var jsFiles = 'src/js/*.js',
 jsDest = 'dist/';
 
 gulp.task('styles', function() {
-    gulp.src('src/scss/**/*.scss')
-    gulp.src('src/scss/**/*.scss')
-    .pipe(sass().on('error', sass.logError))
-        .pipe(concat('styles.css'))
+    gulp.src('src/scss/styleSheets/*.scss')
+    .pipe(sass().on('error', sass.logError))    
         .pipe(cleanCSS())
         .pipe(gulp.dest(jsDest));
 });
