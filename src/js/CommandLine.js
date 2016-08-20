@@ -1,12 +1,15 @@
-function CommandLine() {
+function CommandLine(_variables, _matrixManager) {
 
     var $commandLineTxtBox = $('#cmdinput'),
         $errorLabel = $('#errDisplay'),
         $errorContainer = $('.errContainer'),
         base = 'MatCalculator >> ',
         baseRegex = new RegExp('^' + base, 'i'),
+
         history = new commandHistory(),
-        parser = new Parser();
+        matrixManager = _matrixManager,
+        calculations = new Map(),
+        parser = new Parser(calculations, _variables);
 
     function init() {
         $commandLineTxtBox.bind('input', lockPromptText);
@@ -47,7 +50,11 @@ function CommandLine() {
             var start = Date.now();
 
             $errorLabel.hide();
-            parser.parse(cmd);
+            var result = parser.parse(cmd);
+
+            matrixManager.render(result);
+            calculations.get(result.lbl).render($('.sidebarBody'));
+
             $commandLineTxtBox.val(base);
 
             var end = Date.now() - start;
