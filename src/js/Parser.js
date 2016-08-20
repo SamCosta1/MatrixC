@@ -1,4 +1,6 @@
-var Parser = function() {
+function Parser(_calculations, _variables) {
+    var calculations = _calculations, // Array of calculation steps
+        variables = _variables;
 
     function performCalc(cmd) {
         cmd = cmd.replace(/ /g, '').replace(/\n/g, '');
@@ -20,13 +22,13 @@ var Parser = function() {
         if (cmd.includes('=')) {
             containsEqs = true;
             lbl = cmd.split('=')[0];
-            if (isValid(lbl, true))
+            if (variables.isValid(lbl, true))
                 cmd = cmd.split('=')[1];
             else
                 throw "Invalid Variable Name :(";
 
         } else
-            lbl = getNextFreeLetter();
+            lbl = variables.getNextFreeLetter();
         cmd = '(' + cmd + ')';
 
         var calcSteps = new CalculationArray();
@@ -87,22 +89,10 @@ var Parser = function() {
                 break;
         }
 
-        calculations.get(lbl).render($('.sidebarBody'));
-
-        if (!variables.get(lbl))
-            newInputComp(lbl, theArray[0].clone());
-        else {
-            if (typeof variables.get(lbl) == typeof theArray[0])
-                updateGUI(lbl, theArray[0].clone());
-            else {
-                if (typeof theArray[0] === 'object')
-                    throw "You can't assign a matrix to a number";
-                else
-                    throw "You can't assign a number to a matrix";
-
-            }
-        }
-
+        return {
+            lbl: lbl,
+            matrix: theArray[0].clone()
+        };
     }
 
     function getArrayFromString(cmd) {
@@ -234,11 +224,11 @@ var Parser = function() {
     }
 
     function isCloseBracket(str) {
-        return str == ')';
+        return str === ')';
     }
 
     function isOpenBracket(str) {
-        return str == '(';
+        return str === '(';
     }
 
     function isBrackets(str) {
@@ -250,10 +240,10 @@ var Parser = function() {
     }
 
     function isSquiggle(str) {
-        return str == '}' || str == '{';
+        return str === '}' || str === '{';
     }
 
     return {
         parse: performCalc
     };
-};
+}

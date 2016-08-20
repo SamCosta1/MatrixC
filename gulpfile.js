@@ -16,7 +16,7 @@ gulp.task('default', function() {
   // place code for your default task here
 });
 
-var jsFiles = 'src/js/*.js',
+var jsFiles = 'src/js/**/*.js',
 jsDest = 'dist/';
 
 gulp.task('styles', function() {
@@ -41,7 +41,7 @@ gulp.task('libraryScripts', function() {
     return gulp.src('dependencies/*js')
         .pipe(concat('dep.min.js'))
         .pipe(gulp.dest(jsDest))
-        .pipe(uglify())
+    //    .pipe(uglify())
         .pipe(gulp.dest(jsDest));
 });
 
@@ -49,6 +49,6 @@ gulp.task('scripts', function() {
     return gulp.src(jsFiles)
         .pipe(concat('scripts.min.js'))
         .pipe(gulp.dest(jsDest))
-        .pipe(uglify())
+//        .pipe(uglify())
         .pipe(gulp.dest(jsDest));
 });

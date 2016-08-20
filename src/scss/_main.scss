@@ -2,12 +2,24 @@ $fontstack: 'Mandali', sans-serif;
 $col1: #fbfbfb;
 $col2: gray;
 
-#newLabel {
-    position: absolute;
-    background-color: #e8effd;
-    border-radius: 10px;
-    padding: 2px 5px;
-    margin-left: 10px;
+
+#btnNewMat {
+    cursor: pointer;
+    display: flex;
+
+    #newLabel {
+        background-color: #e8effd;
+        border-radius: 10px;
+        padding: 2px 5px;
+        margin-left: 10px;
+        display: none;
+        cursor: default;
+    }
+    &:hover {
+        #newLabel {
+            display: block;
+        }
+    }
 }
 .thanks {
     text-align: center;
@@ -52,20 +64,13 @@ pull-left:hover {
     font: 100% $fontstack;
     font-size: 30px;
 }
-#btnNewMat:hover {
-    background-color: black;
-    border-radius: 10px;
-}
+
 #newMatGroup {
     display: flex;
     margin-left: 10px;
 }
 #matrixDefinitions {
     height: 100%;
-}
-#btnNewMat {
-    width: 40px;
-    cursor: pointer;
 }
 $handleSize: 20px;
 .handle {

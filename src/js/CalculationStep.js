@@ -1,5 +1,3 @@
-var calculations = new Map();
-
 function CalculationStep(_data) {
     this.data = _data;
     this.subSteps = [];
