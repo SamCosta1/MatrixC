@@ -61,19 +61,7 @@ pull-left:hover {
     display: flex;
     margin-left: 10px;
 }
-#matrixDefinitions {
-    height: 100%;
-}
-$handleSize: 20px;
-.handle {
-    height: $handleSize;
-    width: $handleSize;
-    margin-top: 10px;
-    margin-right: 15px;
-}
-.handle:hover {
-    cursor: all-scroll;
-}
+
 $binsize: 50px;
 .bin {
     margin-left: auto;
