@@ -51,7 +51,7 @@ function MatrixInputManager(_variables) {
         });
         //$span.css("top", col * 35 - 5);
         var $lab = $("<label>", {
-            class: "pull-left noSelect"
+            class: "noSelect"
         });
         var $labtxt = $("<input>", {
             class: "clickedit",

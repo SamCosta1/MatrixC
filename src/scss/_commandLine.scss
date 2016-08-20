@@ -1,45 +1,44 @@
 $commandlineBorder: 7px;
-textarea {
-    font-size: 19px;
-}
-#cmdinput:hover {
-    border: none;
-}
-#cmdinput:focus {
-    border: none;
-    outline: none;
-}
-#commandLine {
-    width: 50%;
-    border-radius: $commandlineBorder;
-    background-color: rgba(208, 208, 208, 0.5);
-}
-#errDisplay {
-    word-wrap: break-word;
-    display: none;
-}
-.errContainer {
-    margin: 5px;
-    line-height: 1.5;
-    color: red;
-
-    &.success {
-        color: #008e0d;
-    }
-}
 .controlContainer {
     display: flex;
     align-items: center;
     margin: 6px;
-    min-height: 102px
-}
-#cmdinput {
-    background: transparent;
-    border: none;
-    width: 100%;
-    color: white;
-    resize: none;
-    background-color: #22374a;
-    border-radius: $commandlineBorder;
-    width: 100%;
+    min-height: 102px;
+
+    #commandLine {
+        width: 50%;
+        border-radius: $commandlineBorder;
+        background-color: rgba(208, 208, 208, 0.5);
+
+        #cmdinput {
+            background: transparent;
+            border: none;
+            font-size: 19px;
+            width: 100%;
+            color: white;
+            resize: none;
+            background-color: #22374a;
+            border-radius: $commandlineBorder;
+            &:hover {
+                border: none;
+            }
+            &:focus {
+                border: none;
+                outline: none;
+            }
+        }
+
+        .errContainer {
+            margin: 5px;
+            line-height: 1.5;
+            color: red;
+            &.success {
+                color: #008e0d;
+            }
+            #errDisplay {
+                word-wrap: break-word;
+                display: none;
+            }
+        }
+    }
 }

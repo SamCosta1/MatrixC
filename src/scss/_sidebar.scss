@@ -1,6 +1,7 @@
 $handleWidth: 16px;
 $gridCol: rgba(128, 128, 128, 0.1);
 $gridDim: 100px;
+
 .sidebar {
     position: fixed;
     min-width: $handleWidth;
@@ -12,6 +13,7 @@ $gridDim: 100px;
     background-color: white;
     background-size: $gridDim $gridDim;
     background-image: linear-gradient(to right, $gridCol 1px, transparent 1px), linear-gradient(to bottom, $gridCol 1px, transparent 1px);
+
     .handle {
         height: 100%;
         width: $handleWidth;
@@ -73,10 +75,12 @@ $gridDim: 100px;
             }
         }
     }
+
     .sidebarBody {
         overflow-y: scroll;
         height: 92%;
     }
+
     .offsetHandle {
         margin-left: $handleWidth;
     }
