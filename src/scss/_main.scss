@@ -21,15 +21,7 @@ $col2: gray;
         }
     }
 }
-.thanks {
-    text-align: center;
-    font-size: 40px !important;
-    width: 100%;
-    padding: 10px 0 !important;
-}
-.thankText {
-    margin-left: 28px;
-}
+
 #bin {
     float: right;
     margin-left: auto;
@@ -125,17 +117,7 @@ $binsize: 50px;
 .addLeftMargin {
     margin-left: 15px;
 }
-#header {
-    margin-top: 0;
-    font: 100% $fontstack;
-    background-color: #333333;
-    border: 0;
-    display: inline-flex;
-    width: 100%;
-    height: 140px;
-    user-select: none;
-    cursor: default;
-}
+
 .center {
     position: relative;
     margin-left: auto;
