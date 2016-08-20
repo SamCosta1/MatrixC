@@ -21,6 +21,11 @@ textarea {
 .errContainer {
     margin: 5px;
     line-height: 1.5;
+    color: red;
+
+    &.success {
+        color: #008e0d;
+    }
 }
 .controlContainer {
     display: flex;
