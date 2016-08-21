@@ -8,8 +8,7 @@ function CommandLine(_variables, _matrixManager) {
 
         history = new commandHistory(),
         matrixManager = _matrixManager,
-        calculations = new Map(),
-        parser = new Parser(calculations, _variables);
+        parser = new Parser(_variables);
 
     function init() {
         $commandLineTxtBox.bind('input', lockPromptText);
@@ -53,7 +52,6 @@ function CommandLine(_variables, _matrixManager) {
             var result = parser.parse(cmd);
 
             matrixManager.render(result);
-            calculations.get(result.lbl).render($('.sidebarBody'));
 
             $commandLineTxtBox.val(base);
 

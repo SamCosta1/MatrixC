@@ -4,7 +4,8 @@ function Sidebar() {
         $snapHandle = $('.snapHandle'),
         $fullScreenToggle = $('.fullScreen'),
 
-        currentWidth = 16;
+        currentWidth = 16,
+        handleWidth = $dragHandle.width();
 
     function init() {
         $sidebarContainer.css('max-width', $(window).width());
@@ -50,7 +51,7 @@ function Sidebar() {
     }
 
     function onWindowResize() {
-        $sidebarContainer.css('max-width', $(window).width());
+        $sidebarContainer.css('max-width', $(window).width() - 16);
     }
 
     function onHandleDoubleClick() {

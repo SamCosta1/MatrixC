@@ -435,7 +435,7 @@ var funcENUM = {
                 return "Diagonal form";
             case this.ROWREDUCE:
             case this.SOLVAUG:
-                return "Reduced Echelon Form";
+                return "Reduced Row Echelon Form";
             case this.ID:
                 return "Identity matrix";
             case this.ZEROS:

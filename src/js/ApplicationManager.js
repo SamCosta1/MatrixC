@@ -1,11 +1,18 @@
 function ApplicationManager() {
-    var variables = new Variables(),
-        popup = new Popup(),
-        matrixManager = new MatrixInputManager(variables, popup),
-        sidebar = new Sidebar();
+    var variables = null,
+        commandLine = null,
+        popup = null,
+        matrixManager = null,
+        sidebar = null;
 
     function init() {
-        new CommandLine(variables, matrixManager).init();
+        variables = new Variables(),
+        popup = new Popup(),
+        sidebar = new Sidebar();
+
+        matrixManager = new MatrixInputManager(variables, popup);
+        commandLine = new CommandLine(variables, matrixManager).init();
+
         matrixManager.init();
         sidebar.init();
         popup.init();

@@ -1,6 +1,5 @@
-function Parser(_calculations, _variables) {
-    var calculations = _calculations, // Array of calculation steps
-        variables = _variables;
+function Parser(_variables) {
+    var variables = _variables;
 
     function performCalc(cmd) {
         cmd = cmd.replace(/ /g, '').replace(/\n/g, '');
@@ -32,7 +31,6 @@ function Parser(_calculations, _variables) {
         cmd = '(' + cmd + ')';
 
         var calcSteps = new CalculationArray();
-        calculations.set(lbl, calcSteps);
 
         var theArray = getArrayFromString(cmd);
         if (!containsEqs && theArray.length == 3) {
@@ -88,6 +86,8 @@ function Parser(_calculations, _variables) {
             else
                 break;
         }
+
+        calcSteps.render($('.sidebarBody'));
 
         return {
             lbl: lbl,
