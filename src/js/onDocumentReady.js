@@ -53,7 +53,7 @@ $(document).ready(function() {
                 target.setAttribute('data-y', y);
             }
 
-        }).allowFrom('.handle');
+        }).allowFrom('.dragHandle');
 
 
 

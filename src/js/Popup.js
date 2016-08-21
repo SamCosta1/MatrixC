@@ -34,12 +34,12 @@ function Popup() {
     }
 
     function renderContent(content) {
-        $container.show();
         $headerText.empty();
         $popupBody.empty();
         $headerText.append(content.header);
         $popupBody.append(content.body);
-        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);      
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+        $container.show();
     }
 
 

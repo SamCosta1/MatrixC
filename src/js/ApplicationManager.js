@@ -6,8 +6,8 @@ function ApplicationManager() {
         sidebar = null;
 
     function init() {
-        variables = new Variables(),
-        popup = new Popup(),
+        variables = new Variables();
+        popup = new Popup();
         sidebar = new Sidebar();
 
         matrixManager = new MatrixInputManager(variables, popup);

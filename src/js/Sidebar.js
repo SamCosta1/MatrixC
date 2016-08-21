@@ -4,7 +4,7 @@ function Sidebar() {
         $snapHandle = $('.snapHandle'),
         $fullScreenToggle = $('.fullScreen'),
 
-        currentWidth = 16,
+        currentWidth = handleWidth,
         handleWidth = $dragHandle.width();
 
     function init() {
@@ -26,7 +26,7 @@ function Sidebar() {
     }
 
     function collapseSidebar() {
-        $sidebarContainer.width(16);
+        $sidebarContainer.width(handleWidth);
         $snapHandle.addClass('expand');
     }
 
@@ -42,7 +42,7 @@ function Sidebar() {
     }
 
     function onSnapClick() {
-        if ($sidebarContainer.width() == 16) {
+        if ($sidebarContainer.width() == handleWidth) {
             expandSidebar();
         } else {
             collapseSidebar();
@@ -51,11 +51,11 @@ function Sidebar() {
     }
 
     function onWindowResize() {
-        $sidebarContainer.css('max-width', $(window).width() - 16);
+        $sidebarContainer.css('max-width', $(window).width() - handleWidth);
     }
 
     function onHandleDoubleClick() {
-        if ($sidebarContainer.width() !== 16)
+        if ($sidebarContainer.width() !== handleWidth)
             collapseSidebar();
         else
             expandSidebar();
@@ -67,7 +67,7 @@ function Sidebar() {
             e.stopImmediatePropagation();
             $('body').trigger('sidebarResize');
             $sidebarContainer.width($sidebarContainer.width() + $sidebarContainer.position().left - e.pageX);
-            if ($sidebarContainer.width() !== 16)
+            if ($sidebarContainer.width() !== handleWidth)
                 $snapHandle.removeClass('expand');
             else
                 $snapHandle.addClass('expand');
