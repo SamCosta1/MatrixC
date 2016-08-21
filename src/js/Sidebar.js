@@ -35,6 +35,7 @@ function Sidebar() {
         else {
             currentWidth = $sidebarContainer.width();
             $sidebarContainer.width($(window).width());
+            $('body').trigger('closePopup');
         }
         $fullScreenToggle.toggleClass('unfullScreen');
     }
@@ -45,6 +46,7 @@ function Sidebar() {
         } else {
             collapseSidebar();
         }
+        $('body').trigger('sidebarResize');
     }
 
     function onWindowResize() {
@@ -56,6 +58,7 @@ function Sidebar() {
             collapseSidebar();
         else
             expandSidebar();
+        $('body').trigger('sidebarResize');
     }
 
     function onSnapHandleMouseDown() {

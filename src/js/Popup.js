@@ -12,8 +12,13 @@ function Popup() {
         $body.append($container);
         $window.resize(resize);
         $body.bind('sidebarResize', resize);
+        $body.bind('closePopup', close);
 
         resize();
+    }
+
+    function close() {
+        $container.hide();
     }
 
     function resize() {
