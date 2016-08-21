@@ -264,7 +264,7 @@ function MatrixInputManager(_variables, _popup) {
         var clickedLbl = $(this).closest(".matInput").attr("id").split("-")[1];
         popup.render({
             header: "Stuff about " + clickedLbl + "!!",
-            body: new AllCalculations(variables.get(clickedLbl)).getTex()
+            body: new AllCalculations(clickedLbl, variables.get(clickedLbl)).getTex()
         });
     }
 

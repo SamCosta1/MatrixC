@@ -11,7 +11,7 @@ function Popup() {
         $container.hide();
         $header.append($headerText);
         $header.append($close);
-        
+
         $container.append($header);
         $container.append($popupBody);
         $body.append($container);
@@ -39,6 +39,7 @@ function Popup() {
         $popupBody.empty();
         $headerText.append(content.header);
         $popupBody.append(content.body);
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);      
     }
 
 

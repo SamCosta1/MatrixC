@@ -1,11 +1,17 @@
-function AllCalculations (_matrix) {
-    var matrix = _matrix;
+function AllCalculations (_name, _matrix) {
+    var matrix = _matrix,
+        name = _name;
 
     function generateAll() {
-        return "Hello World";
+        var str = '$$';
+        // First the actual matrix
+        str += name + '=' + matrix.getTex();
+
+        return str + '$$';
+
     }
 
     return {
-        getTex: generateAll,        
-    }
+        getTex: generateAll,
+    };
 }

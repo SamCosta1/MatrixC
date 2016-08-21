@@ -1,5 +1,6 @@
 $gridCol: rgba(128, 128, 128, 0.1);
 $gridDim: 30px;
+$borderRadius: 10px;
 
 .popUpContainer {
     background-color: white;
@@ -8,16 +9,23 @@ $gridDim: 30px;
     top: 10px;
     left: 10px;
     box-shadow: rgb(49, 49, 49) 0px 0px 17px;
-    border-radius: 10px;
+    border-radius: $borderRadius;
+    background-size: $gridDim $gridDim;
+    background-image: linear-gradient(to right, $gridCol 1px, transparent 1px), linear-gradient(to bottom, $gridCol 1px, transparent 1px);
 
     $margin: 15px;
     .popUpHeader {
-        margin-left: $margin;
+
+        .popUpHeaderText {
+            margin-left: $margin;
+        }
+        border-radius: $borderRadius;
         height: 10%;
         display: flex;
         justify-content: space-between;
         align-items: center;
         font-size: 30px;
+        background-color: white;
 
         .closebtn {
             width: 14px;
@@ -29,8 +37,6 @@ $gridDim: 30px;
     .popUpBody {
         margin-left: $margin;
         height: 90%;
-        background-size: $gridDim $gridDim;
-        background-image: linear-gradient(to right, $gridCol 1px, transparent 1px), linear-gradient(to bottom, $gridCol 1px, transparent 1px);
 
     }
 
