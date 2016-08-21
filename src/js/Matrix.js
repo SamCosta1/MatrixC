@@ -422,22 +422,22 @@ var funcENUM = {
     getString: function(str) {
         switch (str) {
             case this.TRANSPOSE:
-                return "transpose";
+                return "Transpose";
             case this.RANK:
-                return "rank";
+                return "Rank";
             case this.INVERSE:
-                return "inverse";
+                return "Inverse";
             case this.DET:
-                return "determinant";
+                return "Determinant";
             case this.EIGEN:
-                return "eigenvalues/vectors";
+                return "Eigenvalues/Vectors";
             case this.DIAGONALIZE:
-                return "diagonal form";
+                return "Diagonal form";
             case this.ROWREDUCE:
             case this.SOLVAUG:
                 return "Reduced Echelon Form";
             case this.ID:
-                return "identity matrix";
+                return "Identity matrix";
             case this.ZEROS:
                 return "0 matrix";
         }

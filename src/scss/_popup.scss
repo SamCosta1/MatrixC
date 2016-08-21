@@ -37,7 +37,14 @@ $borderRadius: 10px;
     .popUpBody {
         margin-left: $margin;
         height: 90%;
+        overflow: auto;
+    }
 
+    .allCalcLabel {
+        width: 95%;
+        background-color: #eaf1ff;
+        border-radius: $borderRadius;
+        padding-left: $margin / 2;
     }
 
 }
