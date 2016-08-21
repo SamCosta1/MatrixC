@@ -1,11 +1,12 @@
 // Just don't look at this file, seriously, go watch netfilx, this file stinks
 
-function MatrixInputManager(_variables) {
+function MatrixInputManager(_variables, _popup) {
 
     var $newMatrixBtn = $('#btnNewMat'),
         selectedVariables = [],
         count = 0,
-        variables = _variables;
+        variables = _variables,
+        popup = _popup;
 
     function init() {
         $newMatrixBtn.bind('click', function() {
@@ -78,8 +79,13 @@ function MatrixInputManager(_variables) {
         if (matrix instanceof Matrix) {
             $modifiers = $('<div class="guiModifiers">');
 
-            var $hiddenBtns = $(getHiddenButtons());
-            $('.allCalcButton').click(onAllCalcClicked);
+            $hiddenBtns = $('<div class="MatrixOpButtons noSelect">');
+            $dragHandle = $('<img class="handle" src="img/dragHandle.png">');
+            $allCalcButton = $('<img class="allCalcButton" src="img/questionmark.png">');
+
+            $allCalcButton.click(onAllCalcClicked);
+            $hiddenBtns.append($dragHandle);
+            $hiddenBtns.append($allCalcButton);
 
             var btnImg = function() {
                 return $('<img src="img/arrow.png">');
@@ -253,17 +259,13 @@ function MatrixInputManager(_variables) {
         return $c;
     }
 
-    function getHiddenButtons() {
-        return '\
-        <div class="MatrixOpButtons noSelect">\
-            <img class="handle" src="img/dragHandle.png">\
-            <img class="allCalcButton" src="img/questionmark.png">\
-        </div>\
-        ';
-    }
-
     function onAllCalcClicked(e) {
-
+        e.stopImmediatePropagation();
+        var clickedLbl = $(this).closest(".matInput").attr("id").split("-")[1];
+        popup.render({
+            header: "Stuff about " + clickedLbl + "!!",
+            body: new AllCalculations(variables.get(clickedLbl)).getTex()
+        });
     }
 
     function endEdit(e) {

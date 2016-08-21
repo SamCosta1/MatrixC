@@ -61,6 +61,7 @@ function Sidebar() {
     function onSnapHandleMouseDown() {
         $(document).bind('mousemove', function(e) {
             e.stopImmediatePropagation();
+            $('body').trigger('sidebarResize');
             $sidebarContainer.width($sidebarContainer.width() + $sidebarContainer.position().left - e.pageX);
             if ($sidebarContainer.width() !== 16)
                 $snapHandle.removeClass('expand');
