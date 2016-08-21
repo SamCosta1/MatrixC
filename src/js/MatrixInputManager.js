@@ -40,7 +40,6 @@ function MatrixInputManager(_variables) {
 
         variables.set(matLbl, matrix);
         var $div = $('<div id="MAT-' + matLbl + '" class="matInput draggable drag-drop" data-clicked="0">');
-        var $img = $('<img class="handle noSelect" src="img/dragHandle.png">');
         var $span = $('<span class="label noSelect">');
 
         var $lab = $('<label class="noSelect">');
@@ -77,19 +76,16 @@ function MatrixInputManager(_variables) {
 
         $div.append($contnr);
         if (matrix instanceof Matrix) {
-            $modifiers = $("<span>", {
-                class: "guiModifiers"
-            });
+            $modifiers = $('<div class="guiModifiers">');
+
+            var $hiddenBtns = $(getHiddenButtons());
+            $('.allCalcButton').click(onAllCalcClicked);
 
             var btnImg = function() {
-                return $("<img>", {
-                    src: "img/arrow.png"
-                });
+                return $('<img src="img/arrow.png">');
             };
 
-            $colbtn = $("<button>", {
-                class: "addCol colButton rowColModifier noSelect"
-            });
+            $colbtn = $('<button class="addCol colButton rowColModifier noSelect">');
             $colbtn.append(btnImg());
 
             $rowbtn = $('<button class="addRow rowButton rowColModifier noSelect">');
@@ -118,9 +114,9 @@ function MatrixInputManager(_variables) {
             $modifiers.append($rowbtn);
             $modifiers.append($rmvColbtn);
             $modifiers.append($colbtn);
+            $modifiers.append($hiddenBtns);
             $div.append($modifiers);
         }
-        $div.append($img);
 
         $('#matDefinitions').append($div);
         //$('#matDefinitions').append($("<br>"));
@@ -257,6 +253,18 @@ function MatrixInputManager(_variables) {
         return $c;
     }
 
+    function getHiddenButtons() {
+        return '\
+        <div class="MatrixOpButtons noSelect">\
+            <img class="handle" src="img/dragHandle.png">\
+            <img class="allCalcButton" src="img/questionmark.png">\
+        </div>\
+        ';
+    }
+
+    function onAllCalcClicked(e) {
+
+    }
 
     function endEdit(e) {
         e.stopImmediatePropagation();
