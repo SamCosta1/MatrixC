@@ -42,8 +42,10 @@ function Popup() {
         MathJax.Hub.Queue(["Typeset",MathJax.Hub, '.popUpBody']);
 
         // TODO Some kind of loading bar or spinning thing to indicate calculation
-        MathJax.Hub.Queue(function() {$container.show();});
-        resize();
+        MathJax.Hub.Queue(function() {
+            $container.show();
+            resize();
+        });
     }
 
 
