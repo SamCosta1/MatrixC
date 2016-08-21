@@ -53,10 +53,16 @@
             user-select: none;
             padding: 3;
         }
+
         .rowButton {
             transform: rotate(-90deg);
             filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
             position: relative;
+
+            // HACK Use icon fonts!!!
+            &.addRow {
+                transform: rotate(90deg);
+            }
         }
         .addLeftMargin {
             margin-left: 15px;

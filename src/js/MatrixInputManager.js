@@ -8,7 +8,9 @@ function MatrixInputManager(_variables) {
         variables = _variables;
 
     function init() {
-        $newMatrixBtn.bind('click', function() { newInputComp(); });
+        $newMatrixBtn.bind('click', function() {
+            newInputComp();
+        });
     }
 
     function render(data) {
@@ -37,69 +39,14 @@ function MatrixInputManager(_variables) {
         }
 
         variables.set(matLbl, matrix);
-        var $div = $("<div>", {
-            id: "MAT-" + matLbl,
-            class: "matInput draggable drag-drop",
-            'data-clicked': 0
-        });
-        var $img = $("<img>", {
-            class: "handle noSelect",
-            src: "img/dragHandle.png"
-        });
-        var $span = $("<span>", {
-            class: "label noSelect"
-        });
-        //$span.css("top", col * 35 - 5);
-        var $lab = $("<label>", {
-            class: "noSelect"
-        });
-        var $labtxt = $("<input>", {
-            class: "clickedit",
-            type: "text"
-        });
+        var $div = $('<div id="MAT-' + matLbl + '" class="matInput draggable drag-drop" data-clicked="0">');
+        var $img = $('<img class="handle noSelect" src="img/dragHandle.png">');
+        var $span = $('<span class="label noSelect">');
 
-        // target elements with the "draggable" class
-        interact('.draggable')
-            .draggable({
-                snap: {
-                    targets: [
-                        interact.createSnapGrid({
-                            x: 20,
-                            y: 20
-                        })
-                    ],
-                    range: Infinity,
-                    relativePoints: [{
-                        x: 0,
-                        y: 0
-                    }]
-                },
+        var $lab = $('<label class="noSelect">');
+        var $labtxt = $('<input class="clickedit" type: "text">');
 
 
-                // enable inertial throwing
-                inertia: true,
-                // keep the element within the area of it's parent
-                restrict: {
-                    restriction: "#mainBody",
-                    endOnly: false,
-                    elementRect: {
-                        top: 0,
-                        left: 0,
-                        bottom: 0,
-                        right: 1
-                    }
-                },
-                // enable autoScroll
-                autoScroll: true,
-
-                // call this function on every dragmove event
-                onmove: dragMoveListener,
-
-            }).allowFrom('.handle');
-
-
-        // this is used later in the resizing and gesture demos
-        window.dragMoveListener = dragMoveListener;
 
         $lab.append(matLbl);
         $span.append($lab);
@@ -107,15 +54,15 @@ function MatrixInputManager(_variables) {
         $span.append("     = ");
         $div.append($span);
 
-        var $contnr = $("<div>", {
-            class: "matContainer"
-        });
+        var $contnr = $('<div class="matContainer">');
         var $table = $("<table>", {
             class: isNaN(matrix) ? "matGui" : "",
             id: "t" + count
         });
         $table.attr("data-cols", col);
         $table.attr("data-rows", row);
+
+        // Build up the table
         for (i = 0; i < row; i++) {
             var $tr = $("<tr>");
             for (j = 0; j < col; j++) {
@@ -144,18 +91,14 @@ function MatrixInputManager(_variables) {
                 class: "addCol colButton rowColModifier noSelect"
             });
             $colbtn.append(btnImg());
-            $rowbtn = $("<button>", {
-                class: "addRow rowButton rowColModifier noSelect flipY"
-            });
+
+            $rowbtn = $('<button class="addRow rowButton rowColModifier noSelect">');
             $rowbtn.append(btnImg());
 
-            $rmvColbtn = $("<button>", {
-                class: "rmvCol colButton rowColModifier noSelect flip"
-            });
+            $rmvColbtn = $('<button class="rmvCol colButton rowColModifier noSelect flip">');
             $rmvColbtn.append(btnImg());
-            $rmvRowbtn = $("<button>", {
-                class: "rmvRow rowButton rowColModifier noSelect addLeftMargin"
-            });
+
+            $rmvRowbtn = $('<button class="rmvRow rowButton rowColModifier noSelect addLeftMargin">');
             $rmvRowbtn.append(btnImg());
 
             $colbtn.attr("data-tableid", "t" + count);
@@ -163,88 +106,12 @@ function MatrixInputManager(_variables) {
             $rmvRowbtn.attr("data-tableid", "t" + count);
             $rmvColbtn.attr("data-tableid", "t" + count);
 
+            $colbtn.click(onAddColumn);
+            $rowbtn.click(onAddRow);
+            $rmvColbtn.click(onRemoveColumn);
+            $rmvRowbtn.click(onRemoveRow);
 
-
-
-
-            $colbtn.click(
-                function(e) {
-                    e.stopImmediatePropagation();
-                    var rowCount = 0;
-                    $table = $("#" + $(this).attr("data-tableid"));
-                    var n = $table.attr("data-cols") - 1;
-                    var m = $table.attr("data-rows");
-                    $table.attr("data-cols", n + 2);
-                    $table.find('tr').each(function() {
-                        var $td = $("<td>");
-                        $td.append(getCell(rowCount, n + 1, "0"));
-                        rowCount++;
-                        $(this).find('td').eq(n).after($td);
-                    });
-                    var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-                    variables.get(varName).resize(parseInt(m), n + 2);
-                });
-            $rowbtn.click(
-                function(e) {
-                    e.stopImmediatePropagation();
-                    $table = $("#" + $(this).attr("data-tableid"));
-                    var numCols = $table.attr("data-cols");
-                    var numRows = $table.attr("data-rows");
-                    $table.attr("data-rows", parseInt(numRows) + 1);
-
-                    $tr = $("<tr>");
-                    for (i = 0; i < numCols; i++) {
-                        $td = $("<td>");
-                        $td.append(getCell(numRows, i, "0"));
-                        $tr.append($td);
-                    }
-
-                    $table.append($tr);
-                    var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-                    variables.get(varName).resize(parseInt(numRows) + 1, parseInt(numCols));
-                });
-
-            $rmvColbtn.click(function(e) {
-                e.stopImmediatePropagation();
-                var $table = $("#" + $(this).attr("data-tableid"));
-                var numCols = parseInt($table.attr("data-cols"));
-                var numRows = parseInt($table.attr("data-rows"));
-                if (numCols > 1) {
-                    $("#" + $(this).attr("data-tableid") + " td:last-child").remove();
-                    numCols--;
-                    $table.attr("data-cols", numCols);
-                    var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-                    variables.get(varName).resize(numRows, numCols);
-                }
-            });
-            $rmvRowbtn.click(function(e) {
-                e.stopImmediatePropagation();
-                var $table = $("#" + $(this).attr("data-tableid"));
-                var numRows = parseInt($table.attr("data-rows"));
-                var numCols = parseInt($table.attr("data-cols"));
-                if (numRows > 1) {
-                    $("#" + $(this).attr("data-tableid") + " tr:last-child").remove();
-                    numRows--;
-                    $table.attr("data-rows", numRows);
-                    var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-                    variables.get(varName).resize(numRows, numCols);
-                }
-            });
-
-            $div.click(function(e) {
-                e.stopImmediatePropagation();
-                var id = $(this).attr('id');
-                if ($(this).attr("data-clicked") == 1) {
-                    $(this).css("background-color", "rgba(204, 204, 204, 0.2)");
-                    $(this).attr("data-clicked", 0);
-                    selectedVariables.splice(selectedVariables.indexOf(id), 1);
-                } else {
-                    $(this).css("background-color", "rgba(99, 182, 255, 0.2)");
-                    $(this).attr("data-clicked", 1);
-                    selectedVariables.push(id);
-                }
-                $selectedVariablesMatrix = this;
-            });
+            $div.click(onMatrixSelect);
 
             count++;
             $modifiers.append($rmvRowbtn);
@@ -273,6 +140,85 @@ function MatrixInputManager(_variables) {
                 $(this).hide();
                 $(this).next().show().focus();
             });
+    }
+
+    function onMatrixSelect(e) {
+        e.stopImmediatePropagation();
+        var id = $(this).attr('id');
+        if ($(this).attr("data-clicked") == 1) {
+            $(this).css("background-color", "rgba(204, 204, 204, 0.2)");
+            $(this).attr("data-clicked", 0);
+            selectedVariables.splice(selectedVariables.indexOf(id), 1);
+        } else {
+            $(this).css("background-color", "rgba(99, 182, 255, 0.2)");
+            $(this).attr("data-clicked", 1);
+            selectedVariables.push(id);
+        }
+        $selectedVariablesMatrix = this;
+    }
+
+    function onRemoveColumn(e) {
+        e.stopImmediatePropagation();
+        var $table = $("#" + $(this).attr("data-tableid"));
+        var numCols = parseInt($table.attr("data-cols"));
+        var numRows = parseInt($table.attr("data-rows"));
+        if (numCols > 1) {
+            $("#" + $(this).attr("data-tableid") + " td:last-child").remove();
+            numCols--;
+            $table.attr("data-cols", numCols);
+            var varName = $(this).closest(".matInput").attr("id").split("-")[1];
+            variables.get(varName).resize(numRows, numCols);
+        }
+    }
+
+    function onAddColumn(e) {
+        e.stopImmediatePropagation();
+        var rowCount = 0;
+        $table = $("#" + $(this).attr("data-tableid"));
+        var n = $table.attr("data-cols") - 1;
+        var m = $table.attr("data-rows");
+        $table.attr("data-cols", n + 2);
+        $table.find('tr').each(function() {
+            var $td = $("<td>");
+            $td.append(getCell(rowCount, n + 1, "0"));
+            rowCount++;
+            $(this).find('td').eq(n).after($td);
+        });
+        var varName = $(this).closest(".matInput").attr("id").split("-")[1];
+        variables.get(varName).resize(parseInt(m), n + 2);
+    }
+
+    function onAddRow(e) {
+        e.stopImmediatePropagation();
+        $table = $("#" + $(this).attr("data-tableid"));
+        var numCols = $table.attr("data-cols");
+        var numRows = $table.attr("data-rows");
+        $table.attr("data-rows", parseInt(numRows) + 1);
+
+        $tr = $("<tr>");
+        for (i = 0; i < numCols; i++) {
+            $td = $("<td>");
+            $td.append(getCell(numRows, i, "0"));
+            $tr.append($td);
+        }
+
+        $table.append($tr);
+        var varName = $(this).closest(".matInput").attr("id").split("-")[1];
+        variables.get(varName).resize(parseInt(numRows) + 1, parseInt(numCols));
+    }
+
+    function onRemoveRow(e) {
+        e.stopImmediatePropagation();
+        var $table = $("#" + $(this).attr("data-tableid"));
+        var numRows = parseInt($table.attr("data-rows"));
+        var numCols = parseInt($table.attr("data-cols"));
+        if (numRows > 1) {
+            $("#" + $(this).attr("data-tableid") + " tr:last-child").remove();
+            numRows--;
+            $table.attr("data-rows", numRows);
+            var varName = $(this).closest(".matInput").attr("id").split("-")[1];
+            variables.get(varName).resize(numRows, numCols);
+        }
     }
 
     function getCell(row, col, val) {
@@ -311,21 +257,6 @@ function MatrixInputManager(_variables) {
         return $c;
     }
 
-    function dragMoveListener(event) {
-        var target = event.target,
-            // keep the dragged position in the data-x/data-y attributes
-            x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-            y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
-        // translate the element
-        target.style.webkitTransform =
-            target.style.transform =
-            'translate(' + x + 'px, ' + y + 'px)';
-
-        // update the posiion attributes
-        target.setAttribute('data-x', x);
-        target.setAttribute('data-y', y);
-    }
 
     function endEdit(e) {
         e.stopImmediatePropagation();
@@ -415,11 +346,11 @@ function MatrixInputManager(_variables) {
         //overlap: 'pointer',
 
         ondragenter: function(event) {
-            $('#bin').attr("src","img/openBin.png");
+            $('#bin').attr("src", "img/openBin.png");
 
         },
         ondragleave: function(event) {
-            $('#bin').attr("src","img/bin.png");
+            $('#bin').attr("src", "img/bin.png");
 
         },
         ondrop: function(event) {
@@ -428,20 +359,22 @@ function MatrixInputManager(_variables) {
             // Remove from list if it was selectedVariables at time of deleation
             var index = selectedVariables.indexOf($(event.relatedTarget).attr("id"));
             if (index != -1)
-                selectedVariables.splice(index,1);
+                selectedVariables.splice(index, 1);
         },
     });
+
     function deleteMatrix(obj) {
         variables.delete($(obj).attr("id").split('-')[1]);
         obj.remove();
-        $('#bin').attr("src","img/bin.png");
+        $('#bin').attr("src", "img/bin.png");
     }
-    $(document).keyup(function (e) {
+
+    $(document).keyup(function(e) {
         if (e.keyCode == 46)
-            for (var i in selectedVariables){
+            for (var i in selectedVariables) {
                 deleteMatrix($('#' + selectedVariables[i]));
             }
-            selectedVariables = [];
+        selectedVariables = [];
     });
 
 
