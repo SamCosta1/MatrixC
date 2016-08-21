@@ -39,8 +39,10 @@ function Popup() {
         $popupBody.empty();
         $headerText.append(content.header);
         $popupBody.append(content.body);
-        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-        $container.show();
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub, '.popUpBody']);
+
+        // TODO Some kind of loading bar or spinning thing to indicate calculation
+        MathJax.Hub.Queue(function() {$container.show();});
         resize();
     }
 
