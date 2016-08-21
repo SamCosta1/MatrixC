@@ -15,8 +15,15 @@ $gridDim: 30px;
         margin-left: $margin;
         height: 10%;
         display: flex;
+        justify-content: space-between;
         align-items: center;
         font-size: 30px;
+
+        .closebtn {
+            width: 14px;
+            margin-right: $margin + 6;
+            cursor:pointer;
+        }
     }
 
     .popUpBody {
