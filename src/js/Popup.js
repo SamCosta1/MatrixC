@@ -29,8 +29,9 @@ function Popup() {
     }
 
     function resize() {
-        $container.width($window.width() - 17 - $('.sidebar').width());
-        $container.height($window.height() * 0.95);
+        console.log('resize', $headerText.outerHeight(true));
+        $container.width($window.width() - 23 - $('.sidebar').width());
+        $popupBody.height($container.height() - $headerText.outerHeight(true));
     }
 
     function renderContent(content) {
@@ -40,6 +41,7 @@ function Popup() {
         $popupBody.append(content.body);
         MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
         $container.show();
+        resize();
     }
 
 

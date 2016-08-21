@@ -1,5 +1,6 @@
 function Sidebar() {
     var $sidebarContainer = $('.sidebar'),
+        $sidebarBody = $('.sidebarBody'),
         $dragHandle = $('.handle'),
         $snapHandle = $('.snapHandle'),
         $fullScreenToggle = $('.fullScreen'),
@@ -8,12 +9,11 @@ function Sidebar() {
         handleWidth = $dragHandle.width();
 
     function init() {
-        $sidebarContainer.css('max-width', $(window).width());
+
         $dragHandle.bind('mousedown', onSnapHandleMouseDown);
         $dragHandle.dblclick(onHandleDoubleClick);
         $snapHandle.click(onSnapClick);
         $fullScreenToggle.click(toggleFullScreen);
-        $(window).resize(onWindowResize);
 
         $(document).mouseup(function(e) {
             $(document).unbind('mousemove');
@@ -36,7 +36,6 @@ function Sidebar() {
         else {
             currentWidth = $sidebarContainer.width();
             $sidebarContainer.width($(window).width());
-            $('body').trigger('closePopup');
         }
         $fullScreenToggle.toggleClass('unfullScreen');
     }
@@ -48,10 +47,6 @@ function Sidebar() {
             collapseSidebar();
         }
         $('body').trigger('sidebarResize');
-    }
-
-    function onWindowResize() {
-        $sidebarContainer.css('max-width', $(window).width() - handleWidth);
     }
 
     function onHandleDoubleClick() {
@@ -66,7 +61,12 @@ function Sidebar() {
         $(document).bind('mousemove', function(e) {
             e.stopImmediatePropagation();
             $('body').trigger('sidebarResize');
-            $sidebarContainer.width($sidebarContainer.width() + $sidebarContainer.position().left - e.pageX);
+            var amount = $sidebarContainer.position().left - e.pageX;
+            if (amount < 0 || $sidebarContainer.width() < $(window).width())
+                $sidebarContainer.width($sidebarContainer.width() + $sidebarContainer.position().left - e.pageX);
+
+            if ($sidebarContainer.width() > $(window).width())
+                $sidebarContainer.width($(window).width());
             if ($sidebarContainer.width() !== handleWidth)
                 $snapHandle.removeClass('expand');
             else

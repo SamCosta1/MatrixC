@@ -5,8 +5,9 @@ $borderRadius: 10px;
 .popUpContainer {
     background-color: white;
 
-    position: absolute;
-    top: 10px;
+    height:98%;
+    position: fixed;
+    top: 1%;
     left: 10px;
     box-shadow: rgb(49, 49, 49) 0px 0px 17px;
     border-radius: $borderRadius;
@@ -17,15 +18,16 @@ $borderRadius: 10px;
     .popUpHeader {
 
         .popUpHeaderText {
-            margin-left: $margin;
+            margin: 0px $margin;
         }
         border-radius: $borderRadius;
-        height: 10%;
         display: flex;
         justify-content: space-between;
         align-items: center;
         font-size: 30px;
         background-color: white;
+
+        overflow: hidden;
 
         .closebtn {
             width: 14px;
@@ -36,7 +38,6 @@ $borderRadius: 10px;
 
     .popUpBody {
         margin-left: $margin;
-        height: 90%;
         overflow: auto;
     }
 
