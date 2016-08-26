@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'matrixc';
-  src:  url('../img/fonts/matrixc.eot?hm49o0');
-  src:  url('../img/fonts/matrixc.eot?hm49o0#iefix') format('embedded-opentype'),
-    url('../img/fonts/matrixc.ttf?hm49o0') format('truetype'),
-    url('../img/fonts/matrixc.woff?hm49o0') format('woff'),
-    url('../img/fonts/matrixc.svg?hm49o0#matrixc') format('svg');
+  src:  url('../img/fonts/matrixc.eot?oorwl7');
+  src:  url('../img/fonts/matrixc.eot?oorwl7#iefix') format('embedded-opentype'),
+    url('../img/fonts/matrixc.ttf?oorwl7') format('truetype'),
+    url('../img/fonts/matrixc.woff?oorwl7') format('woff'),
+    url('../img/fonts/matrixc.svg?oorwl7#matrixc') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,6 +24,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-full-screen:before {
+  content: "\e908";
+}
+.icon-info:before {
+  content: "\e909";
+}
+.icon-new-matrix:before {
+  content: "\e907";
+}
 .icon-close:before {
   content: "\e906";
 }
