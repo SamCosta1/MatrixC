@@ -42,15 +42,12 @@ gulp.task('styles', function() {
         .pipe(browserSync.reload({stream: true}));
 });
 
+
 //Watch task
 gulp.task('default', ['browser-sync'], function() {
     gulp.watch('./**/*.scss',['styles']);
     gulp.watch('src/**/*.js',['scripts']);
-});
-
-gulp.task('watch', ['browser-sync'], function () {
-    gulp.watch("scss/*.scss", ['sass']);
-    gulp.watch("*.html").on('change', bs.reload);
+    gulp.watch("*.html").on('change', browserSync.reload);
 });
 
 gulp.task('libraryScripts', function() {
