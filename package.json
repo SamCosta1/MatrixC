@@ -1,6 +1,6 @@
 {
   "name": "matrixc",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Matrix Calculator",
   "main": "index.html",
   "dependencies": {},
