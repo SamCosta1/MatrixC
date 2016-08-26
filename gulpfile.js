@@ -5,6 +5,17 @@ var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
 var cleanCSS = require('gulp-clean-css');
 var autoprefixer = require('gulp-autoprefixer');
+var browserSync = require('browser-sync').create();
+
+// Static server
+gulp.task('browser-sync', function() {
+    browserSync.init({
+        server: {
+            baseDir: "./"
+        }
+    });
+});
+
 
 options = {
        src: '.',
@@ -27,15 +38,20 @@ gulp.task('styles', function() {
             cascade: false
         }))
         .pipe(cleanCSS())
-        .pipe(gulp.dest(jsDest));
+        .pipe(gulp.dest(jsDest))
+        .pipe(browserSync.reload({stream: true}));
 });
 
 //Watch task
-gulp.task('default',function() {
+gulp.task('default', ['browser-sync'], function() {
     gulp.watch('./**/*.scss',['styles']);
     gulp.watch('src/**/*.js',['scripts']);
 });
 
+gulp.task('watch', ['browser-sync'], function () {
+    gulp.watch("scss/*.scss", ['sass']);
+    gulp.watch("*.html").on('change', bs.reload);
+});
 
 gulp.task('libraryScripts', function() {
     return gulp.src('dependencies/*js')
@@ -50,5 +66,6 @@ gulp.task('scripts', function() {
         .pipe(concat('scripts.min.js'))
         .pipe(gulp.dest(jsDest))
 //        .pipe(uglify())
-        .pipe(gulp.dest(jsDest));
+        .pipe(gulp.dest(jsDest))
+        .pipe(browserSync.reload({stream: true}));
 });
