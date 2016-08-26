@@ -2,7 +2,7 @@ function Popup() {
     var $container = $('<div class="popUpContainer">'),
         $header = $('<div class="popUpHeader noSelect">'),
         $headerText = $('<p class="popUpHeaderText">'),
-        $close = $('<img class="closebtn" src="img/x.png">'),
+        $close = $('<div class="closebtn icon-close">'),
         $popupBody = $('<div class="popUpBody">'),
         $window = $(window),
         $body = $('body');

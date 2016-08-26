@@ -80,7 +80,7 @@ function MatrixInputManager(_variables, _popup) {
             $modifiers = $('<div class="guiModifiers">');
 
             $hiddenBtns = $('<div class="MatrixOpButtons noSelect">');
-            $dragHandle = $('<img class="dragHandle" src="img/dragHandle.png">');
+            $dragHandle = $('<div class="DragHandle icon-drag-handle">');
             $allCalcButton = $('<img class="allCalcButton" src="img/questionmark.png">');
 
             $allCalcButton.click(onAllCalcClicked);

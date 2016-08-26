@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'matrixc';
-  src:  url('../img/fonts/matrixc.eot?mdk110');
-  src:  url('../img/fonts/matrixc.eot?mdk110#iefix') format('embedded-opentype'),
-    url('../img/fonts/matrixc.ttf?mdk110') format('truetype'),
-    url('../img/fonts/matrixc.woff?mdk110') format('woff'),
-    url('../img/fonts/matrixc.svg?mdk110#matrixc') format('svg');
+  src:  url('../img/fonts/matrixc.eot?hm49o0');
+  src:  url('../img/fonts/matrixc.eot?hm49o0#iefix') format('embedded-opentype'),
+    url('../img/fonts/matrixc.ttf?hm49o0') format('truetype'),
+    url('../img/fonts/matrixc.woff?hm49o0') format('woff'),
+    url('../img/fonts/matrixc.svg?hm49o0#matrixc') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,34 +24,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-drag-handle .path1:before {
-  content: "\e905";
-  color: rgb(0, 0, 0);
-}
-.icon-drag-handle .path2:before {
+.icon-close:before {
   content: "\e906";
-  margin-left: -1em;
-  color: rgb(0, 0, 0);
 }
-.icon-drag-handle .path3:before {
-  content: "\e907";
-  margin-left: -1em;
-  color: rgb(0, 0, 0);
-}
-.icon-drag-handle .path4:before {
-  content: "\e908";
-  margin-left: -1em;
-  color: rgb(0, 0, 0);
-}
-.icon-drag-handle .path5:before {
-  content: "\e909";
-  margin-left: -1em;
-  color: rgb(0, 0, 0);
-}
-.icon-drag-handle .path6:before {
-  content: "\e90a";
-  margin-left: -1em;
-  color: rgb(0, 0, 0);
+.icon-drag-handle:before {
+  content: "\e905";
 }
 .icon-double-right-arrow:before {
   content: "\e900";
@@ -68,3 +45,4 @@
 .icon-right-arrow:before {
   content: "\e903";
 }
+

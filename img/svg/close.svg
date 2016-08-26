@@ -18,7 +18,7 @@
    xml:space="preserve"
    shape-rendering="crispEdges"
    inkscape:version="0.91 r"
-   sodipodi:docname="drag-handle.svg"><sodipodi:namedview
+   sodipodi:docname="close.svg"><sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1"
@@ -37,7 +37,7 @@
      inkscape:snap-smooth-nodes="true"
      inkscape:snap-midpoints="true"
      inkscape:zoom="0.91161315"
-     inkscape:cx="539.51205"
+     inkscape:cx="507.15183"
      inkscape:cy="225.43115"
      inkscape:window-x="0"
      inkscape:window-y="0"
@@ -46,14 +46,7 @@
      id="metadata3548"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
-     id="defs3546" /><g
-     transform="translate(623.07131,189.77348)"
-     style="fill:#000000;fill-opacity:1"
-     id="g4490"><g
-       style="fill:#000000;fill-opacity:1"
-       id="g4498"
-       transform="matrix(0,-1,1,0,-742.62815,617.6182)"><path
-         id="path4504"
-         style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero"
-         d="m 674.84414,533.42094 0,-107.86409 0,-107.86409 66.27377,53.93204 66.27377,53.93205 -66.27377,53.93204 z m -346.90491,-215.72819 0,107.8641 0,107.86409 -66.27377,-53.93205 -66.27378,-53.93204 66.27378,-53.93205 z m 10e-6,77.61313 346.9049,0 0,60.50191 -346.9049,0 z m 65.58836,203.70341 107.86409,0 107.86408,0 -53.93205,66.27378 -53.93203,66.27377 -53.93205,-66.27377 z m 215.72816,-346.9049 -107.86408,0 -107.86409,0 53.93204,-66.27377 53.93205,-66.27378 53.93204,66.27377 z m -77.61313,0 0,346.9049 -60.5019,0 0,-346.9049 z"
-         inkscape:connector-curvature="0" /></g></g></svg>
+     id="defs3546" /><path
+     style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.64448035;stroke-opacity:1"
+     d="M 27.181641 1.4101562 L 1.4101562 27.181641 L 280.22852 306 L 1.4101562 584.81836 L 27.181641 610.58984 L 306 331.77148 L 584.81836 610.58984 L 610.58984 584.81836 L 331.77148 306 L 610.58984 27.181641 L 584.81836 1.4101562 L 306 280.22852 L 27.181641 1.4101562 z "
+     id="rect4665" /></svg>
