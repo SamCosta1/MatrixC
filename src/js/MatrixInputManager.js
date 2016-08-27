@@ -82,7 +82,7 @@ function MatrixInputManager(_variables, _popup) {
 
             $hiddenBtns = $('<div class="MatrixOpButtons noSelect">');
             $dragHandle = $('<div class="dragHandle icon-drag-handle">');
-            $allCalcButton = $('<img class="allCalcButton" src="img/questionmark.png">');
+            $allCalcButton = $('<div class="allCalcButton icon-info">');
 
             $allCalcButton.click(onAllCalcClicked);
             $hiddenBtns.append($dragHandle);
