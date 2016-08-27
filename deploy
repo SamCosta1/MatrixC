@@ -6,9 +6,7 @@ then
 else
     echo "Branch check successful"
     echo "Running gulp"
-    gulp libraryScripts
-    gulp scripts
-    gulp styles
+    gulp deploy
 
     cd /home/sam/Mess_About_Code/MatrixCLive
     echo "Found live repo"

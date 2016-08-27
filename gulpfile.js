@@ -2,7 +2,9 @@ var gulp = require('gulp');
 var sass = require('gulp-sass');
 var concat = require('gulp-concat');
 var rename = require('gulp-rename');
+
 var uglify = require('gulp-uglify');
+var gulpif = require('gulp-if');
 var cleanCSS = require('gulp-clean-css');
 var autoprefixer = require('gulp-autoprefixer');
 var browserSync = require('browser-sync').create();
@@ -16,16 +18,11 @@ gulp.task('browser-sync', function() {
     });
 });
 
-
 options = {
        src: '.',
        dest: './dist'
     };
-require('gulp-compress')(gulp, options);
-
-gulp.task('default', function() {
-  // place code for your default task here
-});
+    require('gulp-compress')(gulp, options);
 
 var jsFiles = 'src/js/**/*.js',
 jsDest = 'dist/';
@@ -37,27 +34,34 @@ gulp.task('styles', function() {
             browsers: ['last 2 versions'],
             cascade: false
         }))
-        .pipe(cleanCSS())
+        .pipe(gulpif(deploy,cleanCSS()))
         .pipe(gulp.dest(jsDest))
-        .pipe(browserSync.reload({stream: true}));
+        .pipe(gulpif(!deploy,browserSync.reload({stream: true})));
 });
 
-//Watch task
-gulp.task('default', ['browser-sync'], function() {
+var deploy = false;
+gulp.task('deploy', function() {
+    deploy = true;
+    gulp.start('default');
+});
+
+gulp.task('default', function() {
+    gulp.start('libraryScripts');
+    gulp.start('scripts');
+    gulp.start('styles');
+});
+
+gulp.task('develop', ['default', 'browser-sync'], function() {
     gulp.watch('./**/*.scss',['styles']);
     gulp.watch('src/**/*.js',['scripts']);
-});
-
-gulp.task('watch', ['browser-sync'], function () {
-    gulp.watch("scss/*.scss", ['sass']);
-    gulp.watch("*.html").on('change', bs.reload);
+    gulp.watch("*.html").on('change', browserSync.reload);
 });
 
 gulp.task('libraryScripts', function() {
     return gulp.src('dependencies/*js')
         .pipe(concat('dep.min.js'))
         .pipe(gulp.dest(jsDest))
-    //    .pipe(uglify())
+        .pipe(gulpif(deploy, uglify()))
         .pipe(gulp.dest(jsDest));
 });
 
@@ -65,7 +69,7 @@ gulp.task('scripts', function() {
     return gulp.src(jsFiles)
         .pipe(concat('scripts.min.js'))
         .pipe(gulp.dest(jsDest))
-//        .pipe(uglify())
+        .pipe(gulpif(deploy, uglify()))
         .pipe(gulp.dest(jsDest))
-        .pipe(browserSync.reload({stream: true}));
+        .pipe(gulpif(!deploy,browserSync.reload({stream: true})));
 });
