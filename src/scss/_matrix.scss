@@ -74,6 +74,7 @@
         display: flex;
         align-items: center;
         width: 140px;
+        font-size:20px;
         .rowColModifier {
             position: relative;
             border-radius: 5px;
@@ -84,16 +85,10 @@
             margin-left: 5px;
             user-select: none;
             padding: 3;
+
+            font-size: 15px;
         }
-        .rowButton {
-            transform: rotate(-90deg);
-            filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-            position: relative;
-            // HACK Use icon fonts!!!
-            &.addRow {
-                transform: rotate(90deg);
-            }
-        }
+
         .addLeftMargin {
             margin-left: 15px;
         }
