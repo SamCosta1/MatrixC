@@ -357,10 +357,12 @@ function MatrixInputManager(_variables, _popup) {
         //overlap: 'pointer',
 
         ondragenter: function(event) {
+            $(event.relatedTarget).addClass('deleting');
             $('#bin').addClass("binOpen");
 
         },
         ondragleave: function(event) {
+            $(event.relatedTarget).removeClass('deleting');            
             $('#bin').removeClass("binOpen");
         },
         ondrop: function(event) {
@@ -376,7 +378,7 @@ function MatrixInputManager(_variables, _popup) {
     function deleteMatrix(obj) {
         variables.delete($(obj).attr("id").split('-')[1]);
         obj.remove();
-        $('#bin').attr("src", "img/bin.png");
+        $('#bin').removeClass("binOpen");
     }
 
     $(document).keyup(function(e) {
