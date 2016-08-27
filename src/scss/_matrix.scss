@@ -1,0 +1,103 @@
+.matDefinitions {
+
+    .matInput {
+        font-size: 20px;
+        display: inline-flex;
+        margin-left: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius: 25px;
+        background-color: rgba(204, 204, 204, 0.2);
+
+        .label {
+            display: flex;
+            align-items: center;
+        }
+
+        &.deleting {
+            background-color: rgba(236, 110, 110, 0.2) !important;
+        }
+
+        &:hover {
+            .MatrixOpButtons {
+                display: flex;
+            }
+        }
+
+        .MatrixOpButtons {
+            display: none;
+            top: 7px;
+            $handleSize: 20px;
+            .dragHandle {
+                height: $handleSize;
+                width: $handleSize;
+                margin-left: 5px;
+                &:hover {
+                    cursor: all-scroll;
+                }
+            }
+
+            .allCalcButton {
+                height: $handleSize;
+                width: $handleSize;
+                cursor: pointer;
+            }
+            flex-direction: row-reverse;
+            align-items: center;
+            position: relative;
+            right: 32px;
+            align-self: flex-start;
+
+        }
+
+    }
+    .matContainer {
+        margin-left: 20px;
+        margin-top: 10px;
+
+        .matrixCell {
+            width: 50px;
+            height: 55px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+            border-radius: 4px;
+            border-color: black;
+            border-width: 1px;
+        }
+        $borderStyle: 3px solid black;
+        .matGUI {
+            padding-left: 10px;
+            padding-top: 10px;
+            border-left: $borderStyle;
+            border-right: $borderStyle;
+            border-radius: 20px;
+        }
+    }
+
+
+    .guiModifiers {
+        display: flex;
+        align-items: center;
+        width: 140px;
+        font-size:20px;
+        .rowColModifier {
+            position: relative;
+            border-radius: 5px;
+            border-color: black;
+            background-color: white;
+            border-style: solid;
+            cursor: pointer;
+            margin-left: 5px;
+            user-select: none;
+            padding: 3;
+
+            font-size: 15px;
+        }
+
+        .addLeftMargin {
+            margin-left: 15px;
+        }
+    }
+
+}

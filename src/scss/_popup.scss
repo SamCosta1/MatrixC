@@ -1,0 +1,51 @@
+$gridCol: rgba(128, 128, 128, 0.1);
+$gridDim: 30px;
+$borderRadius: 10px;
+
+.popUpContainer {
+    background-color: white;
+
+    height:98%;
+    position: fixed;
+    top: 1%;
+    left: 10px;
+    box-shadow: rgb(49, 49, 49) 0px 0px 17px;
+    border-radius: $borderRadius;
+    background-size: $gridDim $gridDim;
+    background-image: linear-gradient(to right, $gridCol 1px, transparent 1px), linear-gradient(to bottom, $gridCol 1px, transparent 1px);
+
+    $margin: 15px;
+    .popUpHeader {
+
+        .popUpHeaderText {
+            margin: 0px $margin;
+        }
+        border-radius: $borderRadius;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 30px;
+        background-color: white;
+
+        overflow: hidden;
+
+        .closebtn {
+            margin-right: $margin + 1;
+            cursor: pointer;
+            font-size: 20px;
+        }
+    }
+
+    .popUpBody {
+        margin-left: $margin;
+        overflow: auto;
+    }
+
+    .allCalcLabel {
+        width: 95%;
+        background-color: #eaf1ff;
+        border-radius: $borderRadius;
+        padding-left: $margin / 2;
+    }
+
+}

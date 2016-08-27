@@ -1,56 +1,79 @@
-$('.sidebar').ready(function() {
-    $('.sidebar').css('max-width', $(window).width());
-    var oldX = 0;
-    $('.handle').mousedown(function() {
-        $(document).bind('mousemove', function(e) {
-            e.stopImmediatePropagation();
-            $('.sidebar').width($('.sidebar').width() + $('.sidebar').position().left - e.pageX);
-            if ($('.sidebar').width() !== 16)
-                $('.snapHandle').removeClass('expand');
-            else
-                $('.snapHandle').addClass('expand');
+function Sidebar() {
+    var $sidebarContainer = $('.sidebar'),
+        $sidebarBody = $('.sidebarBody'),
+        $dragHandle = $('.handle'),
+        $snapHandle = $('.snapHandle'),
+        $fullScreenToggle = $('.fullScreen'),
+
+        currentWidth = handleWidth,
+        handleWidth = $dragHandle.width();
+
+    function init() {
+
+        $dragHandle.bind('mousedown', onSnapHandleMouseDown);
+        $dragHandle.dblclick(onHandleDoubleClick);
+        $snapHandle.click(onSnapClick);
+        $fullScreenToggle.click(toggleFullScreen);
+
+        $(document).mouseup(function(e) {
+            $(document).unbind('mousemove');
         });
-    });
+    }
 
-    $('.handle').dblclick(function() {
-        if ($('.sidebar').width() !== 16)
-            collapseSidebar();
-        else
-            expandSidebar();
-    });
+    function expandSidebar() {
+        $sidebarContainer.width($(window).width() * 0.75);
+        $snapHandle.removeClass('expand');
+    }
 
-    $(document).mouseup(function(e) {
-        $(document).unbind('mousemove');
-    });
+    function collapseSidebar() {
+        $sidebarContainer.width(handleWidth);
+        $snapHandle.addClass('expand');
+    }
 
-    $('.snapHandle').click(function() {
-        if ($('.sidebar').width() == 16) {
+    function toggleFullScreen() {
+        if ($fullScreenToggle.hasClass('unfullScreen'))
+            $sidebarContainer.css('width', currentWidth);
+        else {
+            currentWidth = $sidebarContainer.width();
+            $sidebarContainer.width($(window).width());
+        }
+        $fullScreenToggle.toggleClass('unfullScreen');
+    }
+
+    function onSnapClick() {
+        if ($sidebarContainer.width() == handleWidth) {
             expandSidebar();
         } else {
             collapseSidebar();
         }
-    });
-    var prevSize = 16;
-    $('.fullScreen').click(function() {
-        if ($('.fullScreen').hasClass('unfullScreen'))
-            $('.sidebar').css('width', prevSize);
-        else {
-            prevSize = $('.sidebar').width();
-            $('.sidebar').width($(window).width());
-        }
-        $('.fullScreen').toggleClass('unfullScreen');
-    });
-});
-$(window).resize(function() {
-    $('.sidebar').css('max-width', $(window).width());
-});
+        $('body').trigger('sidebarResize');
+    }
 
-function expandSidebar() {
-    $('.sidebar').width($(window).width() * 0.75);
-    $('.snapHandle').removeClass('expand');
-}
+    function onHandleDoubleClick() {
+        if ($sidebarContainer.width() !== handleWidth)
+            collapseSidebar();
+        else
+            expandSidebar();
+        $('body').trigger('sidebarResize');
+    }
 
-function collapseSidebar() {
-    $('.sidebar').width(16);
-    $('.snapHandle').addClass('expand');
+    function onSnapHandleMouseDown() {
+        $(document).bind('mousemove', function(e) {
+            e.stopImmediatePropagation();
+            $('body').trigger('sidebarResize');
+            var amount = $sidebarContainer.position().left - e.pageX;
+            if (amount < 0 || $sidebarContainer.width() < $(window).width())
+                $sidebarContainer.width($sidebarContainer.width() + $sidebarContainer.position().left - e.pageX);
+
+            if ($sidebarContainer.width() > $(window).width())
+                $sidebarContainer.width($(window).width());
+            if ($sidebarContainer.width() !== handleWidth)
+                $snapHandle.removeClass('expand');
+            else
+                $snapHandle.addClass('expand');
+        });
+    }
+    return {
+        init: init
+    };
 }

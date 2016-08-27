@@ -1,17 +1,20 @@
 {
   "name": "matrixc",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Matrix Calculator",
   "main": "index.html",
-  "dependencies": {
-    "gulp": "^3.9.1"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "browser-sync": "^2.14.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
     "gulp-clean-css": "^2.0.12",
     "gulp-compress": "0.0.8",
     "gulp-concat": "^2.6.0",
+    "gulp-if": "^2.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.2",
+    "gulp-shell": "^0.5.2",
     "gulp-uglify": "^2.0.0"
   },
   "scripts": {

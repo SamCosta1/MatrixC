@@ -1,10 +1,11 @@
-var Parser = function() {
+function Parser(_variables) {
+    var variables = _variables;
 
     function performCalc(cmd) {
         cmd = cmd.replace(/ /g, '').replace(/\n/g, '');
 
         // Split lines by semi colon and run each command seperatly
-        if (cmd.includes(';')) {
+        if (cmd.indexOf(';') > 0) {
             var commands = cmd.split(';');
             for (var c in commands)
                 performCalc(commands[c]);
@@ -17,20 +18,19 @@ var Parser = function() {
         var org = cmd;
         var lbl = '';
         var containsEqs = false;
-        if (cmd.includes('=')) {
+        if (cmd.indexOf('=') > 0) {
             containsEqs = true;
             lbl = cmd.split('=')[0];
-            if (isValid(lbl, true))
+            if (variables.isValid(lbl, true))
                 cmd = cmd.split('=')[1];
             else
                 throw "Invalid Variable Name :(";
 
         } else
-            lbl = getNextFreeLetter();
+            lbl = variables.getNextFreeLetter();
         cmd = '(' + cmd + ')';
 
         var calcSteps = new CalculationArray();
-        calculations.set(lbl, calcSteps);
 
         var theArray = getArrayFromString(cmd);
         if (!containsEqs && theArray.length == 3) {
@@ -87,22 +87,12 @@ var Parser = function() {
                 break;
         }
 
-        calculations.get(lbl).render($('.sidebarBody'));
+        calcSteps.render($('.sidebarBody'));
 
-        if (!variables.get(lbl))
-            newInputComp(lbl, theArray[0].clone());
-        else {
-            if (typeof variables.get(lbl) == typeof theArray[0])
-                updateGUI(lbl, theArray[0].clone());
-            else {
-                if (typeof theArray[0] === 'object')
-                    throw "You can't assign a matrix to a number";
-                else
-                    throw "You can't assign a number to a matrix";
-
-            }
-        }
-
+        return {
+            lbl: lbl,
+            matrix: theArray[0].clone()
+        };
     }
 
     function getArrayFromString(cmd) {
@@ -234,11 +224,11 @@ var Parser = function() {
     }
 
     function isCloseBracket(str) {
-        return str == ')';
+        return str === ')';
     }
 
     function isOpenBracket(str) {
-        return str == '(';
+        return str === '(';
     }
 
     function isBrackets(str) {
@@ -250,10 +240,10 @@ var Parser = function() {
     }
 
     function isSquiggle(str) {
-        return str == '}' || str == '{';
+        return str === '}' || str === '{';
     }
 
     return {
         parse: performCalc
     };
-};
+}
