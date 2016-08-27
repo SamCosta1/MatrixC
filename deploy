@@ -14,11 +14,11 @@ else
     echo "Clearing old code"
     rm *
     rm dist/*
-    rm dependencies/*
-    rm img/*
+    rm -r dependencies/*
+    rm -r img/*
 
     cp ../MatrixC/*html .
-    cp ../MatrixC/img/* ./img
+    cp -r ../MatrixC/img/* ./img
     cp ../MatrixC/dist/* ./dist
     rsync -av --exclude='*js' ../MatrixC/dependencies/ dependencies
 
