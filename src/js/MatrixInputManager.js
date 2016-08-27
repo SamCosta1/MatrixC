@@ -125,8 +125,8 @@ function MatrixInputManager(_variables, _popup) {
             $div.append($modifiers);
         }
 
-        $('#matDefinitions').append($div);
-        //$('#matDefinitions').append($("<br>"));
+        $('.matDefinitions').append($div);
+
         $('.clickedit').hide()
             .focusout(endEdit)
             .keyup(function(e) {
@@ -362,7 +362,7 @@ function MatrixInputManager(_variables, _popup) {
 
         },
         ondragleave: function(event) {
-            $(event.relatedTarget).removeClass('deleting');            
+            $(event.relatedTarget).removeClass('deleting');
             $('#bin').removeClass("binOpen");
         },
         ondrop: function(event) {

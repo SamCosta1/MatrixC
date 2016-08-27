@@ -8,49 +8,49 @@
 </head>
 
 <body>
-    <div id="header">
+    <div id="header" class="noSelect">
         <div class="middleTitle center noSelect" onclick="window.location.href='index.html'">
-            <img class="Lbracket bracket" src="img/bracketWhite.png">
+            <div class="headerBracket icon-left-bracket"></div>
             <div id="headerText">
                 M&#945;trix
                 <br>C&#945;lculator
             </div>
-            <img class="Rbracket flip" src="img/bracketWhite.png">
+            <div class="headerBracket icon-right-bracket"></div>
         </div>
-        <div class="credit"><a target="parent" class="credit" href="refrences.html"><b>Other Stuff</b></a></div>
+        <div class="credit noSelect"><a class="credit" href="refrences.html">Other Stuff</a></div>
     </div>
-    <hr>
-    <div class="mainBody">
+
+    <div class="mainBody matDefinitions">
         <br>
-        <div class="matInput draggable addPad" style="padding-left:10px;">
+        <div class="matInput draggable addPad">
             <p>interact.js module - <a target="parent" href="http://interactjs.io/">Drag Stuff!</a></p>
-            <img class="handle noSelect" src="img/dragHandle.png">
+            <div class="dragHandle icon-drag-handle"></div>
         </div>
-        <div class="matInput draggable addPad" style="padding-left:10px;">
-            <img src="img/mathjax.png" class="noSelect" style="height:29px;margin-top:23px;margin-right:5px;"></img>
+        <div class="matInput draggable addPad">
+            <img src="img/mathjax.png" class="noSelect"></img>
             <p>Maths rendering - <a target="parent" href="http://www.mathjax.org/">Pretty equations!!</a></p>
-            <img class="handle noSelect" src="img/dragHandle.png">
+            <div class="dragHandle icon-drag-handle"></div>
         </div>
-        <div class="matInput draggable addPad" style="padding-left:10px;">
+        <div class="matInput draggable addPad">
             <p>Super accurate maths with <a target="parent" href="http://mikemcl.github.io/big.js/">big.js!</a></p>
-            <img class="handle noSelect" src="img/dragHandle.png">
+            <div class="dragHandle icon-drag-handle"></div>
         </div>
 
-        <div class="matInput draggable addPad" style="padding:10px">
-            <img src="img/bin.png" class="noSelect" style="width:40px;height:40px;margin-top:19px;"></img>
+        <div class="matInput draggable addPad">
+            <div class="noSelect icon-bin"></div>
             <p>
                 Icons by <a target="parent" href="http://www.flaticon.com/authors/catalin-fertu">Catalin Fertu</a> from
                 <a target="parent" href="http://www.flaticon.com">www.flaticon.com</a>
             </p>
-            <img src="img/arrow.png" class="noSelect" style="height:20px;margin-top:31px;"></img>
+            <img src="img/arrow.png" class="noSelect"></img>
             <img class="handle noSelect addPad" src="img/dragHandle.png">
         </div>
 
 
         <div class="matInput draggable addPad">
-            <img src="img/github.png" class="noSelect" style="width:40px;height:40px;margin-top:19px;margin-right:5px;"></img>
+            <img src="img/github.png" class="noSelect"></img>
             <p> GitHub Repository <a target="parent" href="https://github.com/SamCosta1/MatrixC">here!</a></p>
-            <img class="handle noSelect" src="img/dragHandle.png">
+            <div class="dragHandle icon-drag-handle"></div>
         </div>
         <div class="matInput draggable addPad">
 
@@ -73,17 +73,17 @@
                         <textarea class="frmInput msgInput" name="message"></textarea>
                     </div><br>
                     <div class="frmInputContainer btnContainer">
-                        <button>Send</button>
+                        <button id="submit">Send</button>
                     </div>
 
                 </form>
             </div>
-            <img class="handle noSelect" src="img/dragHandle.png">
+            <div class="dragHandle icon-drag-handle"></div>
         </div>
         <div class="matInput draggable addPad">
-            <img src="img/trello.png" class="noSelect" style="height:40px;margin-top:19px;margin-right:5px;"></img>
+            <img src="img/trello.png" class="noSelect"></img>
             <p> My attempt at organization <a target="parent" href="https://trello.com/b/535Ywpo0/matrixc">here!</a></p>
-            <img class="handle noSelect" src="img/dragHandle.png">
+            <div class="dragHandle icon-drag-handle"></div>
         </div>
     </div>
 </body>
@@ -125,7 +125,7 @@
             // call this function on every dragmove event
             onmove: dragMoveListener,
 
-        }).allowFrom('.handle');
+        }).allowFrom('.dragHandle');
 
 
     // this is used later in the resizing and gesture demos
