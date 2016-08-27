@@ -1,0 +1,10 @@
+cd ~/Documents/
+unzip -o matrixc.zip -d matrixc
+cp matrixc/fonts/* /home/sam/Mess_About_Code/MatrixC/img/fonts
+cp matrixc/style.css /home/sam/Mess_About_Code/MatrixC/src/scss/_icons.scss
+rm /home/sam/Mess_About_Code/MatrixC/img/.directory
+rm matrixc.zip
+
+cd /home/sam/Mess_About_Code/MatrixC/src/scss/
+
+sed -i 's/fonts/..\/img\/fonts/g' _icons.scss

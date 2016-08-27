@@ -5,7 +5,7 @@ function Parser(_variables) {
         cmd = cmd.replace(/ /g, '').replace(/\n/g, '');
 
         // Split lines by semi colon and run each command seperatly
-        if (cmd.includes(';')) {
+        if (cmd.indexOf(';') > 0) {
             var commands = cmd.split(';');
             for (var c in commands)
                 performCalc(commands[c]);
@@ -18,7 +18,7 @@ function Parser(_variables) {
         var org = cmd;
         var lbl = '';
         var containsEqs = false;
-        if (cmd.includes('=')) {
+        if (cmd.indexOf('=') > 0) {
             containsEqs = true;
             lbl = cmd.split('=')[0];
             if (variables.isValid(lbl, true))

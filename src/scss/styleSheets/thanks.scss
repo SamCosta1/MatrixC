@@ -1,0 +1,28 @@
+@import "../icons";
+@import "../main";
+@import "../matrix";
+@import "../header";
+
+.mainBody {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
+
+    .matInput {
+        margin: 0 !important;
+    }
+
+    .handle {
+       margin-right: 8px !important;
+    }
+}
+
+.thanks {
+    text-align: center;
+    font-size: 40px !important;
+    padding: 10px 0 !important;
+}
+.thankText {
+    margin-left: 28px;
+}

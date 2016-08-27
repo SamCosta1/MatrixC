@@ -10,7 +10,7 @@ function Fraction(top, bottom) {
     this.bottom = this.bottom.toString();
     this.top = this.top.toString();
 
-    if (this.top.includes('/')) {
+    if (this.top.indexOf('/') > 0) {
         this.top = top.split('/')[0];
         this.bottom = top.split('/')[1];
     }

@@ -12,6 +12,7 @@ function MatrixInputManager(_variables, _popup) {
         $newMatrixBtn.bind('click', function() {
             newInputComp();
         });
+        $newMatrixBtn.trigger('click');
     }
 
     function render(data) {
@@ -80,28 +81,28 @@ function MatrixInputManager(_variables, _popup) {
             $modifiers = $('<div class="guiModifiers">');
 
             $hiddenBtns = $('<div class="MatrixOpButtons noSelect">');
-            $dragHandle = $('<img class="dragHandle" src="img/dragHandle.png">');
-            $allCalcButton = $('<img class="allCalcButton" src="img/questionmark.png">');
+            $dragHandle = $('<div class="dragHandle icon-drag-handle">');
+            $allCalcButton = $('<div class="allCalcButton icon-info">');
 
             $allCalcButton.click(onAllCalcClicked);
             $hiddenBtns.append($dragHandle);
             $hiddenBtns.append($allCalcButton);
 
-            var btnImg = function() {
-                return $('<img src="img/arrow.png">');
+            var btnImg = function(direction) {
+                return $('<div class="icon-'+direction+'-arrow">');
             };
 
             $colbtn = $('<button class="addCol colButton rowColModifier noSelect">');
-            $colbtn.append(btnImg());
+            $colbtn.append(btnImg('right'));
 
             $rowbtn = $('<button class="addRow rowButton rowColModifier noSelect">');
-            $rowbtn.append(btnImg());
+            $rowbtn.append(btnImg('down'));
 
-            $rmvColbtn = $('<button class="rmvCol colButton rowColModifier noSelect flip">');
-            $rmvColbtn.append(btnImg());
+            $rmvColbtn = $('<button class="rmvCol colButton rowColModifier noSelect">');
+            $rmvColbtn.append(btnImg('left'));
 
             $rmvRowbtn = $('<button class="rmvRow rowButton rowColModifier noSelect addLeftMargin">');
-            $rmvRowbtn.append(btnImg());
+            $rmvRowbtn.append(btnImg('up'));
 
             $colbtn.attr("data-tableid", "t" + count);
             $rowbtn.attr("data-tableid", "t" + count);
@@ -124,8 +125,8 @@ function MatrixInputManager(_variables, _popup) {
             $div.append($modifiers);
         }
 
-        $('#matDefinitions').append($div);
-        //$('#matDefinitions').append($("<br>"));
+        $('.matDefinitions').append($div);
+
         $('.clickedit').hide()
             .focusout(endEdit)
             .keyup(function(e) {
@@ -356,12 +357,13 @@ function MatrixInputManager(_variables, _popup) {
         //overlap: 'pointer',
 
         ondragenter: function(event) {
-            $('#bin').attr("src", "img/openBin.png");
+            $(event.relatedTarget).addClass('deleting');
+            $('#bin').addClass("binOpen");
 
         },
         ondragleave: function(event) {
-            $('#bin').attr("src", "img/bin.png");
-
+            $(event.relatedTarget).removeClass('deleting');
+            $('#bin').removeClass("binOpen");
         },
         ondrop: function(event) {
             deleteMatrix(event.relatedTarget);
@@ -375,8 +377,8 @@ function MatrixInputManager(_variables, _popup) {
 
     function deleteMatrix(obj) {
         variables.delete($(obj).attr("id").split('-')[1]);
-        obj.remove();
-        $('#bin').attr("src", "img/bin.png");
+        $(obj).remove();
+        $('#bin').removeClass("binOpen");
     }
 
     $(document).keyup(function(e) {

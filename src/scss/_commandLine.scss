@@ -19,6 +19,7 @@ $commandlineBorder: 7px;
             resize: none;
             background-color: #22374a;
             border-radius: $commandlineBorder;
+            overflow: auto;
             &:hover {
                 border: none;
             }

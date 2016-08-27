@@ -9,6 +9,17 @@ $col2: gray;
     #btnNewMat {
         cursor: pointer;
         display: flex;
+        height:40px; // == fontsize
+        display: flex;
+        align-items: center;
+
+        .newMatIcon {
+            background-color: black;
+            color: white;
+            font-size:40px;
+            padding: 2px;
+            border-radius: 5px;
+        }
 
         #newLabel {
             background-color: #e8effd;
@@ -30,9 +41,16 @@ $col2: gray;
 #bin {
     float: right;
     margin-left: auto;
-    margin-right: 10px;
+    margin-right: 17px;
     user-select: none;
     width: 50px;
+    font-size: 50px;
+
+    &.icon-bin {
+        &.binOpen {
+            @extend .icon-bin-open;
+        }
+    }
 }
 
 $gridCol: rgba(128, 128, 128, 0.1);
