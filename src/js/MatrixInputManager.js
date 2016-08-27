@@ -377,7 +377,7 @@ function MatrixInputManager(_variables, _popup) {
 
     function deleteMatrix(obj) {
         variables.delete($(obj).attr("id").split('-')[1]);
-        obj.remove();
+        $(obj).remove();
         $('#bin').removeClass("binOpen");
     }
 
