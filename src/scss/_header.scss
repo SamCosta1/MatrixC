@@ -18,14 +18,17 @@
         align-items: center;
         margin-bottom: 8;
     }
-    .bracket {
-        margin-top: 3px;
-        margin-bottom: 3px;
-    }
+
+
     .middleTitle {
         display: flex;
         margin-top: 5px;
         margin-bottom: 5px;
+
+        .headerBracket {
+            font-size: 129px;
+            color: white;
+        }
     }
     .credit {
         display: flex;
