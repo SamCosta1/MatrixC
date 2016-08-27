@@ -30,9 +30,9 @@ $borderRadius: 10px;
         overflow: hidden;
 
         .closebtn {
-            width: 14px;
-            margin-right: $margin + 6;
-            cursor:pointer;
+            margin-right: $margin + 1;
+            cursor: pointer;
+            font-size: 20px;
         }
     }
 
