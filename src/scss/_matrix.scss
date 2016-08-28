@@ -85,6 +85,7 @@
         justify-content: space-between;
         font-size:20px;
         margin-right: 5px;
+        width:150px; // Fixed width to look right in ie and firefox
         .rowColModifier {
             position: relative;
             border-radius: 5px;
