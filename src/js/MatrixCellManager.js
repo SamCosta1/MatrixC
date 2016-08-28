@@ -19,6 +19,12 @@ function MatrixCellManager() {
         $container.attr('data-row', row);
         $container.attr('data-col', col);
 
+        if (val.getBottomString() === '1') {
+            $container.removeClass('fraction');
+        } else {
+            $container.addClass('fraction');
+        }
+
         $top.keyup(function() {
             if ($(this).val().indexOf('/') > 0) {
                 $(this).parent().addClass("fraction");
@@ -39,7 +45,7 @@ function MatrixCellManager() {
 
         $top.on('change focusout keyup',function(e) {
             console.log("focusout");
-            var newVal = $(this).val();
+            var newVal = $(this).val().trim();
             console.log(newVal);
             if (newVal === '0')
                 $(this).parent().addClass('zero');
@@ -52,11 +58,13 @@ function MatrixCellManager() {
         });
 
         $bottom.focusout(function() {
-            var newVal = $(this).val();
+            var newVal = $(this).val().trim();
 
-            if (newVal.trim() === '') {
+            if (newVal === '') {
                 $(this).parent().removeClass('fraction');
                 $(this).siblings('.top').focus();
+            } else if (newVal === '1') {
+                $(this).parent().removeClass('fraction');
             }
         })
 
