@@ -3,3 +3,17 @@
 @import "../main";
 @import "../header";
 @import "../refrences";
+
+img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+.matDefinitions .matInput {
+    align-items: center;
+}
+
+.dragHandle {
+    margin-left: 10px !important;
+    margin-top: 0px !important;
+}
