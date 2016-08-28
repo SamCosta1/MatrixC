@@ -55,15 +55,76 @@
         margin-left: 20px;
         margin-top: 10px;
 
+        $cellWidth: 55px;
+        $cellHeight: 55px;
+
         .matrixCell {
-            width: 50px;
-            height: 55px;
+            width: $cellWidth;
+            height: $cellHeight;
             margin-right: 10px;
             margin-bottom: 10px;
             text-align: center;
             border-radius: 4px;
             border-color: black;
             border-width: 1px;
+            border-style: solid;
+
+            background-color: white;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .fractionLine {
+                display: none;
+            }
+
+            &.zero {
+                .inputCell {
+                    color: gray;
+                }
+            }
+
+            .inputCell {
+                width:96%;
+                height: $cellHeight * 0.9;
+                border-style: none;
+                text-align: center;
+
+                &.bottom {
+                    display: none;
+                }
+
+                &:focus {
+                    outline: none;
+                }
+            }
+
+            &.fraction {
+                .fractionLine {
+                    width: $cellWidth * 0.85;
+                    display: block; border: 0;
+                    height: 1px;
+                }
+
+                $fractionGap: 3px;
+
+                .inputCell {
+
+                    &.top {
+                        margin-bottom: $fractionGap / 2;
+                    }
+
+                    &.bottom {
+                        display: block;
+                        margin-top: $fractionGap / 2;
+                    }
+                }
+            }
+
+
+
         }
         $borderStyle: 3px solid black;
         .matGUI {

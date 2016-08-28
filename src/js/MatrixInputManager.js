@@ -305,12 +305,7 @@ function MatrixInputManager(_variables, _popup) {
         }
         $('#MAT-' + lbl).find('table tr').each(function() {
             $(this).find('td').each(function() {
-                var $input = $(this).find('input');
-                var row = $input.attr("data-row");
-                var col = $input.attr("data-col");
-
-
-                $input.val(matrix instanceof Matrix ? matrix.getCell(row, col) : matrix.toString());
+                cellManager.updateCell($(this), matrix)
             });
         });
     }
