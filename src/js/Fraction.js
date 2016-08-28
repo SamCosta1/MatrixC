@@ -108,6 +108,9 @@ Fraction.prototype.isZero = function() {
 Fraction.prototype.isOne = function() {
     return this.bottom.eq(this.top);
 };
+Fraction.prototype.isInt = function() {
+    return this.bottom.eq('1');
+};
 Fraction.prototype.toString = function() {
     if (this.top.eq(0))
         return '0';
