@@ -39,7 +39,7 @@ function MatrixCellManager() {
             if ($(this).val() === "0")
                 $(this).val("");
             else {
-                $(this).removeClass('zero');
+                $(this).parent().removeClass('zero');
             }
         });
 
@@ -63,7 +63,7 @@ function MatrixCellManager() {
             if (newVal === '') {
                 $(this).parent().removeClass('fraction');
                 $(this).siblings('.top').focus();
-            } else if (newVal === '1') {
+            } else if (newVal === '1' || $(this).siblings('.top').val().trim() === '0') {
                 $(this).parent().removeClass('fraction');
             }
         })
@@ -107,10 +107,16 @@ function MatrixCellManager() {
         $parent.find('.top').val(top);
         $parent.find('.bottom').val(bottom);
 
-        if (bottom !== '1') {
-            $parent.addClass('fraction');
+        if (top === '0') {
+            $parent.children().addClass('zero');
         } else {
-            $parent.removeClass('fraction');
+            $parent.children().removeClass('zero');
+        }
+
+        if (bottom !== '1') {
+            $parent.children().addClass('fraction');
+        } else {
+            $parent.children().removeClass('fraction');
         }
 
     }
