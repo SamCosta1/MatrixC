@@ -3,6 +3,7 @@
 function MatrixInputManager(_variables, _popup) {
 
     var $newMatrixBtn = $('#btnNewMat'),
+        cellManager = new MatrixCellManager();
         selectedVariables = [],
         count = 0,
         variables = _variables,
@@ -68,8 +69,8 @@ function MatrixInputManager(_variables, _popup) {
             var $tr = $("<tr>");
             for (j = 0; j < col; j++) {
                 var $td = $("<td>");
-                $td.append(getCell(i, j, matrix instanceof Matrix ? matrix.getCell(i, j).toString() :
-                    matrix instanceof Fraction ? matrix.toString() : matrix));
+                $td.append(cellManager.getCell(i, j, matrix instanceof Matrix ? matrix.getCell(i, j) :
+                    matrix instanceof Fraction ? matrix : new Fraction(matrix)));
                 $tr.append($td);
             }
             $table.append($tr);
@@ -181,7 +182,7 @@ function MatrixInputManager(_variables, _popup) {
         $table.attr("data-cols", n + 2);
         $table.find('tr').each(function() {
             var $td = $("<td>");
-            $td.append(getCell(rowCount, n + 1, "0"));
+            $td.append(cellManager.getCell(rowCount, n + 1, new Fraction("0")));
             rowCount++;
             $(this).find('td').eq(n).after($td);
         });
@@ -199,7 +200,7 @@ function MatrixInputManager(_variables, _popup) {
         $tr = $("<tr>");
         for (i = 0; i < numCols; i++) {
             $td = $("<td>");
-            $td.append(getCell(numRows, i, "0"));
+            $td.append(cellManager.getCell(numRows, i, new Fraction('0')));
             $tr.append($td);
         }
 
@@ -220,42 +221,6 @@ function MatrixInputManager(_variables, _popup) {
             var varName = $(this).closest(".matInput").attr("id").split("-")[1];
             variables.get(varName).resize(numRows, numCols);
         }
-    }
-
-    function getCell(row, col, val) {
-        var $c = $("<input>", {
-            class: "matrixCell",
-            type: "text",
-        });
-        $c.val(val);
-        if (val == "0")
-            $c.css("color", "gray");
-        $c.attr('data-row', row);
-        $c.attr('data-col', col);
-
-        $c.click(function(e) {
-            e.stopImmediatePropagation();
-            if ($(this).val() == "0")
-                $(this).val("");
-            $(this).css("color", "black");
-        });
-        $c.change(function(e) {
-            e.stopImmediatePropagation();
-            var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-            var row = $(this).attr("data-row");
-            var col = $(this).attr("data-col");
-            if ($(this).val().trim() === "") {
-                $c.css("color", "gray");
-                variables.get(varName).update(row, col, 0);
-                $(this).val("0");
-            } else {
-                variables.get(varName).update(row, col, $(this).val());
-            }
-        });
-        $c.keyup(function(e) {
-            e.stopImmediatePropagation();
-        });
-        return $c;
     }
 
     function onAllCalcClicked(e) {
@@ -338,12 +303,7 @@ function MatrixInputManager(_variables, _popup) {
         }
         $('#MAT-' + lbl).find('table tr').each(function() {
             $(this).find('td').each(function() {
-                var $input = $(this).find('input');
-                var row = $input.attr("data-row");
-                var col = $input.attr("data-col");
-
-
-                $input.val(matrix instanceof Matrix ? matrix.getCell(row, col) : matrix.toString());
+                cellManager.updateCell($(this), matrix)
             });
         });
     }
