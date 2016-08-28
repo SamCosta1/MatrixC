@@ -1,10 +1,10 @@
 function Fraction(top, bottom) {
     this.top = top;
     this.bottom = bottom;
-    if (top === undefined) {
+    if (top === undefined || top === '') {
         this.top = '0';
         this.bottom = '1';
-    } else if (bottom === undefined) {
+    } else if (bottom === undefined || bottom === '') {
         this.bottom = '1';
     }
     this.bottom = this.bottom.toString();
@@ -54,6 +54,12 @@ Fraction.prototype.divide = function(v) {
     result.simplify();
     return result;
 };
+Fraction.prototype.getTopString = function() {
+    return this.top.toString();
+}
+Fraction.prototype.getBottomString = function() {
+    return this.bottom.toString();
+}
 Fraction.prototype.times = function(v) {
     v = this.parseLiteral(v);
     if (this.top.eq(0) || v.top.eq(0))
