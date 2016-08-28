@@ -78,15 +78,14 @@ function MatrixInputManager(_variables, _popup) {
 
         $div.append($contnr);
         if (matrix instanceof Matrix) {
-            $modifiers = $('<div class="guiModifiers">');
+            $buttons = $('<div class="matrixButtons">')
+            $hiddenBtns = $('<div class="MatrixOpButtons noSelect">').appendTo($buttons);
+            $modifiers = $('<div class="guiModifiers">').appendTo($buttons);
 
-            $hiddenBtns = $('<div class="MatrixOpButtons noSelect">');
-            $dragHandle = $('<div class="dragHandle icon-drag-handle">');
-            $allCalcButton = $('<div class="allCalcButton icon-info">');
+            $dragHandle = $('<div class="dragHandle icon-drag-handle">').appendTo($hiddenBtns);
+            $allCalcButton = $('<div class="allCalcButton icon-info">').appendTo($hiddenBtns);
 
             $allCalcButton.click(onAllCalcClicked);
-            $hiddenBtns.append($dragHandle);
-            $hiddenBtns.append($allCalcButton);
 
             var btnImg = function(direction) {
                 return $('<div class="icon-'+direction+'-arrow">');
@@ -101,7 +100,7 @@ function MatrixInputManager(_variables, _popup) {
             $rmvColbtn = $('<button class="rmvCol colButton rowColModifier noSelect">');
             $rmvColbtn.append(btnImg('left'));
 
-            $rmvRowbtn = $('<button class="rmvRow rowButton rowColModifier noSelect addLeftMargin">');
+            $rmvRowbtn = $('<button class="rmvRow rowButton rowColModifier noSelect">');
             $rmvRowbtn.append(btnImg('up'));
 
             $colbtn.attr("data-tableid", "t" + count);
@@ -121,8 +120,7 @@ function MatrixInputManager(_variables, _popup) {
             $modifiers.append($rowbtn);
             $modifiers.append($rmvColbtn);
             $modifiers.append($colbtn);
-            $modifiers.append($hiddenBtns);
-            $div.append($modifiers);
+            $div.append($buttons);
         }
 
         $('.matDefinitions').append($div);

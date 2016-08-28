@@ -26,6 +26,8 @@
 
         .MatrixOpButtons {
             display: none;
+            position: absolute;
+            width: 100%;
             top: 7px;
             $handleSize: 20px;
             .dragHandle {
@@ -44,8 +46,6 @@
             }
             flex-direction: row-reverse;
             align-items: center;
-            position: relative;
-            right: 32px;
             align-self: flex-start;
 
         }
@@ -74,13 +74,18 @@
             border-radius: 20px;
         }
     }
-
+    .matrixButtons {
+        display: flex;
+        position: relative;
+    }
 
     .guiModifiers {
         display: flex;
         align-items: center;
-        width: 140px;
+        justify-content: space-between;
         font-size:20px;
+        margin-right: 5px;
+        width:150px; // Fixed width to look right in ie and firefox
         .rowColModifier {
             position: relative;
             border-radius: 5px;
@@ -91,11 +96,12 @@
             margin-left: 5px;
             user-select: none;
             padding: 3;
+            flex: 1;
 
             font-size: 15px;
         }
 
-        .addLeftMargin {
+        .rowColModifier:first-child {
             margin-left: 15px;
         }
     }
