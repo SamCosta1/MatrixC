@@ -124,7 +124,7 @@ function MatrixInputManager(_variables, _popup) {
             $div.append($buttons);
         }
 
-        $('.matDefinitions').append($div);
+        $('.matDefinitions').prepend($div);
 
         $('.clickedit').hide()
             .focusout(endEdit)
