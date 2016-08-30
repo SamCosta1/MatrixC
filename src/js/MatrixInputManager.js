@@ -3,7 +3,7 @@
 function MatrixInputManager(_variables, _popup) {
 
     var $newMatrixBtn = $('#btnNewMat'),
-        cellManager = new MatrixCellManager();
+        cellManager = new MatrixCellManager(),
         selectedVariables = [],
         count = 0,
         variables = _variables,
