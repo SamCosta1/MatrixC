@@ -74,10 +74,7 @@ gulp.task('libraryScripts', function() {
 gulp.task('scripts', function() {
     return gulp.src(jsFiles)
         .pipe(concat('scripts.min.js'))
-        .pipe(gulp.dest(jsDest))
-        .pipe(babel({
-            presets: ['es2015']
-        }))
+        .pipe(gulp.dest(jsDest))    
         .pipe(gulpif(deploy, uglify()))
         .pipe(gulp.dest(jsDest))
         .pipe(gulpif(!deploy,browserSync.reload({stream: true})));
