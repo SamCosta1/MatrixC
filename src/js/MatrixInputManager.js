@@ -1,13 +1,14 @@
 // Just don't look at this file, seriously, go watch netfilx, this file stinks
 
-function MatrixInputManager(_variables, _popup) {
+function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
 
     var $newMatrixBtn = $('#btnNewMat'),
-        cellManager = new MatrixCellManager(),
+        cellManager = new MatrixCellManager(_variables),
         selectedVariables = [],
         count = 0,
         variables = _variables,
-        popup = _popup;
+        popup = _popup,
+        quickCalcsPanel = _quickCalcsPanel;
 
     function init() {
         $newMatrixBtn.bind('click', function() {
@@ -85,8 +86,10 @@ function MatrixInputManager(_variables, _popup) {
 
             $dragHandle = $('<div class="dragHandle icon-drag-handle">').appendTo($hiddenBtns);
             $allCalcButton = $('<div class="allCalcButton icon-info">').appendTo($hiddenBtns);
+            $quickCalcsBtn = $('<div class="quickCalcsButton icon-quickCalcs">').appendTo($hiddenBtns);
 
             $allCalcButton.click(onAllCalcClicked);
+            $quickCalcsBtn.click(quickCalcsPanel.onMatrixSelect);
 
             var btnImg = function(direction) {
                 return $('<div class="icon-'+direction+'-arrow">');

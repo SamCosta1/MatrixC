@@ -1,33 +1,57 @@
-function QuickCalculations(_matrixManager) {
-    var matrixManager = _matrixManager;
-    var matrixSpecific = [{
-        func: funcENUM.TRANSPOSE,
-        text: "Transpose"
-    }, {
-        func: funcENUM.INVERSE,
-        text: "Inverse"
-    }, {
-        func: funcENUM.DET,
-        text: "Determinant"
-    }];
-    var matrixGeneral = [{
-        func: funcENUM.ID,
-        text: "New Identity Matrix"
-    }, {
-        func: funcENUM.ZEROS,
-        text: "New Zero Matrix"
-    }]
+function QuickCalculations() {
+    var matrixManager,
+        variables,
+        matrixSpecific = [{
+            func: funcENUM.TRANSPOSE,
+            text: "Transpose"
+        }, {
+            func: funcENUM.INVERSE,
+            text: "Inverse"
+        }, {
+            func: funcENUM.DET,
+            text: "Determinant"
+        }],
+        matrixGeneral = [{
+            func: funcENUM.ID,
+            text: "New Identity Matrix"
+        }, {
+            func: funcENUM.ZEROS,
+            text: "New Zero Matrix"
+        }],
 
-    currentMatrix = null;
+        currentMatrix = null;
 
-    var $specificFuncsContainer = $('.quickClassMatSpecific'),
+    var $mainContainer = $('#quickCalcsContainer'),
+        $specificFuncsContainer = $('.quickClassMatSpecific'),
         $generalFuncsContainer = $('.quickCalcsGeneral');
 
-    function init() {
+    function init(_matrixManager, _variables) {
+        matrixManager = _matrixManager;
+        variables = _variables;
         initSpecificBtns();
         initGeneralBtns();
 
         $('.quickBtn').click(onButtonClick);
+        $mainContainer.mouseleave(onMouseLeave);
+        $mainContainer.mouseenter(onMouseEnter);
+    }
+
+    var mouseEntered = false;
+    function onMouseLeave(e) {
+        if ($(e.relatedTarget).closest('.headerMenu').length > 0)
+            return;
+            console.log($(e.relatedTarget).closest('.headerMenu').length);
+
+        if (mouseEntered) {
+            $mainContainer.hide();
+            mouseEntered = false;
+        }
+    }
+
+    function onMouseEnter() {
+        console.log("mouseenter");
+        mouseEntered = true;
+        return false;
     }
 
     function onButtonClick(e) {
@@ -42,8 +66,9 @@ function QuickCalculations(_matrixManager) {
                 type: func,
                 op1: currentMatrix,
             });
+            step.data.result = currentMatrix.performFunction(func, null, step)
             matrixManager.render({
-                matrix: currentMatrix.performFunction(func)
+                matrix: step.data.result
             });
             calcSteps.push(step);
             calcSteps.render($('.sidebarBody'));
@@ -69,7 +94,15 @@ function QuickCalculations(_matrixManager) {
                     <div class="icon-right-bracket"></div>  \
                 </div>';
     }
+
+    function onMatrixSelect() {
+        $mainContainer.css('display', 'flex');
+        $mainContainer.removeClass('quickCalcsNoMatrix');
+        var clickedLbl = $(this).closest(".matInput").attr("id").split("-")[1];
+        currentMatrix = variables.get(clickedLbl);
+    }
     return {
-        init: init
+        init: init,
+        onMatrixSelect: onMatrixSelect
     };
 }

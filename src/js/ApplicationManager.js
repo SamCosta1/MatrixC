@@ -12,12 +12,12 @@ function ApplicationManager() {
         popup = new Popup();
         sidebar = new Sidebar();
         header = new Header();
-        matrixManager = new MatrixInputManager(variables, popup);
+        quickCalcsPanel = new QuickCalculations();
+        matrixManager = new MatrixInputManager(variables, popup, quickCalcsPanel);
         commandLine = new CommandLine(variables, matrixManager).init();
-        quickCalcsPanel = new QuickCalculations(matrixManager);
 
         header.init();
-        quickCalcsPanel.init();
+        quickCalcsPanel.init(matrixManager, variables);
 
         matrixManager.init();
         sidebar.init();

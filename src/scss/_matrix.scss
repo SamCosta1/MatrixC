@@ -39,10 +39,12 @@
                 }
             }
 
-            .allCalcButton {
+            .allCalcButton , .quickCalcsButton {
                 height: $handleSize;
                 width: $handleSize;
                 cursor: pointer;
+                margin-left: 5px;
+                
             }
             flex-direction: row-reverse;
             align-items: center;

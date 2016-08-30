@@ -1,4 +1,5 @@
-function MatrixCellManager() {
+function MatrixCellManager(_variables) {
+    var variables = _variables;
     function getCell(row, col, val) {
         var $container = $('<div class="matrixCell">');
         var $top = $('<input class="inputCell top" type="text">').appendTo($container);
