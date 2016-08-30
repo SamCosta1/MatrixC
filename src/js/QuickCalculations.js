@@ -1,4 +1,5 @@
-function QuickCalculations() {
+function QuickCalculations(_matrixManager) {
+    var matrixManager = _matrixManager;
     var matrixSpecific = [{
         func: funcENUM.TRANSPOSE,
         text: "Transpose"
@@ -15,7 +16,9 @@ function QuickCalculations() {
     }, {
         func: funcENUM.ZEROS,
         text: "New Zero Matrix"
-    }];
+    }]
+
+    currentMatrix = null;
 
     var $specificFuncsContainer = $('.quickClassMatSpecific'),
         $generalFuncsContainer = $('.quickCalcsGeneral');
@@ -23,6 +26,28 @@ function QuickCalculations() {
     function init() {
         initSpecificBtns();
         initGeneralBtns();
+
+        $('.quickBtn').click(onButtonClick);
+    }
+
+    function onButtonClick(e) {
+        var func = $(e.currentTarget).attr('data-func');
+        if ($(e.currentTarget).parent().hasClass('quickCalcsGeneral')) {
+            matrixManager.render({
+                matrix: new Matrix().performFunction(func, [3, 3])
+            });
+        } else {
+            var calcSteps = new CalculationArray();
+            var step = new CalculationStep({
+                type: func,
+                op1: currentMatrix,
+            });
+            matrixManager.render({
+                matrix: currentMatrix.performFunction(func)
+            });
+            calcSteps.push(step);
+            calcSteps.render($('.sidebarBody'));
+        }
     }
 
     function initSpecificBtns() {

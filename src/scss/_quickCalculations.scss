@@ -1,5 +1,5 @@
 #quickCalcsContainer {
-    display: flex;
+    display: none;
 
     width: 100%;
     position: absolute;
@@ -20,6 +20,23 @@
     .quickCalcsColumn {
         width: 50%;
         display: flex;
+        flex-direction: column;
+
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .quickCalcsRow {
+        display: flex;
+    }
+
+    &.quickCalcsNoMatrix {
+        .quickClassMatSpecific {
+            .quickBtn {
+                cursor: default;
+                background-color: #b1b1b1;
+            }
+        }
     }
 
     .quickBtn {
@@ -31,6 +48,12 @@
         margin: 5px;
         justify-content: center;
         border-radius: 3px;
+        font-size: 20px;
+
+        &:hover {
+            cursor: pointer;
+            background-color: #676767;
+        }
     }
 
 }
