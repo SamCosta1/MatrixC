@@ -8,11 +8,29 @@
     height: 160px;
     background-color: white;
 
+    border-bottom-style: solid;
+    border-color: black;
+
+    $gridCol: rgba(128, 128, 128, 0.1);
+    $gridDim: 20px;
+    background-size: $gridDim $gridDim;
+    background-image: linear-gradient(to right, $gridCol 1px, transparent 1px), linear-gradient(to bottom, $gridCol 1px, transparent 1px);
+
+
     .quickCalcsColumn {
         width: 50%;
         display: flex;
+    }
 
-        flex-direction: column;
+    .quickBtn {
+        display: flex;
+        align-items: center;
+        background-color: gray;
+        color: white;
+        padding:0px 10px;
+        margin: 5px;
+        justify-content: center;
+        border-radius: 3px;
     }
 
 }

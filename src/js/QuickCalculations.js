@@ -1,5 +1,5 @@
 function QuickCalculations() {
-    var supportedButtons = [{
+    var matrixSpecific = [{
         func: funcENUM.TRANSPOSE,
         text: "Transpose"
     }, {
@@ -9,7 +9,7 @@ function QuickCalculations() {
         func: funcENUM.DET,
         text: "Determinant"
     }];
-    var nonMatrixSpecific = [{
+    var matrixGeneral = [{
         func: funcENUM.ID,
         text: "New Identity Matrix"
     }, {
@@ -17,14 +17,30 @@ function QuickCalculations() {
         text: "New Zero Matrix"
     }];
 
-    function init() {
+    var $specificFuncsContainer = $('.quickClassMatSpecific'),
+        $generalFuncsContainer = $('.quickCalcsGeneral');
 
+    function init() {
+        initSpecificBtns();
+        initGeneralBtns();
     }
 
-    function newButton(func, text) {
-        return '<div class="quickBtn" data-func="' + func + '"> \
+    function initSpecificBtns() {
+        for (btn in matrixSpecific) {
+            $specificFuncsContainer.append(newButton(matrixSpecific[btn]));
+        }
+    }
+
+    function initGeneralBtns() {
+        for (btn in matrixGeneral) {
+            $generalFuncsContainer.append(newButton(matrixGeneral[btn]));
+        }
+    }
+
+    function newButton(data) {
+        return '<div class="quickBtn" data-func="' + data.func + '"> \
                     <div class="icon-left-bracket"></div>  \
-                    <div class="quickCalcBtnText">' + text + '</div> \
+                    <div class="quickCalcBtnText">' + data.text + '</div> \
                     <div class="icon-right-bracket"></div>  \
                 </div>';
     }
