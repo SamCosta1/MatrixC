@@ -8,6 +8,7 @@ function Header() {
 
     function init() {
         $toggle.click(onToggleClick);
+        $mainHeader.dblclick(onToggleClick);
     }
 
     function onToggleClick() {
