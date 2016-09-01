@@ -23,7 +23,8 @@ function QuickCalculations() {
 
     var $mainContainer = $('#quickCalcsContainer'),
         $specificFuncsContainer = $('.quickClassMatSpecific'),
-        $generalFuncsContainer = $('.quickCalcsGeneral');
+        $generalFuncsContainer = $('.quickCalcsGeneral'),
+        $title = $('.quickCalcsTitle');
 
     function init(_matrixManager, _variables) {
         matrixManager = _matrixManager;
@@ -97,6 +98,8 @@ function QuickCalculations() {
         $mainContainer.css('display', 'flex');
         $mainContainer.removeClass('quickCalcsNoMatrix');
         var clickedLbl = $(this).closest(".matInput").attr("id").split("-")[1];
+        $title.empty();
+        $title.append(clickedLbl);
         currentMatrix = variables.get(clickedLbl);
     }
     return {

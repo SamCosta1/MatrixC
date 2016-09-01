@@ -3,9 +3,10 @@
 
     width: 100%;
     position: absolute;
+    flex-direction: column;
 
     top: 0px;
-    height: 160px;
+    height: 150px;
     background-color: white;
 
     border-bottom-style: solid;
@@ -16,7 +17,14 @@
     background-size: $gridDim $gridDim;
     background-image: linear-gradient(to right, $gridCol 1px, transparent 1px), linear-gradient(to bottom, $gridCol 1px, transparent 1px);
 
-
+    $titleFontSize: 30px;
+    .quickCalcsTitle {
+        font-size: $titleFontSize;
+        height: $titleFontSize;
+        display: flex;
+        align-items: center;
+        margin-left: 5px
+    }
     .quickCalcsColumn {
         width: 50%;
         display: flex;
