@@ -45,9 +45,8 @@ function MatrixCellManager(_variables) {
         });
 
         $top.on('change focusout keyup',function(e) {
-            console.log("focusout");
             var newVal = $(this).val().trim();
-            console.log(newVal);
+            
             if (newVal === '0')
                 $(this).parent().addClass('zero');
             else if (e.type !== 'keyup' && newVal.trim() === '') {
@@ -78,6 +77,7 @@ function MatrixCellManager(_variables) {
             variables.get(varName).update(row, col, new Fraction (
                                                     $(this).children('.top').val().trim(),
                                                     $(this).children('.bottom').val().trim()));
+            updateCell($(this).parent(), variables.get(varName));
 
         });
         $container.keyup(function(e) {

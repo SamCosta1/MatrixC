@@ -40,7 +40,6 @@ function QuickCalculations() {
     function onMouseLeave(e) {
         if ($(e.relatedTarget).closest('.headerMenu').length > 0)
             return;
-            console.log($(e.relatedTarget).closest('.headerMenu').length);
 
         if (mouseEntered) {
             $mainContainer.hide();
@@ -49,7 +48,6 @@ function QuickCalculations() {
     }
 
     function onMouseEnter() {
-        console.log("mouseenter");
         mouseEntered = true;
         return false;
     }
