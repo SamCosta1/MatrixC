@@ -38,6 +38,7 @@ function QuickCalculations() {
         $mainContainer.mouseenter(onMouseEnter);
         $('body').bind('matrixNameChange', onNameTempChange);
         $('body').bind('matrixConfirmNameChange', onNameConfirmedChange);
+        $('body').bind('matrixDelete', onMatrixDelete);
     }
 
     var mouseEntered = false;
@@ -56,17 +57,24 @@ function QuickCalculations() {
         return false;
     }
 
+    function onMatrixDelete(data) {
+        if (data.lbl === currentLbl) {
+            $mainContainer.addClass('quickCalcsNoMatrix');
+            currentLbl = null;
+            currentMatrix = null;
+            changeTitle('');
+        }
+    }
+
     function onNameTempChange(data) {
         if (data.original === currentLbl) {
-            $title.empty();
-            $title.append(data.new);
+            changeTitle(data.new);
         }
     }
 
     function onNameConfirmedChange(data) {
         if (data.original === currentLbl) {
-            $title.empty();
-            $title.append(data.new);
+            changeTitle(data.new);
             currentLbl = data.new;
         }
     }
@@ -112,12 +120,16 @@ function QuickCalculations() {
                 </div>';
     }
 
+    function changeTitle(newVal) {
+        $title.empty();
+        $title.append(newVal);
+    }
+
     function onMatrixSelect() {
         $mainContainer.css('display', 'flex');
         $mainContainer.removeClass('quickCalcsNoMatrix');
         currentLbl = $(this).closest(".matInput").attr("id").split("-")[1];
-        $title.empty();
-        $title.append(currentLbl);
+        changeTitle(currentLbl);
         currentMatrix = variables.get(currentLbl);
     }
     return {

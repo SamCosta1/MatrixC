@@ -348,9 +348,15 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
     });
 
     function deleteMatrix(obj) {
-        variables.delete($(obj).attr("id").split('-')[1]);
+        var id = $(obj).attr("id").split('-')[1];
+        variables.delete(id);
         $(obj).remove();
         $('#bin').removeClass("binOpen");
+
+        $('body').trigger({
+            type: 'matrixDelete',
+            lbl: id            
+        })
     }
 
     $(document).keyup(function(e) {
