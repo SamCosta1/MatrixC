@@ -26,7 +26,9 @@ function QuickCalculations() {
         $specificFuncsContainer = $('.quickClassMatSpecific'),
         $generalFuncsContainer = $('.quickCalcsGeneral'),
         $title = $('.quickCalcsTitle'),
-        $pinIcon = $('.quickCalcsPinIcon');
+        $pinIcon = $('.quickCalcsPinIcon'),
+        $errorLabel = $('.quickCalcsErrDisplay'),
+        $errorContainer = $('.quickCalcsErrContainer');
 
     function init(_matrixManager, _variables) {
         matrixManager = _matrixManager;
@@ -93,18 +95,47 @@ function QuickCalculations() {
                 matrix: new Matrix().performFunction(func, [3, 3])
             });
         } else {
+
             var calcSteps = new CalculationArray();
             var step = new CalculationStep({
                 type: func,
                 op1: currentMatrix,
             });
-            step.data.result = currentMatrix.performFunction(func, null, step)
-            matrixManager.render({
-                matrix: step.data.result
-            });
-            calcSteps.push(step);
-            calcSteps.render($('.sidebarBody'));
+
+            try {
+                var start = Date.now();
+
+                $errorLabel.hide();
+
+                step.data.result = currentMatrix.performFunction(func, null, step)
+                matrixManager.render({
+                    matrix: step.data.result
+                });
+
+                var end = Date.now() - start;
+                successHandle(end);
+                console.log("Operation done in " + end + "ms");
+
+                calcSteps.push(step);
+                calcSteps.render($('.sidebarBody'));
+            } catch (err) {
+                errorHandle(err);
+            }
         }
+    }
+
+    function errorHandle(err) {
+        console.log(err);
+        $errorContainer.removeClass('success');
+        $errorLabel.text(err).show(200);
+    }
+
+    function successHandle(msg) {
+        $errorContainer.addClass('success');
+        $errorLabel.text('Command Successful! (' + msg + ' ms' + ')').show(200);
+        setTimeout(function() {
+            $errorLabel.hide(500);
+        }, 2000);
     }
 
     function initSpecificBtns() {

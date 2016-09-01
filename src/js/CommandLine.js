@@ -1,7 +1,7 @@
 function CommandLine(_variables, _matrixManager) {
 
     var $commandLineTxtBox = $('#cmdinput'),
-        $errorLabel = $('#errDisplay'),
+        $errorLabel = $('.errDisplay'),
         $errorContainer = $('.errContainer'),
         base = 'MatCalculator >> ',
         baseRegex = new RegExp('^' + base, 'i'),

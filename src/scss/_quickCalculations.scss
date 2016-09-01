@@ -42,11 +42,21 @@
             margin-right: 16px;
             cursor: pointer;
             color: #a5a5a5;
+            width:20px;
+            height: 20px;
+
+            .icon-pin {
+                margin-left: 4px;
+            }
 
             &:hover {
                 color: gray;
             }
         }
+    }
+
+    .quickCalcsErrContainer {
+        height: 18px;        
     }
 
     &.pinned {
