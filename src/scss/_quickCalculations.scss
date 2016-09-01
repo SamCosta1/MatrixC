@@ -34,6 +34,27 @@
         align-items: center;
     }
 
+    .quickCalcsTitleBar {
+        display: flex;
+        justify-content: space-between;
+
+        .quickCalcsPinIcon {
+            margin-right: 16px;
+            cursor: pointer;
+            color: #a5a5a5;
+
+            &:hover {
+                color: gray;
+            }
+        }
+    }
+
+    &.pinned {
+        .quickCalcsPinIcon {
+            color: #22374a;
+        }
+    }
+
     .quickCalcsRow {
         display: flex;
     }

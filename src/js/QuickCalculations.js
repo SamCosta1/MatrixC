@@ -25,7 +25,8 @@ function QuickCalculations() {
     var $mainContainer = $('#quickCalcsContainer'),
         $specificFuncsContainer = $('.quickClassMatSpecific'),
         $generalFuncsContainer = $('.quickCalcsGeneral'),
-        $title = $('.quickCalcsTitle');
+        $title = $('.quickCalcsTitle'),
+        $pinIcon = $('.quickCalcsPinIcon');
 
     function init(_matrixManager, _variables) {
         matrixManager = _matrixManager;
@@ -36,14 +37,16 @@ function QuickCalculations() {
         $('.quickBtn').click(onButtonClick);
         $mainContainer.mouseleave(onMouseLeave);
         $mainContainer.mouseenter(onMouseEnter);
+        $pinIcon.click(onPinIconClicked);
         $('body').bind('matrixNameChange', onNameTempChange);
         $('body').bind('matrixConfirmNameChange', onNameConfirmedChange);
         $('body').bind('matrixDelete', onMatrixDelete);
+
     }
 
     var mouseEntered = false;
     function onMouseLeave(e) {
-        if ($(e.relatedTarget).closest('.headerMenu').length > 0)
+        if ($(e.relatedTarget).closest('.headerMenu').length > 0 || $mainContainer.hasClass('pinned'))
             return;
 
         if (mouseEntered) {
@@ -55,6 +58,10 @@ function QuickCalculations() {
     function onMouseEnter() {
         mouseEntered = true;
         return false;
+    }
+
+    function onPinIconClicked() {
+        $mainContainer.toggleClass('pinned');
     }
 
     function onMatrixDelete(data) {
