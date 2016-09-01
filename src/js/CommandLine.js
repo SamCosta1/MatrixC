@@ -13,6 +13,7 @@ function CommandLine(_variables, _matrixManager) {
     function init() {
         $commandLineTxtBox.bind('input', lockPromptText);
         $commandLineTxtBox.keyup(onKeyUp);
+        $('body').bind('error', function(data) { errorHandle(data.msg); });
     }
 
     function onKeyUp(e) {

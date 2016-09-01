@@ -250,8 +250,15 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
         var inputted = makeCammelCase(input.val());
         var err = false;
         if (!variables.isValid(inputted, false)) {
-            label.text(label.closest("div").attr('id').split("-")[1]);
+            var oldName = label.closest("div").attr('id').split("-")[1];
+            label.text(oldName);
             err = true;
+
+            $('body').trigger({
+                type: "matrixConfirmNameChange",
+                original: oldName,
+                new: oldName
+            });
         } else {
             label.text(inputted);
             var oldName = label.closest("div").attr('id').split("-")[1];
@@ -270,8 +277,10 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
         input.val("");
 
         if (err)
-            errorHandle("Invalid Variable Name :(");
-
+            $('body').trigger({
+                type: 'error',
+                msg: 'Invalid Variable Name :('
+            });
     }
 
     function makeCammelCase(inputted) {

@@ -43,7 +43,7 @@ function QuickCalculations() {
         $('body').bind('matrixNameChange', onNameTempChange);
         $('body').bind('matrixConfirmNameChange', onNameConfirmedChange);
         $('body').bind('matrixDelete', onMatrixDelete);
-
+        $('body').bind('error', function(data) { errorHandle(data.msg); });
     }
 
     var mouseEntered = false;
@@ -127,7 +127,7 @@ function QuickCalculations() {
     function errorHandle(err) {
         console.log(err);
         $errorContainer.removeClass('success');
-        $errorLabel.text(err).show(200);
+        $errorLabel.text(err).show(3000);
     }
 
     function successHandle(msg) {
