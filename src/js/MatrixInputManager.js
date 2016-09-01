@@ -132,6 +132,11 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
         $('.clickedit').hide()
             .focusout(endEdit)
             .keyup(function(e) {
+                $('body').trigger({
+                    type: 'matrixNameChange',
+                    original: $(this).closest(".matInput").attr('id').split("-")[1],
+                    new: $(this).val()
+                });
                 e.stopImmediatePropagation();
                 if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
                     endEdit(e);
@@ -249,10 +254,16 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
             err = true;
         } else {
             label.text(inputted);
-            var mat = variables.get(label.closest("div").attr('id').split("-")[1]);
-            variables.delete(label.closest("div").attr('id').split("-")[1]);
+            var oldName = label.closest("div").attr('id').split("-")[1];
+            var mat = variables.get(oldName);
+            variables.delete(oldName);
             variables.set(inputted, mat);
             label.closest("div").attr('id', "MAT-" + inputted);
+            $('body').trigger({
+                type: "matrixConfirmNameChange",
+                original: oldName,
+                new: inputted
+            });
         }
         input.hide();
         label.show();

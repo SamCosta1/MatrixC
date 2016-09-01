@@ -19,7 +19,8 @@ function QuickCalculations() {
             text: "New Zero Matrix"
         }],
 
-        currentMatrix = null;
+        currentMatrix = null,
+        currentLbl = null;
 
     var $mainContainer = $('#quickCalcsContainer'),
         $specificFuncsContainer = $('.quickClassMatSpecific'),
@@ -35,6 +36,8 @@ function QuickCalculations() {
         $('.quickBtn').click(onButtonClick);
         $mainContainer.mouseleave(onMouseLeave);
         $mainContainer.mouseenter(onMouseEnter);
+        $('body').bind('matrixNameChange', onNameTempChange);
+        $('body').bind('matrixConfirmNameChange', onNameConfirmedChange);
     }
 
     var mouseEntered = false;
@@ -51,6 +54,21 @@ function QuickCalculations() {
     function onMouseEnter() {
         mouseEntered = true;
         return false;
+    }
+
+    function onNameTempChange(data) {
+        if (data.original === currentLbl) {
+            $title.empty();
+            $title.append(data.new);
+        }
+    }
+
+    function onNameConfirmedChange(data) {
+        if (data.original === currentLbl) {
+            $title.empty();
+            $title.append(data.new);
+            currentLbl = data.new;
+        }
     }
 
     function onButtonClick(e) {
@@ -97,10 +115,10 @@ function QuickCalculations() {
     function onMatrixSelect() {
         $mainContainer.css('display', 'flex');
         $mainContainer.removeClass('quickCalcsNoMatrix');
-        var clickedLbl = $(this).closest(".matInput").attr("id").split("-")[1];
+        currentLbl = $(this).closest(".matInput").attr("id").split("-")[1];
         $title.empty();
-        $title.append(clickedLbl);
-        currentMatrix = variables.get(clickedLbl);
+        $title.append(currentLbl);
+        currentMatrix = variables.get(currentLbl);
     }
     return {
         init: init,
