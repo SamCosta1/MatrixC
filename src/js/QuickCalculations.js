@@ -127,7 +127,10 @@ function QuickCalculations() {
     function errorHandle(err) {
         console.log(err);
         $errorContainer.removeClass('success');
-        $errorLabel.text(err).show(3000);
+        $errorLabel.text(err).show(200);
+        setTimeout(function() {
+            $errorLabel.hide(500);
+        }, 2000);
     }
 
     function successHandle(msg) {
