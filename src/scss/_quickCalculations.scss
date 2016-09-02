@@ -25,13 +25,27 @@
         align-items: center;
         margin-left: 5px
     }
-    .quickCalcsColumn {
-        width: 50%;
-        display: flex;
-        flex-direction: column;
 
-        justify-content: space-around;
-        align-items: center;
+    .quickCalcsColumnContainer {
+        display: flex;
+        .quickCalcsColumn {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .quickCalcsOperatorsContainer {
+            p {
+                margin: 0px;
+
+                &.times {
+                    margin: 0 10px;
+                }
+            }
+        }
     }
 
     .quickCalcsTitleBar {
@@ -70,7 +84,7 @@
     }
 
     &.quickCalcsNoMatrix {
-        .quickClassMatSpecific {
+        .quickClassMatSpecific, .quickCalcsOperatorsContainer {
             .quickBtn {
                 cursor: default;
                 background-color: #b1b1b1;

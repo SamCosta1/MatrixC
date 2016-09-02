@@ -19,7 +19,7 @@
     <div class="mainContentContainer">
 
         <div id="quickCalcsContainer" class="quickCalcsNoMatrix noSelect">
-            <div class="quickCalcsTitleBar">
+            <div class="quickCalcsTitleBar quickCalcsMatLabel">
                 <div class="quickCalcsTitle"></div>
                 <div class="quickCalcsErrContainer">
                     <label class="quickCalcsErrDisplay">Error: </label>
@@ -32,7 +32,25 @@
                     <div class="quickCalcsRow quickCalcsGeneral"></div>
                 </div>
 
-                <div class="quickCalcsColumn operatorsContainer"></div>
+                <div class="quickCalcsColumn quickCalcsOperatorsContainer">
+                    <div class="quickCalcsPreMult quickBtn">
+                        <div class="icon-left-bracket"></div>
+                        <p class="quickCalcsMatLabel"></p><p class="times">x</p>
+                        <select class="quickCalcsPreMultMatricies"></select>
+                        <div class="icon-right-bracket"></div>
+                    </div>
+                    <div class="quickCalcsPostMult quickBtn">
+                        <div class="icon-left-bracket"></div>
+                        <p class="quickCalcsMatLabel"></p><p class="times">x</p>
+                        <select class="quickCalcsPostMultMatricies"></select>
+                        <div class="icon-right-bracket"></div>
+                    </div>
+                    <div class="quickCalcsScalarMult quickBtn">
+                        <div class="icon-left-bracket"></div>
+                        <p class="quickCalcsMatLabel"></p><p class="times">x</p>
+                        <div class="icon-right-bracket"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -46,7 +64,7 @@
                 <div class="headerBracket icon-right-bracket"></div>
             </div>
             <div class="headerMenu noSelect">
-                <a class="credit" href="refrences.html">Other Stuff</a>        
+                <a class="credit" href="refrences.html">Other Stuff</a>
             </div>
             <div class="headerToggleBar icon-double-up-arrows"></div>
         </div>

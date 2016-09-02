@@ -9,10 +9,16 @@ function Variables() {
 
     function set(key, val) {
         variables.set(key, val);
+        $('body').trigger('matrixChange');
     }
 
     function deleteVar(key) {
         variables.delete(key);
+        $('body').trigger('matrixChange');        
+    }
+
+    function iterate(callback) {
+        variables.forEach(callback);
     }
 
     function isValid(inputted, allowDuplicate) {
@@ -40,6 +46,7 @@ function Variables() {
         set: set,
         getNextFreeLetter: getNextFreeLetter,
         isValid: isValid,
-        delete: deleteVar
-    }
+        delete: deleteVar,
+        iterate: iterate
+    };
 }

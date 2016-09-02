@@ -25,10 +25,11 @@ function QuickCalculations() {
     var $mainContainer = $('#quickCalcsContainer'),
         $specificFuncsContainer = $('.quickClassMatSpecific'),
         $generalFuncsContainer = $('.quickCalcsGeneral'),
-        $title = $('.quickCalcsTitle'),
+        $title = $('.quickCalcsMatLabel'),
         $pinIcon = $('.quickCalcsPinIcon'),
         $errorLabel = $('.quickCalcsErrDisplay'),
-        $errorContainer = $('.quickCalcsErrContainer');
+        $errorContainer = $('.quickCalcsErrContainer'),
+        $dropdowns = $('.quickCalcsOperatorsContainer').find('select');
 
     function init(_matrixManager, _variables) {
         matrixManager = _matrixManager;
@@ -43,10 +44,14 @@ function QuickCalculations() {
         $('body').bind('matrixNameChange', onNameTempChange);
         $('body').bind('matrixConfirmNameChange', onNameConfirmedChange);
         $('body').bind('matrixDelete', onMatrixDelete);
-        $('body').bind('error', function(data) { errorHandle(data.msg); });
+        $('body').bind('error', function(data) {
+            errorHandle(data.msg);
+        });
+        $('body').bind('matrixChange', fillDropDowns);
     }
 
     var mouseEntered = false;
+
     function onMouseLeave(e) {
         if ($(e.relatedTarget).closest('.headerMenu').length > 0 || $mainContainer.hasClass('pinned'))
             return;
@@ -130,7 +135,7 @@ function QuickCalculations() {
         $errorLabel.text(err).show(200);
         setTimeout(function() {
             $errorLabel.hide(500);
-        }, 2000);
+        }, 10000);
     }
 
     function successHandle(msg) {
@@ -142,13 +147,13 @@ function QuickCalculations() {
     }
 
     function initSpecificBtns() {
-        for (btn in matrixSpecific) {
+        for (var btn in matrixSpecific) {
             $specificFuncsContainer.append(newButton(matrixSpecific[btn]));
         }
     }
 
     function initGeneralBtns() {
-        for (btn in matrixGeneral) {
+        for (var btn in matrixGeneral) {
             $generalFuncsContainer.append(newButton(matrixGeneral[btn]));
         }
     }
@@ -166,12 +171,27 @@ function QuickCalculations() {
         $title.append(newVal);
     }
 
+    function fillDropDowns() {
+        if (!(currentMatrix instanceof Matrix))
+            return;
+
+        $dropdowns.empty();
+        variables.iterate(addToDropDown);
+    }
+
+    function addToDropDown(matrix, lbl) {
+        if (currentMatrix.numRows() === matrix.numCols() && currentMatrix.numCols() === matrix.numRows()) {
+            $dropdowns.append('<option>' + lbl + '</option>');
+        }
+    }
+
     function onMatrixSelect() {
         $mainContainer.css('display', 'flex');
         $mainContainer.removeClass('quickCalcsNoMatrix');
         currentLbl = $(this).closest(".matInput").attr("id").split("-")[1];
         changeTitle(currentLbl);
         currentMatrix = variables.get(currentLbl);
+        fillDropDowns();
     }
     return {
         init: init,
