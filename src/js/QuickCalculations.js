@@ -36,7 +36,13 @@ function QuickCalculations() {
         variables = _variables;
         initSpecificBtns();
         initGeneralBtns();
+        bindEvents();
 
+        
+
+    }
+
+    function bindEvents() {
         $('.quickBtn').click(onButtonClick);
         $mainContainer.mouseleave(onMouseLeave);
         $mainContainer.mouseenter(onMouseEnter);
