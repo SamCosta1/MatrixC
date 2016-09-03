@@ -8,7 +8,7 @@ function MatrixCellManager(_variables) {
 
 
         if (val.isZero()) {
-            $container.addClass('zero');;
+            $container.addClass('zero');
         }
         if (!val.isInt()) {
             $container.addClass('fraction');

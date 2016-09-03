@@ -186,6 +186,8 @@ function QuickCalculations() {
     }
 
     function addToDropDown(matrix, lbl) {
+        if (!(matrix instanceof Matrix))
+            return;
         if (currentMatrix.numRows() === matrix.numCols() && currentMatrix.numCols() === matrix.numRows()) {
             $dropdowns.append('<option>' + lbl + '</option>');
         }
