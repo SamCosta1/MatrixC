@@ -38,7 +38,10 @@ function QuickCalculations() {
         initGeneralBtns();
         bindEvents();
 
-        
+        if (typeof(Storage) !== "undefined" && localStorage.getItem('pinned') === 'true') {            
+            $mainContainer.css('display', 'flex');
+            onPinIconClicked();
+        }
 
     }
 
@@ -75,6 +78,11 @@ function QuickCalculations() {
 
     function onPinIconClicked() {
         $mainContainer.toggleClass('pinned');
+
+        if (typeof(Storage) !== "undefined") {
+            localStorage.setItem("pinned", $mainContainer.hasClass('pinned'));
+        }
+
     }
 
     function onMatrixDelete(data) {
@@ -115,7 +123,6 @@ function QuickCalculations() {
 
             try {
                 var start = Date.now();
-
                 $errorLabel.hide();
 
                 step.data.result = currentMatrix.performFunction(func, null, step)
