@@ -22,7 +22,7 @@ function Variables() {
     }
 
     function isValid(inputted, allowDuplicate) {
-        return /^[a-z0-9]+$/i.test(inputted) && (allowDuplicate ? true :
+        return /^[a-z][a-z0-9]*$/i.test(inputted) && (allowDuplicate ? true :
                 variables.get(inputted) === undefined) &&
             getEnum(inputted) === funcENUM.NONE;
     }
