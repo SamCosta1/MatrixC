@@ -14,7 +14,7 @@ function Variables() {
 
     function deleteVar(key) {
         variables.delete(key);
-        $('body').trigger('matrixChange');        
+        $('body').trigger('matrixChange');
     }
 
     function iterate(callback) {
@@ -28,9 +28,8 @@ function Variables() {
     }
 
     function getNextFreeLetter() {
-        letterIndex++;
-        if (letterIndex >= alphabet.length)
-            letterIndex = 0;
+        letterIndex = (letterIndex + 1) % alphabet.length;
+
         if (isValid(alphabet[letterIndex]))
             return alphabet[letterIndex];
 

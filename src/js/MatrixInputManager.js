@@ -3,7 +3,7 @@
 function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
 
     var $newMatrixBtn = $('#btnNewMat'),
-        cellManager = new MatrixCellManager(_variables),
+        cellManager = new MatrixCellManager(onCellChanged),
         selectedVariables = [],
         count = 0,
         variables = _variables,
@@ -23,7 +23,6 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
         else {
             updateGUI(data.lbl, data.matrix);
         }
-
     }
 
     function newInputComp(matLbl, matrix) {
@@ -283,6 +282,21 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
             });
     }
 
+    function onCellChanged(e) {
+        e.stopImmediatePropagation();
+        if (variables === undefined)
+            return;
+
+        var varName = $(e.currentTarget).closest(".matInput").attr("id").split("-")[1];
+        var row = $(this).attr("data-row");
+        var col = $(this).attr("data-col");
+
+        variables.get(varName).update(row, col, new Fraction (
+                                                $(e.currentTarget).children('.top').val().trim(),
+                                                $(e.currentTarget).children('.bottom').val().trim()));
+        cellManager.updateCell($(e.currentTarget).parent(), variables.get(varName));
+    }
+
     function makeCammelCase(inputted) {
         inputted = inputted.replace(/\b[a-z]/g, function(f) {
             return f.toUpperCase();
@@ -364,7 +378,7 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
 
         $('body').trigger({
             type: 'matrixDelete',
-            lbl: id            
+            lbl: id
         })
     }
 

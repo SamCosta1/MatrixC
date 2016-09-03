@@ -1,5 +1,5 @@
-function MatrixCellManager(_variables) {
-    var variables = _variables;
+function MatrixCellManager(onChange) {
+
     function getCell(row, col, val) {
         var $container = $('<div class="matrixCell">');
         var $top = $('<input class="inputCell top" type="text">').appendTo($container);
@@ -46,7 +46,7 @@ function MatrixCellManager(_variables) {
 
         $top.on('change focusout keyup',function(e) {
             var newVal = $(this).val().trim();
-            
+
             if (newVal === '0')
                 $(this).parent().addClass('zero');
             else if (e.type !== 'keyup' && newVal.trim() === '') {
@@ -66,20 +66,10 @@ function MatrixCellManager(_variables) {
             } else if (newVal === '1' || $(this).siblings('.top').val().trim() === '0') {
                 $(this).parent().removeClass('fraction');
             }
-        })
-
-        $container.change(function(e) {
-            e.stopImmediatePropagation();
-            var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-            var row = $(this).attr("data-row");
-            var col = $(this).attr("data-col");
-
-            variables.get(varName).update(row, col, new Fraction (
-                                                    $(this).children('.top').val().trim(),
-                                                    $(this).children('.bottom').val().trim()));
-            updateCell($(this).parent(), variables.get(varName));
-
         });
+
+        $container.change(onChange);
+
         $container.keyup(function(e) {
             e.stopImmediatePropagation();
         });

@@ -20,7 +20,9 @@ function QuickCalculations() {
         }],
 
         currentMatrix = null,
-        currentLbl = null;
+        currentLbl = null,
+        scalarMultiple = 1,
+        cellManager = new MatrixCellManager(onScalarChange);
 
     var $mainContainer = $('#quickCalcsContainer'),
         $specificFuncsContainer = $('.quickClassMatSpecific'),
@@ -29,7 +31,8 @@ function QuickCalculations() {
         $pinIcon = $('.quickCalcsPinIcon'),
         $errorLabel = $('.quickCalcsErrDisplay'),
         $errorContainer = $('.quickCalcsErrContainer'),
-        $dropdowns = $('.quickCalcsOperatorsContainer').find('select');
+        $dropdowns = $('.quickCalcsOperatorsContainer').find('select'),
+        $scalarMultiple = $('.quickCalcsScalarContainer');
 
     function init(_matrixManager, _variables) {
         matrixManager = _matrixManager;
@@ -38,10 +41,16 @@ function QuickCalculations() {
         initGeneralBtns();
         bindEvents();
 
-        if (typeof(Storage) !== "undefined" && localStorage.getItem('pinned') === 'true') {            
+        $scalarMultiple.append(cellManager.getCell(null,null,new Fraction(1)));
+
+        if (typeof(Storage) !== "undefined" && localStorage.getItem('pinned') === 'true') {
             $mainContainer.css('display', 'flex');
             onPinIconClicked();
         }
+
+    }
+
+    function onScalarChange(e) {
 
     }
 
