@@ -1,6 +1,12 @@
 $height: 140px;
 $collapsedHeight: $height / 10;
 
+// HACK This is really messy
+.quickCalcsOpen {
+    .headerMenu {
+        display: none !important;
+    }
+}
 #header {
     margin-top: 0;
     border: 0;

@@ -44,7 +44,7 @@ function QuickCalculations() {
         $scalarMultiple.append(cellManager.getCell(null,null,new Fraction(1)));
 
         if (typeof(Storage) !== "undefined" && localStorage.getItem('pinned') === 'true') {
-            $mainContainer.css('display', 'flex');
+            $mainContainer.parent().addClass("quickCalcsOpen");
             onPinIconClicked();
         }
 
@@ -75,7 +75,7 @@ function QuickCalculations() {
             return;
 
         if (mouseEntered) {
-            $mainContainer.hide();
+            $('body').removeClass('quickCalcsOpen');
             mouseEntered = false;
         }
     }
@@ -210,7 +210,7 @@ function QuickCalculations() {
     }
 
     function onMatrixSelect() {
-        $mainContainer.css('display', 'flex');
+        $('body').addClass("quickCalcsOpen");
         $mainContainer.removeClass('quickCalcsNoMatrix');
         currentLbl = $(this).closest(".matInput").attr("id").split("-")[1];
         changeTitle(currentLbl);
