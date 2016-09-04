@@ -3,7 +3,7 @@
 function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
 
     var $newMatrixBtn = $('#btnNewMat'),
-        cellManager = new MatrixCellManager(onCellChanged),
+        cellManager = new FractionalInputCellManager(onCellChanged),
         selectedVariables = [],
         count = 0,
         variables = _variables,

@@ -1,4 +1,4 @@
-function MatrixCellManager(onChange) {
+function FractionalInputCellManager(onChange) {
 
     function getCell(row, col, val) {
         var $container = $('<div class="matrixCell">');

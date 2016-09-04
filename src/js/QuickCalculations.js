@@ -22,7 +22,7 @@ function QuickCalculations() {
         currentMatrix = null,
         currentLbl = null,
         scalarMultiple = 1,
-        cellManager = new MatrixCellManager(onScalarChange);
+        cellManager = new FractionalInputCellManager(onScalarChange);
 
     var $mainContainer = $('#quickCalcsContainer'),
         $specificFuncsContainer = $('.quickClassMatSpecific'),
