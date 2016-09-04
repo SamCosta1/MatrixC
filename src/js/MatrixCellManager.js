@@ -82,15 +82,15 @@ function MatrixCellManager(onChange) {
         $parent.find('.bottom').val(bottom);
 
         if (top === '0') {
-            $parent.children().addClass('zero');
+            $parent.find('.matrixCell').addClass('zero');
         } else {
-            $parent.children().removeClass('zero');
+            $parent.find('.matrixCell').removeClass('zero');
         }
 
         if (bottom !== '1') {
-            $parent.children().addClass('fraction');
+            $parent.find('.matrixCell').addClass('fraction');
         } else {
-            $parent.children().removeClass('fraction');
+            $parent.find('.matrixCell').removeClass('fraction');
         }
 
     }
