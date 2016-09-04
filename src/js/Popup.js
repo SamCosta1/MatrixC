@@ -17,9 +17,9 @@ function Popup() {
         $body.append($container);
         $window.resize(resize);
 
-        $body.bind('sidebarResize', resize);
-        $body.bind('closePopup', close);
-        $close.bind('click', close);
+        $body.on('sidebarResize', resize);
+        $body.on('closePopup', close);
+        $close.on('click', close);
 
         resize();
     }

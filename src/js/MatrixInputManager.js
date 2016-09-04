@@ -11,7 +11,7 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
         quickCalcsPanel = _quickCalcsPanel;
 
     function init() {
-        $newMatrixBtn.bind('click', function() {
+        $newMatrixBtn.on('click', function() {
             newInputComp();
         });
         $newMatrixBtn.trigger('click');

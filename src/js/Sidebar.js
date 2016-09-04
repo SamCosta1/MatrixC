@@ -10,13 +10,13 @@ function Sidebar() {
 
     function init() {
 
-        $dragHandle.bind('mousedown', onSnapHandleMouseDown);
+        $dragHandle.on('mousedown', onSnapHandleMouseDown);
         $dragHandle.dblclick(onHandleDoubleClick);
         $snapHandle.click(onSnapClick);
         $fullScreenToggle.click(toggleFullScreen);
 
         $(document).mouseup(function(e) {
-            $(document).unbind('mousemove');
+            $(document).off('mousemove');
         });
     }
 
@@ -58,7 +58,7 @@ function Sidebar() {
     }
 
     function onSnapHandleMouseDown() {
-        $(document).bind('mousemove', function(e) {
+        $(document).on('mousemove', function(e) {
             e.stopImmediatePropagation();
             $('body').trigger('sidebarResize');
             var amount = $sidebarContainer.position().left - e.pageX;

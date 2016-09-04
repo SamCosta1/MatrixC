@@ -11,9 +11,9 @@ function CommandLine(_variables, _matrixManager) {
         parser = new Parser(_variables);
 
     function init() {
-        $commandLineTxtBox.bind('input', lockPromptText);
+        $commandLineTxtBox.on('input', lockPromptText);
         $commandLineTxtBox.keyup(onKeyUp);
-        $('body').bind('error', function(data) { errorHandle(data.msg); });
+        $('body').on('error', function(data) { errorHandle(data.msg); });
     }
 
     function onKeyUp(e) {
