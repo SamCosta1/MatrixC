@@ -178,6 +178,7 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
             var varName = $(this).closest(".matInput").attr("id").split("-")[1];
             variables.get(varName).resize(numRows, numCols);
         }
+        $('body').trigger('matrixChange');        
     }
 
     function onAddColumn(e) {
@@ -195,6 +196,7 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
         });
         var varName = $(this).closest(".matInput").attr("id").split("-")[1];
         variables.get(varName).resize(parseInt(m), n + 2);
+        $('body').trigger('matrixChange');
     }
 
     function onAddRow(e) {
@@ -214,6 +216,7 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
         $table.append($tr);
         var varName = $(this).closest(".matInput").attr("id").split("-")[1];
         variables.get(varName).resize(parseInt(numRows) + 1, parseInt(numCols));
+        $('body').trigger('matrixChange');
     }
 
     function onRemoveRow(e) {
@@ -228,6 +231,7 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
             var varName = $(this).closest(".matInput").attr("id").split("-")[1];
             variables.get(varName).resize(numRows, numCols);
         }
+        $('body').trigger('matrixChange');
     }
 
     function onAllCalcClicked(e) {
