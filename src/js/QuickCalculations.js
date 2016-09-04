@@ -48,6 +48,9 @@ function QuickCalculations() {
             onPinIconClicked();
         }
 
+        // Stop clicking on dropdowns from doing anything
+        $('.quickBtn option, .quickBtn select').click(function() { return false; });
+
     }
 
     function onScalarChange(e) {
@@ -62,13 +65,13 @@ function QuickCalculations() {
         $mainContainer.mouseleave(onMouseLeave);
         $mainContainer.mouseenter(onMouseEnter);
         $pinIcon.click(onPinIconClicked);
-        $('body').bind('matrixNameChange', onNameTempChange);
-        $('body').bind('matrixConfirmNameChange', onNameConfirmedChange);
-        $('body').bind('matrixDelete', onMatrixDelete);
-        $('body').bind('error', function(data) {
+        $('body').on('matrixNameChange', onNameTempChange);
+        $('body').on('matrixConfirmNameChange', onNameConfirmedChange);
+        $('body').on('matrixDelete', onMatrixDelete);
+        $('body').on('error', function(data) {
             errorHandle(data.msg);
         });
-        $('body').bind('matrixChange', fillDropDowns);
+        $('body').on('matrixChange', fillDropDowns);
     }
 
     var mouseEntered = false;
@@ -200,7 +203,8 @@ function QuickCalculations() {
         if (!(currentMatrix instanceof Matrix))
             return;
 
-        $dropdowns.empty();
+        $dropdowns.empty().val('');
+
         variables.iterate(addToDropDown);
     }
 
@@ -219,6 +223,7 @@ function QuickCalculations() {
         changeTitle(currentLbl);
         currentMatrix = variables.get(currentLbl);
         fillDropDowns();
+        return false;
     }
     return {
         init: init,
