@@ -51,7 +51,10 @@ function QuickCalculations() {
     }
 
     function onScalarChange(e) {
-
+        e.stopImmediatePropagation();
+        scalarMultiple = new Fraction ($(e.currentTarget).children('.top').val().trim(),
+                                       $(e.currentTarget).children('.bottom').val().trim());
+        cellManager.updateCell($(e.currentTarget).parent(), scalarMultiple.getTopString(), scalarMultiple.getBottomString());
     }
 
     function bindEvents() {

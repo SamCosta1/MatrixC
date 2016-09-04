@@ -77,24 +77,7 @@ function MatrixCellManager(onChange) {
         return $container;
     }
 
-    function updateCell($parent, matrix) {
-        var row = $parent.children().attr("data-row");
-        var col = $parent.children().attr("data-col");
-
-        var top,
-            bottom;
-
-        if (matrix instanceof Matrix) {
-            var frac = matrix.getCell(row, col);
-            top = frac.getTopString();
-            bottom = frac.getBottomString();
-        } else if (matrix instanceof Fraction) {
-            top = matrix.getTopString();
-            bottom = matrix.getBottomString();
-        }   else {
-            top = matrix;
-        }
-
+    function updateCell($parent, top, bottom) {
         $parent.find('.top').val(top);
         $parent.find('.bottom').val(bottom);
 

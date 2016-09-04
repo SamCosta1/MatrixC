@@ -288,13 +288,14 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
             return;
 
         var varName = $(e.currentTarget).closest(".matInput").attr("id").split("-")[1];
-        var row = $(this).attr("data-row");
-        var col = $(this).attr("data-col");
+        var row =  $(e.currentTarget).attr("data-row");
+        var col =  $(e.currentTarget).attr("data-col");
 
-        variables.get(varName).update(row, col, new Fraction (
-                                                $(e.currentTarget).children('.top').val().trim(),
-                                                $(e.currentTarget).children('.bottom').val().trim()));
-        cellManager.updateCell($(e.currentTarget).parent(), variables.get(varName));
+        var newFrac = new Fraction ($(e.currentTarget).children('.top').val().trim(),
+                                                $(e.currentTarget).children('.bottom').val().trim());
+
+        variables.get(varName).update(row, col, newFrac);
+        cellManager.updateCell($(e.currentTarget).parent(), newFrac.getTopString(), newFrac.getBottomString());
     }
 
     function makeCammelCase(inputted) {
@@ -340,6 +341,20 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
         }
         $('#MAT-' + lbl).find('table tr').each(function() {
             $(this).find('td').each(function() {
+                var row = $(this).children().attr("data-row"),
+                    col = $(this).children().attr("data-col"),
+                    top,bottom;
+
+                if (matrix instanceof Matrix) {
+                    var frac = matrix.getCell(row, col);
+                    top = frac.getTopString();
+                    bottom = frac.getBottomString();
+                } else if (matrix instanceof Fraction) {
+                    top = matrix.getTopString();
+                    bottom = matrix.getBottomString();
+                }   else {
+                    top = matrix;
+                }
                 cellManager.updateCell($(this), matrix)
             });
         });
