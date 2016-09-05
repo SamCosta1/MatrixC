@@ -47,6 +47,7 @@ function QuickCalculations() {
 
         if (typeof(Storage) !== "undefined" && localStorage.getItem('pinned') === 'true') {
             $mainContainer.parent().addClass("quickCalcsOpen");
+            $('body').trigger('quickCalcsToggle');
             onPinIconClicked();
         }
     }
@@ -139,6 +140,7 @@ function QuickCalculations() {
 
         if (mouseEntered) {
             $('body').removeClass('quickCalcsOpen');
+            $('body').trigger('quickCalcsToggle');
             mouseEntered = false;
         }
     }
@@ -286,6 +288,8 @@ function QuickCalculations() {
 
     function onMatrixSelect() {
         $('body').addClass("quickCalcsOpen");
+        $('body').trigger('quickCalcsToggle');
+
         $mainContainer.removeClass('quickCalcsNoMatrix');
 
         currentLbl = $(this).closest(".matInput").attr("id").split("-")[1];

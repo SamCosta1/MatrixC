@@ -17,7 +17,7 @@ function Popup() {
         $body.append($container);
         $window.resize(resize);
 
-        $body.on('sidebarResize', resize);
+        $body.on('sidebarResize quickCalcsToggle', resize);
         $body.on('closePopup', close);
         $close.on('click', close);
 
@@ -29,9 +29,17 @@ function Popup() {
     }
 
     function resize() {
-        console.log('resize', $headerText.outerHeight(true));
         $container.width($window.width() - 23 - $('.sidebar').width());
+        $container.height($(window).height() * 0.98);
         $popupBody.height($container.height() - $headerText.outerHeight(true));
+        $container.css('top', 10);
+
+        if ($('#quickCalcsContainer').is(":visible")) {
+            var quickCalcsHeight = $('#quickCalcsContainer').height();
+            $container.css('top', quickCalcsHeight + 10);
+            $container.height($container.height() - quickCalcsHeight);
+            $popupBody.height($popupBody.height() - quickCalcsHeight);
+        }
     }
 
     function renderContent(content) {
