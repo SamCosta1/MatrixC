@@ -246,14 +246,15 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
     function endEdit(e) {
         e.stopImmediatePropagation();
 
-        var input = $(e.target),
-            label = input && input.prev();
+        var input = $(e.currentTarget),
+            label = input && input.prev(),
+            oldName;
 
         //make cammel case if needed
         var inputted = makeCammelCase(input.val());
         var err = false;
         if (!variables.isValid(inputted, false)) {
-            var oldName = label.closest("div").attr('id').split("-")[1];
+            oldName = label.closest("div").attr('id').split("-")[1];
             label.text(oldName);
             err = true;
 
@@ -264,7 +265,7 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
             });
         } else {
             label.text(inputted);
-            var oldName = label.closest("div").attr('id').split("-")[1];
+            oldName = label.closest("div").attr('id').split("-")[1];
             var mat = variables.get(oldName);
             variables.delete(oldName);
             variables.set(inputted, mat);
@@ -398,7 +399,7 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
         $('body').trigger({
             type: 'matrixDelete',
             lbl: id
-        })
+        });
     }
 
     $(document).keyup(function(e) {
