@@ -50,7 +50,7 @@
             p {
                 margin: 0px;
 
-                &.times {
+                &.op {
                     margin: 0 10px;
                 }
             }
@@ -92,6 +92,7 @@
 
     .quickCalcsErrContainer {
         height: 18px;
+        margin-top: 0px;
     }
 
     &.pinned {
@@ -115,7 +116,7 @@
     }
 
     &.quickCalcsCurrentNonSquare {
-        [data-func="#D"], [data-func="#I"] {
+        [data-func="#D"], [data-func="#I"], .quickCalcsPowerCalc {
             display: none;
         }
     }

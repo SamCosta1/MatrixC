@@ -67,15 +67,19 @@ function QuickCalculations() {
             type: '*',
         });
 
-        //try {
+        try {
             var start = Date.now();
             $errorLabel.hide();
 
             if ($(e.currentTarget).hasClass('quickCalcsPostMult')) {
+                if (!(otherMatrix instanceof Matrix))
+                    return;
                 step.data.result = currentMatrix.times(otherMatrix);
                 step.data.op1 = currentMatrix;
                 step.data.op2 = otherMatrix;
             } else if ($(e.currentTarget).hasClass('quickCalcsPreMult')) {
+                if (!(otherMatrix instanceof Matrix))
+                    return;
                 step.data.result = otherMatrix.times(currentMatrix);
                 step.data.op1 = otherMatrix;
                 step.data.op2 = currentMatrix;
@@ -91,6 +95,8 @@ function QuickCalculations() {
                 step.data.op1 = currentMatrix;
                 step.data.op2 = new Fraction(pow);
             } else if ($(e.currentTarget).hasClass('quickCalcsAdd')) {
+                if (!(otherMatrix instanceof Matrix))
+                    return;
                 step.data.result = otherMatrix.add(currentMatrix);
                 step.data.type = '+';
                 step.data.op1 = currentMatrix;
@@ -108,9 +114,9 @@ function QuickCalculations() {
 
             calcSteps.push(step);
             calcSteps.render($('.sidebarBody'));
-        /*} catch (err) {
+        } catch (err) {
             errorHandle(err);
-        }*/
+        }
     }
 
     function bindEvents() {
@@ -279,10 +285,11 @@ function QuickCalculations() {
             return;
 
         var numRows,numCols;
-        if ((numRows = currentMatrix.numRows()) === matrix.numCols() && (numCols = currentMatrix.numCols()) === matrix.numRows()) {
+        if (currentMatrix.numRows() === matrix.numCols() && currentMatrix.numCols() === matrix.numRows()) {
             $dropdowns.append('<option>' + lbl + '</option>');
-            if (numRows === numCols)
-                $addDropDown.append('<option>' + lbl + '</option>');
+        }
+        if (currentMatrix.numRows() === matrix.numRows() && currentMatrix.numCols() === matrix.numCols()) {
+            $addDropDown.append('<option>' + lbl + '</option>');
         }
     }
 
