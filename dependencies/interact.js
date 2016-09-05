@@ -1204,8 +1204,8 @@
         };
 
         if (isFunction(Function.prototype.bind)) {
-            this.boundInertiaFrame = this.inertiaFrame.on(this);
-            this.boundSmoothEndFrame = this.smoothEndFrame.on(this);
+            this.boundInertiaFrame = this.inertiaFrame.bind(this);
+            this.boundSmoothEndFrame = this.smoothEndFrame.bind(this);
         }
         else {
             var that = this;

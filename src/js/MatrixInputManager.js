@@ -359,7 +359,7 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
                 }   else {
                     top = matrix;
                 }
-                cellManager.updateCell($(this), matrix)
+                cellManager.updateCell($(this), top, bottom);
             });
         });
     }
