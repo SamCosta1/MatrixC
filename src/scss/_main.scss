@@ -21,17 +21,8 @@ $col2: gray;
             border-radius: 5px;
         }
 
-        #newLabel {
-            background-color: #e8effd;
-            border-radius: 10px;
-            padding: 2px 5px;
-            margin-left: 10px;
-            display: none;
-            cursor: default;
-        }
-
         &:hover {
-            #newLabel {
+            .newLabel {
                 display: block;
             }
         }
@@ -39,10 +30,6 @@ $col2: gray;
 }
 
 #bin {
-    float: right;
-    margin-left: auto;
-    margin-right: 17px;
-    user-select: none;
     width: 50px;
     font-size: 50px;
 
@@ -50,6 +37,23 @@ $col2: gray;
         &.binOpen {
             @extend .icon-bin-open;
         }
+    }
+}
+.binGroup {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+
+    float: right;
+    margin-left: auto;
+    margin-right: 17px;
+    user-select: none;
+    &:hover {
+        .binLabel {
+            display: block;
+            color: black;
+        }
+        color: red;
     }
 }
 
@@ -86,4 +90,19 @@ a {
     width: 60px;
     font-size: 30px;
     border-style: none;
+}
+
+.newLabel {
+    background-color: #e8effd;
+    border-radius: 10px;
+    padding: 2px 5px;
+    margin-left: 10px;
+    display: none;
+    cursor: default;
+
+    height: 30px;
+
+    &.binLabel {
+
+    }
 }

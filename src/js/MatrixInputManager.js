@@ -15,6 +15,13 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
             newInputComp();
         });
         variables.iterate(function(matrix, matLbl) { newInputComp(matLbl, matrix);});
+        $('#bin').click(removeAllMatricies);
+    }
+
+    function removeAllMatricies() {
+        $('.matInput').each(function() {
+            deleteMatrix($(this));
+        });
     }
 
     function render(data) {
