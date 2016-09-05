@@ -14,7 +14,7 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
         $newMatrixBtn.on('click', function() {
             newInputComp();
         });
-        $newMatrixBtn.trigger('click');
+        variables.iterate(function(matrix, matLbl) { newInputComp(matLbl, matrix);});
     }
 
     function render(data) {
