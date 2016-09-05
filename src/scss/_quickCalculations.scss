@@ -58,10 +58,10 @@
     }
 
 
-    $quickCalcsCellHeight: 30px;
-    $quickCalcsCellWidth: 20px;
+    $quickCalcsCellHeight: 35px;
+    $quickCalcsCellWidth: 50px;
 
-    .quickCalcsScalarContainer {
+    .quickBtn {
         .matrixCell {
             width: $quickCalcsCellWidth;
             height: $quickCalcsCellHeight;

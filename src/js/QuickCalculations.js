@@ -22,6 +22,7 @@ function QuickCalculations() {
         currentMatrix = null,
         currentLbl = null,
         scalarMultiple = new Fraction(1),
+        power = new Fraction(1),
         cellManager = new FractionalInputCellManager(onScalarChange);
 
     var $mainContainer = $('#quickCalcsContainer'),
@@ -31,7 +32,8 @@ function QuickCalculations() {
         $pinIcon = $('.quickCalcsPinIcon'),
         $errorLabel = $('.quickCalcsErrDisplay'),
         $errorContainer = $('.quickCalcsErrContainer'),
-        $dropdowns = $('.quickCalcsOperatorsContainer').find('select'),
+        $dropdowns = $('.quickCalcsOperatorsContainer').find('select').not('.quickCalcsAddMatricies'),
+        $addDropDown = $('.quickCalcsAddMatricies');
         $scalarMultiple = $('.quickCalcsScalarContainer');
 
     function init(_matrixManager, _variables) {
@@ -64,23 +66,36 @@ function QuickCalculations() {
             type: '*',
         });
 
-        try {
+        //try {
             var start = Date.now();
             $errorLabel.hide();
 
-            if ($(e.target).hasClass('quickCalcsPostMult')) {
+            if ($(e.currentTarget).hasClass('quickCalcsPostMult')) {
                 step.data.result = currentMatrix.times(otherMatrix);
                 step.data.op1 = currentMatrix;
                 step.data.op2 = otherMatrix;
-            } else if ($(e.target).hasClass('quickCalcsPreMult')) {
+            } else if ($(e.currentTarget).hasClass('quickCalcsPreMult')) {
                 step.data.result = otherMatrix.times(currentMatrix);
                 step.data.op1 = otherMatrix;
                 step.data.op2 = currentMatrix;
-            } else if ($(e.target).hasClass('quickCalcsScalarMult')) {
-                console.log(scalarMultiple);
+            } else if ($(e.currentTarget).hasClass('quickCalcsScalarMult')) {
                 step.data.result = currentMatrix.times(scalarMultiple);
                 step.data.op1 = currentMatrix;
                 step.data.op2 = scalarMultiple;
+            } else if ($(e.currentTarget).hasClass('quickCalcsPowerCalc')) {
+                var pow = parseInt($('.quickCalcsPowerCalc .inputCell').val());
+                console.log($(e.currentTarget), "POWER", pow);
+                step.data.result = currentMatrix.power(pow, step);
+                step.data.type = '^';
+                step.data.op1 = currentMatrix;
+                step.data.op2 = new Fraction(pow);
+            } else if ($(e.currentTarget).hasClass('quickCalcsAdd')) {
+                step.data.result = otherMatrix.add(currentMatrix);
+                step.data.type = '+';
+                step.data.op1 = currentMatrix;
+                step.data.op2 = otherMatrix;
+            } else {
+                throw "Something weird just happened :(";
             }
             matrixManager.render({
                 matrix: step.data.result
@@ -92,9 +107,9 @@ function QuickCalculations() {
 
             calcSteps.push(step);
             calcSteps.render($('.sidebarBody'));
-        } catch (err) {
+        /*} catch (err) {
             errorHandle(err);
-        }
+        }*/
     }
 
     function bindEvents() {
@@ -111,7 +126,7 @@ function QuickCalculations() {
         $('body').on('matrixChange', fillDropDowns);
 
         // Stop clicking on dropdowns from doing anything
-        $('.quickBtn option, .quickBtn select').click(function() { return false; });
+        $('.quickBtn option, .quickBtn select, .quickBtn input').click(function() { return false; });
 
         $('.quickCalcsOperatorsContainer .quickBtn').click(onMultClicked);
     }
@@ -246,6 +261,7 @@ function QuickCalculations() {
             return;
 
         $dropdowns.empty().val('');
+        $addDropDown.empty().val('');
 
         variables.iterate(addToDropDown);
 
@@ -259,8 +275,12 @@ function QuickCalculations() {
     function addToDropDown(matrix, lbl) {
         if (!(matrix instanceof Matrix))
             return;
-        if (currentMatrix.numRows() === matrix.numCols() && currentMatrix.numCols() === matrix.numRows()) {
+
+        var numRows,numCols;
+        if ((numRows = currentMatrix.numRows()) === matrix.numCols() && (numCols = currentMatrix.numCols()) === matrix.numRows()) {
             $dropdowns.append('<option>' + lbl + '</option>');
+            if (numRows === numCols)
+                $addDropDown.append('<option>' + lbl + '</option>');
         }
     }
 
