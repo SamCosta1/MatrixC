@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'matrixc';
-  src:  url('../img/fonts/matrixc.eot?cd66lg');
-  src:  url('../img/fonts/matrixc.eot?cd66lg#iefix') format('embedded-opentype'),
-    url('../img/fonts/matrixc.ttf?cd66lg') format('truetype'),
-    url('../img/fonts/matrixc.woff?cd66lg') format('woff'),
-    url('../img/fonts/matrixc.svg?cd66lg#matrixc') format('svg');
+  src:  url('../img/fonts/matrixc.eot?2j4niq');
+  src:  url('../img/fonts/matrixc.eot?2j4niq#iefix') format('embedded-opentype'),
+    url('../img/fonts/matrixc.ttf?2j4niq') format('truetype'),
+    url('../img/fonts/matrixc.woff?2j4niq') format('woff'),
+    url('../img/fonts/matrixc.svg?2j4niq#matrixc') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,6 +24,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-pin:before {
+  content: "\e913";
+}
+.icon-quickCalcs:before {
+  content: "\e912";
+}
+.icon-double-down-arrows:before {
+  content: "\e910";
+}
+.icon-double-up-arrows:before {
+  content: "\e911";
+}
 .icon-bin-open:before {
   content: "\e900";
 }

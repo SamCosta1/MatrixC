@@ -7,6 +7,7 @@ var uglify = require('gulp-uglify');
 var gulpif = require('gulp-if');
 var cleanCSS = require('gulp-clean-css');
 var autoprefixer = require('gulp-autoprefixer');
+var babel = require('gulp-babel');
 var browserSync = require('browser-sync').create();
 
 // Static server
@@ -73,7 +74,7 @@ gulp.task('libraryScripts', function() {
 gulp.task('scripts', function() {
     return gulp.src(jsFiles)
         .pipe(concat('scripts.min.js'))
-        .pipe(gulp.dest(jsDest))
+        .pipe(gulp.dest(jsDest))    
         .pipe(gulpif(deploy, uglify()))
         .pipe(gulp.dest(jsDest))
         .pipe(gulpif(!deploy,browserSync.reload({stream: true})));

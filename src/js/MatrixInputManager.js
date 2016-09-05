@@ -1,16 +1,17 @@
 // Just don't look at this file, seriously, go watch netfilx, this file stinks
 
-function MatrixInputManager(_variables, _popup) {
+function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
 
     var $newMatrixBtn = $('#btnNewMat'),
-        cellManager = new MatrixCellManager();
+        cellManager = new FractionalInputCellManager(onCellChanged),
         selectedVariables = [],
         count = 0,
         variables = _variables,
-        popup = _popup;
+        popup = _popup,
+        quickCalcsPanel = _quickCalcsPanel;
 
     function init() {
-        $newMatrixBtn.bind('click', function() {
+        $newMatrixBtn.on('click', function() {
             newInputComp();
         });
         $newMatrixBtn.trigger('click');
@@ -22,7 +23,6 @@ function MatrixInputManager(_variables, _popup) {
         else {
             updateGUI(data.lbl, data.matrix);
         }
-
     }
 
     function newInputComp(matLbl, matrix) {
@@ -85,8 +85,10 @@ function MatrixInputManager(_variables, _popup) {
 
             $dragHandle = $('<div class="dragHandle icon-drag-handle">').appendTo($hiddenBtns);
             $allCalcButton = $('<div class="allCalcButton icon-info">').appendTo($hiddenBtns);
+            $quickCalcsBtn = $('<div class="quickCalcsButton icon-quickCalcs">').appendTo($hiddenBtns);
 
             $allCalcButton.click(onAllCalcClicked);
+            $quickCalcsBtn.click(quickCalcsPanel.onMatrixSelect);
 
             var btnImg = function(direction) {
                 return $('<div class="icon-'+direction+'-arrow">');
@@ -124,11 +126,16 @@ function MatrixInputManager(_variables, _popup) {
             $div.append($buttons);
         }
 
-        $('.matDefinitions').append($div);
+        $('.matDefinitions').prepend($div);
 
         $('.clickedit').hide()
             .focusout(endEdit)
             .keyup(function(e) {
+                $('body').trigger({
+                    type: 'matrixNameChange',
+                    original: $(this).closest(".matInput").attr('id').split("-")[1],
+                    new: $(this).val()
+                });
                 e.stopImmediatePropagation();
                 if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
                     endEdit(e);
@@ -171,6 +178,7 @@ function MatrixInputManager(_variables, _popup) {
             var varName = $(this).closest(".matInput").attr("id").split("-")[1];
             variables.get(varName).resize(numRows, numCols);
         }
+        $('body').trigger('matrixChange');        
     }
 
     function onAddColumn(e) {
@@ -188,6 +196,7 @@ function MatrixInputManager(_variables, _popup) {
         });
         var varName = $(this).closest(".matInput").attr("id").split("-")[1];
         variables.get(varName).resize(parseInt(m), n + 2);
+        $('body').trigger('matrixChange');
     }
 
     function onAddRow(e) {
@@ -207,6 +216,7 @@ function MatrixInputManager(_variables, _popup) {
         $table.append($tr);
         var varName = $(this).closest(".matInput").attr("id").split("-")[1];
         variables.get(varName).resize(parseInt(numRows) + 1, parseInt(numCols));
+        $('body').trigger('matrixChange');
     }
 
     function onRemoveRow(e) {
@@ -221,6 +231,7 @@ function MatrixInputManager(_variables, _popup) {
             var varName = $(this).closest(".matInput").attr("id").split("-")[1];
             variables.get(varName).resize(numRows, numCols);
         }
+        $('body').trigger('matrixChange');
     }
 
     function onAllCalcClicked(e) {
@@ -235,29 +246,61 @@ function MatrixInputManager(_variables, _popup) {
     function endEdit(e) {
         e.stopImmediatePropagation();
 
-        var input = $(e.target),
-            label = input && input.prev();
+        var input = $(e.currentTarget),
+            label = input && input.prev(),
+            oldName;
 
         //make cammel case if needed
         var inputted = makeCammelCase(input.val());
         var err = false;
         if (!variables.isValid(inputted, false)) {
-            label.text(label.closest("div").attr('id').split("-")[1]);
+            oldName = label.closest("div").attr('id').split("-")[1];
+            label.text(oldName);
             err = true;
+
+            $('body').trigger({
+                type: "matrixConfirmNameChange",
+                original: oldName,
+                new: oldName
+            });
         } else {
             label.text(inputted);
-            var mat = variables.get(label.closest("div").attr('id').split("-")[1]);
-            variables.delete(label.closest("div").attr('id').split("-")[1]);
+            oldName = label.closest("div").attr('id').split("-")[1];
+            var mat = variables.get(oldName);
+            variables.delete(oldName);
             variables.set(inputted, mat);
             label.closest("div").attr('id', "MAT-" + inputted);
+            $('body').trigger({
+                type: "matrixConfirmNameChange",
+                original: oldName,
+                new: inputted
+            });
         }
         input.hide();
         label.show();
         input.val("");
 
         if (err)
-            errorHandle("Invalid Variable Name :(");
+            $('body').trigger({
+                type: 'error',
+                msg: 'Invalid Variable Name :('
+            });
+    }
 
+    function onCellChanged(e) {
+        e.stopImmediatePropagation();
+        if (variables === undefined)
+            return;
+
+        var varName = $(e.currentTarget).closest(".matInput").attr("id").split("-")[1];
+        var row =  $(e.currentTarget).attr("data-row");
+        var col =  $(e.currentTarget).attr("data-col");
+
+        var newFrac = new Fraction ($(e.currentTarget).children('.top').val().trim(),
+                                                $(e.currentTarget).children('.bottom').val().trim());
+
+        variables.get(varName).update(row, col, newFrac);
+        cellManager.updateCell($(e.currentTarget).parent(), newFrac.getTopString(), newFrac.getBottomString());
     }
 
     function makeCammelCase(inputted) {
@@ -303,7 +346,21 @@ function MatrixInputManager(_variables, _popup) {
         }
         $('#MAT-' + lbl).find('table tr').each(function() {
             $(this).find('td').each(function() {
-                cellManager.updateCell($(this), matrix)
+                var row = $(this).children().attr("data-row"),
+                    col = $(this).children().attr("data-col"),
+                    top,bottom;
+
+                if (matrix instanceof Matrix) {
+                    var frac = matrix.getCell(row, col);
+                    top = frac.getTopString();
+                    bottom = frac.getBottomString();
+                } else if (matrix instanceof Fraction) {
+                    top = matrix.getTopString();
+                    bottom = matrix.getBottomString();
+                }   else {
+                    top = matrix;
+                }
+                cellManager.updateCell($(this), top, bottom);
             });
         });
     }
@@ -334,9 +391,15 @@ function MatrixInputManager(_variables, _popup) {
     });
 
     function deleteMatrix(obj) {
-        variables.delete($(obj).attr("id").split('-')[1]);
+        var id = $(obj).attr("id").split('-')[1];
+        variables.delete(id);
         $(obj).remove();
         $('#bin').removeClass("binOpen");
+
+        $('body').trigger({
+            type: 'matrixDelete',
+            lbl: id
+        });
     }
 
     $(document).keyup(function(e) {

@@ -9,22 +9,27 @@ function Variables() {
 
     function set(key, val) {
         variables.set(key, val);
+        $('body').trigger('matrixChange');
     }
 
     function deleteVar(key) {
         variables.delete(key);
+        $('body').trigger('matrixChange');
+    }
+
+    function iterate(callback) {
+        variables.forEach(callback);
     }
 
     function isValid(inputted, allowDuplicate) {
-        return /^[a-z0-9]+$/i.test(inputted) && (allowDuplicate ? true :
+        return /^[a-z][a-z0-9]*$/i.test(inputted) && (allowDuplicate ? true :
                 variables.get(inputted) === undefined) &&
             getEnum(inputted) === funcENUM.NONE;
     }
 
     function getNextFreeLetter() {
-        letterIndex++;
-        if (letterIndex >= alphabet.length)
-            letterIndex = 0;
+        letterIndex = (letterIndex + 1) % alphabet.length;
+
         if (isValid(alphabet[letterIndex]))
             return alphabet[letterIndex];
 
@@ -40,6 +45,7 @@ function Variables() {
         set: set,
         getNextFreeLetter: getNextFreeLetter,
         isValid: isValid,
-        delete: deleteVar
-    }
+        delete: deleteVar,
+        iterate: iterate
+    };
 }

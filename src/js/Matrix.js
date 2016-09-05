@@ -174,7 +174,10 @@ Matrix.prototype.divide = function(other, stp) {
             return this.times(new Fraction(1, other));
     }
 };
-Matrix.prototype.power = function(power) {
+Matrix.prototype.power = function(power, step) {
+    if (step !== undefined) {
+        this.step = step;
+    }
     if (this.numCols() != this.numRows())
         throw "You can only calculate powers of square matricies!";
     var result;
