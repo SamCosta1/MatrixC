@@ -56,12 +56,16 @@ function Variables() {
     function getNextFreeLetter() {
         letterIndex = (letterIndex + 1) % alphabet.length;
 
-        if (isValid(alphabet[letterIndex]))
+        if (isValid(alphabet[letterIndex])) {
+            localStorage.setItem('letterIndex', letterIndex);
             return alphabet[letterIndex];
+        }
 
         var withRndm = alphabet[letterIndex] + parseInt(Math.random() * 100);
-        if (isValid(withRndm))
+        if (isValid(withRndm)) {
+            localStorage.setItem('letterIndex', letterIndex);
             return withRndm;
+        }
         else
             getNextFreeLetter();
     }
@@ -74,6 +78,15 @@ function Variables() {
     function init() {
         extractAllFromStore();
         $('body').on('matrixCellChange', onCellChange);
+        if (localStorage.hasOwnProperty('letterIndex')) {
+            letterIndex = parseInt(localStorage.getItem('letterIndex'));
+        }
+
+    }
+
+    function resetLetters() {
+        letterIndex = -1;
+        localStorage.setItem('letterIndex', letterIndex);        
     }
 
     return {
@@ -83,6 +96,7 @@ function Variables() {
         isValid: isValid,
         delete: deleteVar,
         iterate: iterate,
-        init: init
+        init: init,
+        reset: resetLetters
     };
 }

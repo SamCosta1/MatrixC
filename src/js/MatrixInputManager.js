@@ -22,6 +22,7 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
         $('.matInput').each(function() {
             deleteMatrix($(this));
         });
+        variables.reset();
     }
 
     function render(data) {
