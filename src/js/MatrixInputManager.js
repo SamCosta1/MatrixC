@@ -14,7 +14,15 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
         $newMatrixBtn.on('click', function() {
             newInputComp();
         });
-        $newMatrixBtn.trigger('click');
+        variables.iterate(function(matrix, matLbl) { newInputComp(matLbl, matrix);});
+        $('#bin').click(removeAllMatricies);
+    }
+
+    function removeAllMatricies() {
+        $('.matInput').each(function() {
+            deleteMatrix($(this));
+        });
+        variables.reset();
     }
 
     function render(data) {
@@ -300,6 +308,10 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
                                                 $(e.currentTarget).children('.bottom').val().trim());
 
         variables.get(varName).update(row, col, newFrac);
+        $('body').trigger({
+            type: 'matrixCellChange',
+            key: varName
+        });
         cellManager.updateCell($(e.currentTarget).parent(), newFrac.getTopString(), newFrac.getBottomString());
     }
 

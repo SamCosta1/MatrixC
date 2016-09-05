@@ -18,7 +18,7 @@ function ApplicationManager() {
 
         header.init();
         quickCalcsPanel.init(matrixManager, variables);
-
+        variables.init();
         matrixManager.init();
         sidebar.init();
         popup.init();
