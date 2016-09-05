@@ -300,6 +300,10 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
                                                 $(e.currentTarget).children('.bottom').val().trim());
 
         variables.get(varName).update(row, col, newFrac);
+        $('body').trigger({
+            type: 'matrixCellChange',
+            key: varName
+        });
         cellManager.updateCell($(e.currentTarget).parent(), newFrac.getTopString(), newFrac.getBottomString());
     }
 

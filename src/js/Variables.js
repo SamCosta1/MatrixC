@@ -66,8 +66,14 @@ function Variables() {
             getNextFreeLetter();
     }
 
+    function onCellChange(data) {
+        if (localStorage.hasOwnProperty('MATRIX-' + data.key))
+            updateStore(data.key);
+    }
+
     function init() {
         extractAllFromStore();
+        $('body').on('matrixCellChange', onCellChange);
     }
 
     return {
