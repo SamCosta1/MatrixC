@@ -20,7 +20,7 @@ function Variables() {
     }
 
     function removeFromStore(key) {
-        localStorage.removeItem(key);
+        localStorage.removeItem('MATRIX-' + key);
     }
 
     function extractAllFromStore() {
