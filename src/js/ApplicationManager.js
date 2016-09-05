@@ -4,17 +4,20 @@ function ApplicationManager() {
         popup = null,
         matrixManager = null,
         sidebar = null,
-        header = null;
+        header = null,
+        quickCalcsPanel = null;
 
     function init() {
         variables = new Variables();
         popup = new Popup();
         sidebar = new Sidebar();
         header = new Header();
+        quickCalcsPanel = new QuickCalculations();
+        matrixManager = new MatrixInputManager(variables, popup, quickCalcsPanel);
+        commandLine = new CommandLine(variables, matrixManager).init();
 
         header.init();
-        matrixManager = new MatrixInputManager(variables, popup);
-        commandLine = new CommandLine(variables, matrixManager).init();
+        quickCalcsPanel.init(matrixManager, variables);
 
         matrixManager.init();
         sidebar.init();

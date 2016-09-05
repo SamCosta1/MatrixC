@@ -1,7 +1,7 @@
 function CommandLine(_variables, _matrixManager) {
 
     var $commandLineTxtBox = $('#cmdinput'),
-        $errorLabel = $('#errDisplay'),
+        $errorLabel = $('.errDisplay'),
         $errorContainer = $('.errContainer'),
         base = 'MatCalculator >> ',
         baseRegex = new RegExp('^' + base, 'i'),
@@ -11,8 +11,9 @@ function CommandLine(_variables, _matrixManager) {
         parser = new Parser(_variables);
 
     function init() {
-        $commandLineTxtBox.bind('input', lockPromptText);
+        $commandLineTxtBox.on('input', lockPromptText);
         $commandLineTxtBox.keyup(onKeyUp);
+        $('body').on('error', function(data) { errorHandle(data.msg); });
     }
 
     function onKeyUp(e) {

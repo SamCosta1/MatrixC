@@ -1,4 +1,5 @@
-function MatrixCellManager() {
+function FractionalInputCellManager(onChange) {
+
     function getCell(row, col, val) {
         var $container = $('<div class="matrixCell">');
         var $top = $('<input class="inputCell top" type="text">').appendTo($container);
@@ -7,7 +8,7 @@ function MatrixCellManager() {
 
 
         if (val.isZero()) {
-            $container.addClass('zero');;
+            $container.addClass('zero');
         }
         if (!val.isInt()) {
             $container.addClass('fraction');
@@ -44,9 +45,8 @@ function MatrixCellManager() {
         });
 
         $top.on('change focusout keyup',function(e) {
-            console.log("focusout");
             var newVal = $(this).val().trim();
-            console.log(newVal);
+
             if (newVal === '0')
                 $(this).parent().addClass('zero');
             else if (e.type !== 'keyup' && newVal.trim() === '') {
@@ -66,19 +66,10 @@ function MatrixCellManager() {
             } else if (newVal === '1' || $(this).siblings('.top').val().trim() === '0') {
                 $(this).parent().removeClass('fraction');
             }
-        })
-
-        $container.change(function(e) {
-            e.stopImmediatePropagation();
-            var varName = $(this).closest(".matInput").attr("id").split("-")[1];
-            var row = $(this).attr("data-row");
-            var col = $(this).attr("data-col");
-
-            variables.get(varName).update(row, col, new Fraction (
-                                                    $(this).children('.top').val().trim(),
-                                                    $(this).children('.bottom').val().trim()));
-
         });
+
+        $container.change(onChange);
+
         $container.keyup(function(e) {
             e.stopImmediatePropagation();
         });
@@ -86,37 +77,20 @@ function MatrixCellManager() {
         return $container;
     }
 
-    function updateCell($parent, matrix) {
-        var row = $parent.children().attr("data-row");
-        var col = $parent.children().attr("data-col");
-
-        var top,
-            bottom;
-
-        if (matrix instanceof Matrix) {
-            var frac = matrix.getCell(row, col);
-            top = frac.getTopString();
-            bottom = frac.getBottomString();
-        } else if (matrix instanceof Fraction) {
-            top = matrix.getTopString();
-            bottom = matrix.getBottomString();
-        }   else {
-            top = matrix;
-        }
-
+    function updateCell($parent, top, bottom) {
         $parent.find('.top').val(top);
         $parent.find('.bottom').val(bottom);
 
         if (top === '0') {
-            $parent.children().addClass('zero');
+            $parent.find('.matrixCell').addClass('zero');
         } else {
-            $parent.children().removeClass('zero');
+            $parent.find('.matrixCell').removeClass('zero');
         }
 
         if (bottom !== '1') {
-            $parent.children().addClass('fraction');
+            $parent.find('.matrixCell').addClass('fraction');
         } else {
-            $parent.children().removeClass('fraction');
+            $parent.find('.matrixCell').removeClass('fraction');
         }
 
     }

@@ -17,6 +17,58 @@
 
 <body>
     <div class="mainContentContainer">
+
+        <div id="quickCalcsContainer" class="quickCalcsNoMatrix noSelect">
+            <div class="quickCalcsTitleBar">
+                <div class="quickCalcsTitle quickCalcsMatLabel"></div>
+                <div class="quickCalcsErrContainer">
+                    <label class="quickCalcsErrDisplay">Error: </label>
+                </div>
+                <div class="quickCalcsPinIcon"><div class="icon-pin"></div></div>
+            </div>
+            <div class="quickCalcsColumnContainer">
+                <div class="quickCalcsColumn functionButtonsContainer">
+                    <div class="quickCalcsRow quickClassMatSpecific"></div>
+                    <div class="quickCalcsRow quickCalcsGeneral"></div>
+                </div>
+
+                <div class="quickCalcsColumn quickCalcsOperatorsContainer">
+                    <div class="quickCalcsPreMult quickBtn">
+                        <div class="icon-left-bracket"></div>
+                        <select class="quickCalcsPreMultMatricies"></select><p class="op">x</p>
+                        <p class="quickCalcsMatLabel"></p>
+                        <div class="icon-right-bracket"></div>
+                    </div>
+                    <div class="quickCalcsPostMult quickBtn">
+                        <div class="icon-left-bracket"></div>
+                        <p class="quickCalcsMatLabel"></p><p class="op">x</p>
+                        <select class="quickCalcsPostMultMatricies"></select>
+                        <div class="icon-right-bracket"></div>
+                    </div>
+                    <div class="quickCalcsAdd quickBtn">
+                        <div class="icon-left-bracket"></div>
+                        <p class="quickCalcsMatLabel"></p><p class="op">+</p>
+                        <select class="quickCalcsAddMatricies"></select>
+                        <div class="icon-right-bracket"></div>
+                    </div>
+                    <div class="quickCalcsScalarMult quickBtn">
+                        <div class="icon-left-bracket"></div>
+                        <p class="quickCalcsMatLabel"></p><p class="op">x</p>
+                        <div class="quickCalcsScalarContainer"></div>
+                        <div class="icon-right-bracket"></div>
+                    </div>
+                    <div class="quickCalcsPowerCalc quickBtn">
+                        <div class="icon-left-bracket"></div>
+                        <p class="quickCalcsMatLabel"></p><p class="op">^</p>
+                        <div class="quickCalcsPowerContainer matrixCell">
+                            <input class="inputCell" type="text" value="1">
+                        </div>
+                        <div class="icon-right-bracket"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="header" class="noSelect">
             <div class="middleTitle center noSelect" onclick="window.location.href='index.html'">
                 <div class="headerBracket icon-left-bracket"></div>
@@ -27,7 +79,7 @@
                 <div class="headerBracket icon-right-bracket"></div>
             </div>
             <div class="headerMenu noSelect">
-                <a class="credit" href="refrences.html">Other Stuff</a>        
+                <a class="credit" href="refrences.html">Other Stuff</a>
             </div>
             <div class="headerToggleBar icon-double-up-arrows"></div>
         </div>
@@ -37,7 +89,7 @@
                 <div id="commandLine">
                     <textarea id="cmdinput" rows="3" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">MatCalculator &gt&gt </textarea>
                     <div class="errContainer">
-                        <label id="errDisplay">Error: </label>
+                        <label class="errDisplay">Error: </label>
                     </div>
                 </div>
                 <div id="newMatGroup">

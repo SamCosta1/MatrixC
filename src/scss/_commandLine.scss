@@ -29,17 +29,18 @@ $commandlineBorder: 7px;
             }
         }
 
-        .errContainer {
-            margin: 5px;
-            line-height: 1.5;
-            color: red;
-            &.success {
-                color: #008e0d;
-            }
-            #errDisplay {
-                word-wrap: break-word;
-                display: none;
-            }
-        }
+    }
+}
+
+.errContainer , .quickCalcsErrContainer {
+    margin: 5px;
+    line-height: 1.5;
+    color: red;
+    &.success {
+        color: #008e0d;
+    }
+    .errDisplay, .quickCalcsErrDisplay {
+        word-wrap: break-word;
+        display: none;
     }
 }
