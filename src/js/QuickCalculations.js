@@ -21,7 +21,7 @@ function QuickCalculations() {
 
         currentMatrix = null,
         currentLbl = null,
-        scalarMultiple = 1,
+        scalarMultiple = new Fraction(1),
         cellManager = new FractionalInputCellManager(onScalarChange);
 
     var $mainContainer = $('#quickCalcsContainer'),
@@ -47,10 +47,6 @@ function QuickCalculations() {
             $mainContainer.parent().addClass("quickCalcsOpen");
             onPinIconClicked();
         }
-
-        // Stop clicking on dropdowns from doing anything
-        $('.quickBtn option, .quickBtn select').click(function() { return false; });
-
     }
 
     function onScalarChange(e) {
@@ -60,8 +56,49 @@ function QuickCalculations() {
         cellManager.updateCell($(e.currentTarget).parent(), scalarMultiple.getTopString(), scalarMultiple.getBottomString());
     }
 
+    function onMultClicked(e) {
+        var otherMatrix = variables.get($(this).find($('select')).val());
+
+        var calcSteps = new CalculationArray();
+        var step = new CalculationStep({
+            type: '*',
+        });
+
+        try {
+            var start = Date.now();
+            $errorLabel.hide();
+
+            if ($(e.target).hasClass('quickCalcsPostMult')) {
+                step.data.result = currentMatrix.times(otherMatrix);
+                step.data.op1 = currentMatrix;
+                step.data.op2 = otherMatrix;
+            } else if ($(e.target).hasClass('quickCalcsPreMult')) {
+                step.data.result = otherMatrix.times(currentMatrix);
+                step.data.op1 = otherMatrix;
+                step.data.op2 = currentMatrix;
+            } else if ($(e.target).hasClass('quickCalcsScalarMult')) {
+                console.log(scalarMultiple);
+                step.data.result = currentMatrix.times(scalarMultiple);
+                step.data.op1 = currentMatrix;
+                step.data.op2 = scalarMultiple;
+            }
+            matrixManager.render({
+                matrix: step.data.result
+            });
+
+            var end = Date.now() - start;
+            successHandle(end);
+            console.log("Operation done in " + end + "ms");
+
+            calcSteps.push(step);
+            calcSteps.render($('.sidebarBody'));
+        } catch (err) {
+            errorHandle(err);
+        }
+    }
+
     function bindEvents() {
-        $('.quickBtn').click(onButtonClick);
+        $('.functionButtonsContainer .quickBtn').click(onButtonClick);
         $mainContainer.mouseleave(onMouseLeave);
         $mainContainer.mouseenter(onMouseEnter);
         $pinIcon.click(onPinIconClicked);
@@ -72,6 +109,11 @@ function QuickCalculations() {
             errorHandle(data.msg);
         });
         $('body').on('matrixChange', fillDropDowns);
+
+        // Stop clicking on dropdowns from doing anything
+        $('.quickBtn option, .quickBtn select').click(function() { return false; });
+
+        $('.quickCalcsOperatorsContainer .quickBtn').click(onMultClicked);
     }
 
     var mouseEntered = false;
@@ -206,6 +248,12 @@ function QuickCalculations() {
         $dropdowns.empty().val('');
 
         variables.iterate(addToDropDown);
+
+        if (currentMatrix.numCols() === currentMatrix.numRows()){
+            $mainContainer.removeClass('quickCalcsCurrentNonSquare');
+        } else {
+            $mainContainer.addClass('quickCalcsCurrentNonSquare');
+        }
     }
 
     function addToDropDown(matrix, lbl) {
@@ -219,6 +267,7 @@ function QuickCalculations() {
     function onMatrixSelect() {
         $('body').addClass("quickCalcsOpen");
         $mainContainer.removeClass('quickCalcsNoMatrix');
+
         currentLbl = $(this).closest(".matInput").attr("id").split("-")[1];
         changeTitle(currentLbl);
         currentMatrix = variables.get(currentLbl);

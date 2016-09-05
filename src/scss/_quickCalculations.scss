@@ -114,6 +114,12 @@
         }
     }
 
+    &.quickCalcsCurrentNonSquare {
+        [data-func="#D"], [data-func="#I"] {
+            display: none;
+        }
+    }
+
     .quickBtn {
         display: flex;
         align-items: center;
