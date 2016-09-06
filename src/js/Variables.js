@@ -27,6 +27,9 @@ function Variables() {
         for (var key in localStorage) {
             var res;
             if ((res = /MATRIX-(.+)/.exec(key))) {
+                if (localStorage.getItem(key) === 'undefined') {
+                    continue;
+                }
                 var rawData = JSON.parse(localStorage.getItem(key));
                 for (var i = 0; i < rawData.length; i++)
                     for (var j = 0; j < rawData[i].length; j++)
@@ -86,7 +89,7 @@ function Variables() {
 
     function resetLetters() {
         letterIndex = -1;
-        localStorage.setItem('letterIndex', letterIndex);        
+        localStorage.setItem('letterIndex', letterIndex);
     }
 
     return {
