@@ -16,6 +16,15 @@ Matrix.prototype.update = function(row, col, val) {
     this.matrix[parseInt(row)][parseInt(col)] = val instanceof Fraction ?
         val : new Fraction(val);
 };
+Matrix.prototype.toString = function() {
+    var str = '';
+    for (var r = 0; r < this.numRows(); r++) {
+        for (var c = 0; c < this.numCols(); c++)
+            str += ' ' + this.matrix[r][c].getLiteral();
+        str += '\n';
+    }
+    return str;
+};
 Matrix.prototype.getCell = function(row, col) {
     return this.matrix[row][col];
 };

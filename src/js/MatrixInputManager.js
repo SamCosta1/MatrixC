@@ -327,7 +327,6 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
     }
 
     function updateGUI(lbl, matrix) {
-        variables.set(lbl, matrix);
 
         if (matrix instanceof Matrix) {
 
@@ -356,6 +355,7 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
 
             }
         }
+        variables.set(lbl, matrix);
         $('#MAT-' + lbl).find('table tr').each(function() {
             $(this).find('td').each(function() {
                 var row = $(this).children().attr("data-row"),
