@@ -1,6 +1,4 @@
 $handleWidth: 16px;
-$gridCol: rgba(128, 128, 128, 0.1);
-$gridDim: 100px;
 
 .sidebar {
     position: fixed;
@@ -11,8 +9,7 @@ $gridDim: 100px;
     right: 0;
     top: 0;
     background-color: white;
-    background-size: $gridDim $gridDim;
-    background-image: linear-gradient(to right, $gridCol 1px, transparent 1px), linear-gradient(to bottom, $gridCol 1px, transparent 1px);
+    @include background-grid(5, get-val($main-map, 'background-grid.grid-color'));
     z-index: 2;
 
     .handle {
