@@ -7,14 +7,14 @@ $fontstack: 'Mandali', sans-serif;
     #btnNewMat {
         cursor: pointer;
         display: flex;
-        height:40px; // == fontsize
+        height: get-val($main-map, 'button.height');
         display: flex;
         align-items: center;
 
         .newMatIcon {
             background-color: black;
             color: white;
-            font-size:40px;
+            font-size: get-val($main-map, 'button.height');
             padding: 2px;
             border-radius: 5px;
         }
@@ -28,8 +28,8 @@ $fontstack: 'Mandali', sans-serif;
 }
 
 #bin {
-    width: 50px;
-    font-size: 50px;
+    width: get-val($main-map, 'button.height') * 1.2;
+    font-size: get-val($main-map, 'button.height') * 1.2;
 
     &.icon-bin {
         &.binOpen {
@@ -64,11 +64,6 @@ body {
     background-color: get-val($main-map, 'background-color');
 
     @include background-grid(1, get-val($main-map, 'background-grid.grid-color'));
-}
-
-#enterMat {
-    font: 100% $fontstack;
-    font-size: 30px;
 }
 
 .noSelect {

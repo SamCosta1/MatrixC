@@ -3,7 +3,10 @@ $main-map: (
         'grid-color': rgba(128, 128, 128, 0.1),
         'default-dimension': 20px
     ),
-    'background-color': #fbfbfb
+    'background-color': #fbfbfb,
+    'button': (
+        'height': 40px
+    )
 );
 
 @mixin background-grid($scale, $colour) {
