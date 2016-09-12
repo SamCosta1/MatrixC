@@ -27,7 +27,7 @@ $collapsedHeight: $height / 10;
     #headerText {
         text-align: center;
         color: white;
-        font-size: 50px;
+        font-size: get-val($main-map, 'font-size.large-heading');
         margin: 0;
         line-height: 1;
         display: flex;

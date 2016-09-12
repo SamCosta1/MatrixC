@@ -1,4 +1,6 @@
 @import "main-map";
+@import "sidebar-map";
+
 @function explode($string,$dem) {
     $list: ();
     $sum: str-length($string);

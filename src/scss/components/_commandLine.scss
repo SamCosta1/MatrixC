@@ -13,7 +13,7 @@ $commandlineBorder: 7px;
         #cmdinput {
             background: transparent;
             border: none;
-            font-size: 19px;
+            font-size: get-val($main-map, 'font-size.small');
             width: 100%;
             color: white;
             resize: none;
