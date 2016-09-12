@@ -1,0 +1,156 @@
+.quickCalcsOpen {
+    #quickCalcsContainer {
+        display: flex;
+    }
+}
+
+
+#quickCalcsContainer {
+    display: none;
+
+    width: 100%;
+    position: fixed;
+    flex-direction: column;
+    font: 100% $fontstack !important;
+    z-index: 1;
+
+    top: 0px;
+    height: 150px;
+    background-color: white;
+
+    border-bottom-style: solid;
+    border-color: black;
+
+    $gridCol: rgba(128, 128, 128, 0.1);
+    $gridDim: 20px;
+    background-size: $gridDim $gridDim;
+    background-image: linear-gradient(to right, $gridCol 1px, transparent 1px), linear-gradient(to bottom, $gridCol 1px, transparent 1px);
+
+    $titleFontSize: 30px;
+    .quickCalcsTitle {
+        font-size: $titleFontSize;
+        height: $titleFontSize;
+        display: flex;
+        align-items: center;
+        margin-left: 5px
+    }
+
+    .quickCalcsColumnContainer {
+        display: flex;
+        .quickCalcsColumn {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .quickCalcsOperatorsContainer {
+            p {
+                margin: 0px;
+
+                &.op {
+                    margin: 0 10px;
+                }
+            }
+        }
+    }
+
+
+    $quickCalcsCellHeight: 35px;
+    $quickCalcsCellWidth: 50px;
+
+    .quickBtn {
+        .matrixCell {
+            width: $quickCalcsCellWidth;
+            height: $quickCalcsCellHeight;
+            margin: 0px;
+        }
+    }
+
+    .quickCalcsTitleBar {
+        display: flex;
+        justify-content: space-between;
+
+        .quickCalcsPinIcon {
+            margin-right: 16px;
+            cursor: pointer;
+            color: #a5a5a5;
+            width:20px;
+            height: 20px;
+
+            .icon-pin {
+                margin-left: 4px;
+            }
+
+            &:hover {
+                color: gray;
+            }
+        }
+    }
+
+    .quickCalcsErrContainer {
+        height: 18px;
+        margin-top: 0px;
+    }
+
+    &.pinned {
+        .quickCalcsPinIcon {
+            color: #22374a;
+        }
+    }
+
+    .quickCalcsRow {
+        display: flex;
+    }
+
+    &.quickCalcsNoMatrix {
+        .quickClassMatSpecific, .quickCalcsOperatorsContainer {
+            .quickBtn, .matrixCell {
+                cursor: default;
+                background-color: #b1b1b1;
+                pointer-events: none;
+            }
+        }
+    }
+
+    &.quickCalcsCurrentNonSquare {
+        [data-func="#D"], [data-func="#I"], .quickCalcsPowerCalc {
+            display: none;
+        }
+    }
+
+    .quickBtn {
+        display: flex;
+        align-items: center;
+        background-color: gray;
+        color: white;
+        padding:0px 10px;
+        margin: 5px 5px;
+        justify-content: center;
+        border-radius: 3px;
+        font-size: 20px;
+
+        .quickCalcBtnText {
+            height: 40px;
+        }
+
+        &:hover {
+            cursor: pointer;
+            background-color: #676767;
+        }
+        div:first-child {
+            margin-right: 3px;
+        }
+        div:last-child {
+            margin-left: 3px;
+        }
+
+        select {
+            border-radius: 2px;
+            font-size: 20px;
+        }
+    }
+
+}

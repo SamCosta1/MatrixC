@@ -1,0 +1,99 @@
+$height: 140px;
+$collapsedHeight: $height / 10;
+
+// HACK This is really messy
+.quickCalcsOpen {
+    .headerMenu {
+        display: none !important;
+    }
+}
+#header {
+    margin-top: 0;
+    border: 0;
+    font: 100% $fontstack;
+    background-color: #333333;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: $height;
+    cursor: default;
+
+    &:hover {
+        .headerToggleBar {
+            display: block;
+        }
+    }
+
+    #headerText {
+        text-align: center;
+        color: white;
+        font-size: 50px;
+        margin: 0;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        margin-bottom: 8;
+    }
+
+    .middleTitle {
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+        margin-bottom: 5px;
+
+        .headerBracket {
+            font-size: 129px;
+            color: white;
+        }
+    }
+    .headerMenu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        right: 16px;
+        height: $height;
+        margin-right:10px;
+
+        .credit {
+            color: white;
+            width: 100px;
+            text-align: center;
+
+            &:hover {
+                font-weight: bold;
+            }
+        }
+    }
+
+    $toggleSize: $collapsedHeight;
+    &.collapsed {
+
+        height: $height / 10;
+
+        .middleTitle, .headerMenu {
+            display: none;
+        }
+
+        .headerToggleBar {
+            top: $collapsedHeight - $toggleSize;
+        }
+    }
+    .headerToggleBar {
+        display: none;
+
+        color: white;
+        position: absolute;
+        left: 0px;
+        top: $height - $toggleSize;
+        font-size: $toggleSize;
+    }
+
+    .Rbracket {
+        margin: 0;
+    }
+    .Lbracket {
+        margin: 0;
+    }
+}
