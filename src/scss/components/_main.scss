@@ -1,6 +1,4 @@
 $fontstack: 'Mandali', sans-serif;
-$col1: #fbfbfb;
-$col2: gray;
 
 #newMatGroup {
     display: flex;
@@ -63,7 +61,7 @@ body {
     margin: 0;
     padding: 0;
     font: 100% $fontstack !important;
-    background-color: $col1;
+    background-color: get-val($main-map, 'background-color');
 
     @include background-grid(1, get-val($main-map, 'background-grid.grid-color'));
 }
