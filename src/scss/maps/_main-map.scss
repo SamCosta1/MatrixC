@@ -1,0 +1,12 @@
+$main-map: (
+    'background-grid': (
+        'grid-color': rgba(128, 128, 128, 0.1),
+        'default-dimension': 20px
+    )
+);
+
+@mixin background-grid($scale, $colour) {
+    $dim: $scale * get-val($main-map, 'background-grid.default-dimension');
+    background-size: $dim $dim;
+    background-image: linear-gradient(to right, $colour 1px, transparent 1px), linear-gradient(to bottom, $colour 1px, transparent 1px);
+}
