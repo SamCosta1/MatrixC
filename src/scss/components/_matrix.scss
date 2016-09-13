@@ -29,21 +29,21 @@
             position: absolute;
             width: 100%;
             top: 7px;
-            $handleSize: 20px;
+
             .dragHandle {
-                height: $handleSize;
-                width: $handleSize;
-                margin-left: 5px;
+                height: get-val($main-map, 'font-size.small');
+                width: get-val($main-map, 'font-size.small');
+                margin-left: get-val($main-map, 'margin');
                 &:hover {
                     cursor: all-scroll;
                 }
             }
 
             .allCalcButton , .quickCalcsButton {
-                height: $handleSize;
-                width: $handleSize;
+                height: get-val($main-map, 'font-size.small');
+                width: get-val($main-map, 'font-size.small');
                 cursor: pointer;
-                margin-left: 5px;
+                margin-left: get-val($main-map, 'margin');
 
             }
             flex-direction: row-reverse;
@@ -54,13 +54,13 @@
 
     }
     .matContainer {
-        margin-left: 20px;
-        margin-top: 10px;
+        margin-left:  get-val($main-map, 'margin') * 4;
+        margin-top:  get-val($main-map, 'margin') * 2;
 
         $borderStyle: 3px solid black;
         .matGUI {
-            padding-left: 10px;
-            padding-top: 10px;
+            padding-left: get-val($main-map, 'margin') * 2;
+            padding-top: get-val($main-map, 'margin') * 2;
             border-left: $borderStyle;
             border-right: $borderStyle;
             border-radius: 20px;
@@ -75,8 +75,8 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        font-size:20px;
-        margin-right: 5px;
+        font-size: get-val($main-map, 'font-size small');
+        margin-right: get-val($main-map, 'margin') * 2;
         width:150px; // Fixed width to look right in ie and firefox
         .rowColModifier {
             position: relative;
@@ -85,16 +85,16 @@
             background-color: white;
             border-style: solid;
             cursor: pointer;
-            margin-left: 5px;
+            margin-left: get-val($main-map, 'margin');
             user-select: none;
             padding: 3;
             flex: 1;
 
-            font-size: 15px;
+            font-size: get-val($main-map, 'margin') * 3;
         }
 
         .rowColModifier:first-child {
-            margin-left: 15px;
+            margin-left:  get-val($main-map, 'margin') * 3;
         }
     }
 

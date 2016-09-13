@@ -22,13 +22,12 @@
 
     @include background-grid(1, get-val($main-map, 'background-grid.grid-color'));
 
-    $titleFontSize: 30px;
     .quickCalcsTitle {
-        font-size: $titleFontSize;
-        height: $titleFontSize;
+        font-size: get-val($main-map, 'font-size.heading');
+        height: get-val($main-map, 'font-size.heading');
         display: flex;
         align-items: center;
-        margin-left: 5px
+        margin-left: get-val($main-map, 'margin');
     }
 
     .quickCalcsColumnContainer {
@@ -47,7 +46,7 @@
                 margin: 0px;
 
                 &.op {
-                    margin: 0 10px;
+                    margin: 0 get-val($main-map, 'margin') * 2;
                 }
             }
         }
@@ -70,14 +69,14 @@
         justify-content: space-between;
 
         .quickCalcsPinIcon {
-            margin-right: 16px;
+            margin-right: get-val($sidebar-map, 'handle.width');
             cursor: pointer;
             color: #a5a5a5;
-            width:20px;
+            width: 20px;
             height: 20px;
 
             .icon-pin {
-                margin-left: 4px;
+                margin-left: get-val($main-map, 'margin')
             }
 
             &:hover {
@@ -123,30 +122,25 @@
         background-color: gray;
         color: white;
         padding:0px 10px;
-        margin: 5px 5px;
+        margin: get-val($main-map, 'margin') get-val($main-map, 'margin');
         justify-content: center;
         border-radius: 3px;
-        font-size: 20px;
-
-        .quickCalcBtnText {
-            height: 40px;
-        }
+        font-size: get-val($main-map, 'font-size.small');
 
         &:hover {
             cursor: pointer;
             background-color: #676767;
         }
         div:first-child {
-            margin-right: 3px;
+            margin-right: get-val($main-map, 'margin')
         }
         div:last-child {
-            margin-left: 3px;
+            margin-left: get-val($main-map, 'margin')
         }
 
         select {
             border-radius: 2px;
-            font-size: 20px;
+            font-size: get-val($main-map, 'font-size.small');
         }
     }
-
 }

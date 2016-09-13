@@ -57,7 +57,7 @@
         border-width: 1px;
 
         .title {
-            margin-left: 17px;
+            margin-left: get-val($main-map, 'margin') * 3;
         }
         .fullScreen {
             margin-left: auto;
@@ -99,5 +99,5 @@ hr {
 .calculation {
     background-color: rgba(195, 204, 255, 0.37);
     padding: 10px 10px;
-    margin: 10px 0px;
+    margin: get-val($main-map, 'margin') * 2 0px;
 }
