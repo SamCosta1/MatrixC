@@ -1,5 +1,4 @@
-$height: 140px;
-$collapsedHeight: $height / 10;
+$collapsedHeight: get-val($header-map, 'height') / 10;
 
 // HACK This is really messy
 .quickCalcsOpen {
@@ -15,7 +14,7 @@ $collapsedHeight: $height / 10;
     display: flex;
     justify-content: center;
     width: 100%;
-    height: $height;
+    height: get-val($header-map, 'height');
     cursor: default;
 
     &:hover {
@@ -32,14 +31,14 @@ $collapsedHeight: $height / 10;
         line-height: 1;
         display: flex;
         align-items: center;
-        margin-bottom: 8;
+        margin-bottom: get-val($main-map, 'margin');
     }
 
     .middleTitle {
         display: flex;
         align-items: center;
-        margin-top: 5px;
-        margin-bottom: 5px;
+        margin-top: get-val($main-map, 'margin');
+        margin-bottom: get-val($main-map, 'margin');
 
         .headerBracket {
             font-size: 129px;
@@ -52,9 +51,9 @@ $collapsedHeight: $height / 10;
         align-items: center;
         justify-content: center;
         position: absolute;
-        right: 16px;
-        height: $height;
-        margin-right:10px;
+        right: get-val($sidebar-map, 'handle.width');
+        height: get-val($header-map, 'height');
+        margin-right: get-val($main-map, 'margin') * 2;
 
         .credit {
             color: white;
@@ -70,7 +69,7 @@ $collapsedHeight: $height / 10;
     $toggleSize: $collapsedHeight;
     &.collapsed {
 
-        height: $height / 10;
+        height: get-val($header-map, 'height') / 10;
 
         .middleTitle, .headerMenu {
             display: none;
@@ -86,7 +85,7 @@ $collapsedHeight: $height / 10;
         color: white;
         position: absolute;
         left: 0px;
-        top: $height - $toggleSize;
+        top: get-val($header-map, 'height') - $toggleSize;
         font-size: $toggleSize;
     }
 

@@ -2,7 +2,7 @@ $commandlineBorder: 7px;
 .controlContainer {
     display: flex;
     align-items: center;
-    margin: 6px;
+    margin: get-val($main-map, 'margin');
     min-height: 102px;
 
     #commandLine {
@@ -33,7 +33,7 @@ $commandlineBorder: 7px;
 }
 
 .errContainer , .quickCalcsErrContainer {
-    margin: 5px;
+    margin: get-val($main-map, 'margin');
     line-height: 1.5;
     color: red;
     &.success {

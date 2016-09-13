@@ -47,7 +47,7 @@
         }
     }
     .header {
-        font-size: get-val($sidebar-map, 'handle.width');
+        font-size: get-val($main-map, 'font-size.heading');
         width: 100%;
         display: flex;
         align-items: center;
@@ -61,7 +61,7 @@
         }
         .fullScreen {
             margin-left: auto;
-            margin-right: 26px;
+            margin-right: get-val($main-map, 'margin') * 5;
             height: get-val($sidebar-map, 'handle.width');
             cursor: pointer;
             display: flex;
