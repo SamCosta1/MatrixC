@@ -1,7 +1,3 @@
-@import "main-map";
-@import "sidebar-map";
-@import "header-map";
-
 @function explode($string,$dem) {
     $list: ();
     $sum: str-length($string);
@@ -37,3 +33,7 @@
 
    @return map-deep-get($map, $splitted);
 }
+
+@import "main-map";
+@import "sidebar-map";
+@import "header-map";

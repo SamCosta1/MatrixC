@@ -3,12 +3,12 @@ $main-map: (
         'grid-color': rgba(128, 128, 128, 0.1),
         'default-dimension': 20px
     ),
-    'background-color': #fbfbfb,
+    'background-color': get-val($colours-map, 'base.1'),
     'button': (
         'height': 40px,
         'label': (
             'height': 30px
-        )        
+        )
     ),
     'font-size': (
         'large-heading': 50px,

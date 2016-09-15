@@ -1,0 +1,35 @@
+$base: #fbfbfb !default;
+$shift-amount: 10% !default;
+$theme-col: #22374a !default;
+
+@import 'includer';
+
+$inverse: invert($base);
+
+@function colour-shift($colour, $amount) {
+    @if $amount < 0 {
+       @return lighten($colour, $amount * -1);
+    }
+    @else {
+       @return darken($colour, $amount);
+    }
+}
+
+$colours-map: (
+    'base': (
+        '1': $base,
+        '2': colour-shift($base, $shift-amount),
+        '3': colour-shift($base, $shift-amount * 2),
+        '4': colour-shift($base, $shift-amount * 3),
+        '5': colour-shift($base, $shift-amount * 4)
+    ),
+    'inverse': (
+        '1': $inverse,
+        '2': colour-shift($inverse, $shift-amount * -1),
+        '3': colour-shift($inverse, $shift-amount * -2),
+        '4': colour-shift($inverse, $shift-amount * -3),
+        '5': colour-shift($inverse, $shift-amount * -4)
+    ),
+    'theme-col': $theme-col
+);
+@debug $colours-map;
