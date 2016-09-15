@@ -14,7 +14,7 @@
     z-index: 1;
 
     top: 0px;
-    height: 150px;
+    height: get-val($header-map, 'height');
     background-color: white;
 
     border-bottom-style: solid;
