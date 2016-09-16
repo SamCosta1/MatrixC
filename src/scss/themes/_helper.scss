@@ -30,5 +30,22 @@ $colours-map: (
         '4': colour-shift($inverse, $shift-amount * -3),
         '5': colour-shift($inverse, $shift-amount * -4)
     ),
-    'theme-col': $theme-col
+    'theme-col': (
+        'normal': $theme-col,
+        'lighten': (
+            '1': lighten($theme-col, 15%),
+            '2': lighten($theme-col, 30%),
+            '3': lighten($theme-col, 35%),
+            '4': lighten($theme-col, 50%),
+            '5': lighten($theme-col, 65%)
+        ),
+        'darken': (
+            '1': darken($theme-col, 15%),
+            '2': darken($theme-col, 30%),
+            '3': darken($theme-col, 35%),
+            '4': darken($theme-col, 50%),
+            '5': darken($theme-col, 65%)
+        )
+    ),
+    'error': red
 );

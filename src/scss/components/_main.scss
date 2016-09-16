@@ -12,8 +12,8 @@ $fontstack: 'Mandali', sans-serif;
         align-items: center;
 
         .newMatIcon {
-            background-color: black;
-            color: white;
+            background-color: get-val($colours-map, 'inverse.1');
+            color: get-val($colours-map, 'base.1');
             font-size: get-val($main-map, 'button.height');
             padding: 2px;
             border-radius: 5px;
@@ -49,9 +49,9 @@ $fontstack: 'Mandali', sans-serif;
     &:hover {
         .binLabel {
             display: block;
-            color: black;
+            color: get-val($colours-map, 'inverse.1');
         }
-        color: red;
+        color: get-val($colours-map, 'error');
     }
 }
 
@@ -84,7 +84,7 @@ a {
 }
 
 .newLabel {
-    background-color: #e8effd;
+    background-color: get-val($colours-map, 'theme-col.lighten.3');
     border-radius: 10px;
     padding: 2px 5px;
     margin-left: get-val($main-map, 'margin') * 2;

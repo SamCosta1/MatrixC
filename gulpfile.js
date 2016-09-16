@@ -42,26 +42,40 @@ gulp.task('styles', function() {
 });
 
 var colours = ['blue', 'green'];
-var themes = ['light', 'dark'];
-gulp.task('all-styles', function() {
-    console.log("hello", colours.length, themes.length);
-    for (var col = 0; col < colours.length; col++) {
-        for (var theme = 0; theme < themes.length; theme++) {
-            var str = "@import \"colours/" + colours[col] + "\"; \n@import \"themes/" + themes[theme] + "\";    ";
+var themes = ['dark', 'light'];
 
-            fs.writeFile("src/scss/themes/_includer.scss", str);
-            gulp.src('src/scss/styleSheets/*.scss')
-            .pipe(sass().on('error', sass.logError))
-                .pipe(autoprefixer({
-                    browsers: ['last 2 versions'],
-                    cascade: false
-                }))
-                .pipe(gulpif(deploy,cleanCSS()))
-                .pipe(gulp.dest(jsDest + themes[theme] + '/' + colours[col]))
-                .pipe(gulpif(!deploy,browserSync.reload({stream: true})));
-        }
-    }
+var theme = 0;
+var col = 0;
+gulp.task('all-styles', function() {
+    generateThemes();
 });
+
+function generateThemes() {
+    console.log(theme,col);
+    var str = "@import \"colours/" + colours[col] + "\"; \n@import \"themes/" + themes[theme] + "\";    ";
+
+    fs.writeFile("src/scss/themes/_includer.scss", str);
+    gulp.src('src/scss/styleSheets/*.scss')
+    .pipe(sass().on('error', sass.logError))
+        .pipe(autoprefixer({
+            browsers: ['last 2 versions'],
+            cascade: false
+        }))
+        .pipe(gulpif(deploy,cleanCSS()))
+        .pipe(gulp.dest(jsDest + themes[theme] + '/' + colours[col]))
+        .pipe(gulpif(!deploy,browserSync.reload({stream: true})))
+        .pipe(function() {
+
+            col = (col + 1) % colours.length;
+            if (col === 0)
+            theme++;
+
+            if (theme < themes.length) {
+                generateThemes();
+            }
+        });
+
+}
 
 function errorHandle(err) {
     if (err) {

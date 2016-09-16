@@ -1,6 +1,6 @@
 $main-map: (
     'background-grid': (
-        'grid-color': rgba(128, 128, 128, 0.1),
+        'grid-color': rgba(get-val($colours-map, 'inverse.3'), 0.1),
         'default-dimension': 20px
     ),
     'background-color': get-val($colours-map, 'base.1'),
