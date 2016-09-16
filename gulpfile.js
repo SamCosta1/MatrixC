@@ -9,6 +9,7 @@ var cleanCSS = require('gulp-clean-css');
 var autoprefixer = require('gulp-autoprefixer');
 var babel = require('gulp-babel');
 var browserSync = require('browser-sync').create();
+var fs = require('fs');
 
 // Static server
 gulp.task('browser-sync', function() {
@@ -40,6 +41,36 @@ gulp.task('styles', function() {
         .pipe(gulpif(!deploy,browserSync.reload({stream: true})));
 });
 
+var colours = ['blue', 'green'];
+var themes = ['light', 'dark'];
+gulp.task('all-styles', function() {
+    console.log("hello", colours.length, themes.length);
+    for (var col = 0; col < colours.length; col++) {
+        for (var theme = 0; theme < themes.length; theme++) {
+            var str = "@import \"colours/" + colours[col] + "\"; \n@import \"themes/" + themes[theme] + "\";    ";
+
+            fs.writeFile("src/scss/themes/_includer.scss", str);
+            gulp.src('src/scss/styleSheets/*.scss')
+            .pipe(sass().on('error', sass.logError))
+                .pipe(autoprefixer({
+                    browsers: ['last 2 versions'],
+                    cascade: false
+                }))
+                .pipe(gulpif(deploy,cleanCSS()))
+                .pipe(gulp.dest(jsDest + themes[theme] + '/' + colours[col]))
+                .pipe(gulpif(!deploy,browserSync.reload({stream: true})));
+        }
+    }
+});
+
+function errorHandle(err) {
+    if (err) {
+        return console.log(err);
+    } else {
+        console.log("The file was saved!===");
+    }
+}
+
 var deploy = false;
 gulp.task('deploy', function() {
     deploy = true;
@@ -49,7 +80,7 @@ gulp.task('deploy', function() {
 gulp.task('default', function() {
     gulp.start('libraryScripts');
     gulp.start('scripts');
-    gulp.start('styles');
+    gulp.start('all-styles');
 });
 
 gulp.task('icon-update', shell.task([
@@ -58,7 +89,7 @@ gulp.task('icon-update', shell.task([
 
 gulp.task('develop', ['default', 'browser-sync'], function() {
     gulp.watch('./*.zip',['icon-update']);
-    gulp.watch('./**/*.scss',['styles']);
+    gulp.watch('./**/*.scss',['all-styles']);
     gulp.watch('src/**/*.js',['scripts']);
     gulp.watch("*.html").on('change', browserSync.reload);
 });
@@ -74,7 +105,7 @@ gulp.task('libraryScripts', function() {
 gulp.task('scripts', function() {
     return gulp.src(jsFiles)
         .pipe(concat('scripts.min.js'))
-        .pipe(gulp.dest(jsDest))    
+        .pipe(gulp.dest(jsDest))
         .pipe(gulpif(deploy, uglify()))
         .pipe(gulp.dest(jsDest))
         .pipe(gulpif(!deploy,browserSync.reload({stream: true})));
