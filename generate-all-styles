@@ -1,0 +1,14 @@
+colours=(green blue purple)
+themes=(light dark)
+
+for col in ${colours[@]}
+do
+    for theme in ${themes[@]}
+    do
+        {
+            echo "@import \"colours/$col\";"
+            echo "@import \"themes/$theme\";"
+        } > src/scss/themes/_includer.scss
+        gulp all-styles --$theme --$col
+    done
+done
