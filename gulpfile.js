@@ -10,6 +10,7 @@ var autoprefixer = require('gulp-autoprefixer');
 var babel = require('gulp-babel');
 var browserSync = require('browser-sync').create();
 var fs = require('fs');
+var gcallback = require('gulp-callback');
 
 // Static server
 gulp.task('browser-sync', function() {
@@ -41,7 +42,7 @@ gulp.task('styles', function() {
         .pipe(gulpif(!deploy,browserSync.reload({stream: true})));
 });
 
-var colours = ['blue', 'green'];
+var colours = ['blue', 'green', 'purple'];
 var themes = ['dark', 'light'];
 
 var theme = 0;
@@ -51,7 +52,6 @@ gulp.task('all-styles', function() {
 });
 
 function generateThemes() {
-    console.log(theme,col);
     var str = "@import \"colours/" + colours[col] + "\"; \n@import \"themes/" + themes[theme] + "\";    ";
 
     fs.writeFile("src/scss/themes/_includer.scss", str);
@@ -64,7 +64,7 @@ function generateThemes() {
         .pipe(gulpif(deploy,cleanCSS()))
         .pipe(gulp.dest(jsDest + themes[theme] + '/' + colours[col]))
         .pipe(gulpif(!deploy,browserSync.reload({stream: true})))
-        .pipe(function() {
+        .pipe(gcallback(function() {
 
             col = (col + 1) % colours.length;
             if (col === 0)
@@ -73,10 +73,15 @@ function generateThemes() {
             if (theme < themes.length) {
                 generateThemes();
             }
-        });
+        }));
+
+
+
 
 }
+function a() {
 
+}
 function errorHandle(err) {
     if (err) {
         return console.log(err);
