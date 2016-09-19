@@ -7,11 +7,11 @@ $theme-col: #22374a !default;
 $inverse: invert($base);
 
 @function colour-shift($colour, $amount) {
-    @if $amount < 0 {
-       @return lighten($colour, $amount * -1);
+    @if $amount > 0 {
+       @return lighten($colour, $amount);
     }
     @else {
-       @return darken($colour, $amount);
+       @return darken($colour, $amount * -1);
     }
 }
 

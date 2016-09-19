@@ -1,0 +1,78 @@
+@import "../themes/helper";
+@import "../maps/includer";
+@import "../components/icons";
+
+[data-num="1"] {
+    background-color: get-val($colours-map, 'base.1');
+}
+[data-num="2"] {
+    background-color: get-val($colours-map, 'base.2');
+}
+[data-num="3"] {
+    background-color: get-val($colours-map, 'base.3');
+}
+[data-num="4"] {
+    background-color: get-val($colours-map, 'base.4');
+}
+[data-num="5"] {
+    background-color: get-val($colours-map, 'base.5');
+}
+.inverse {
+    [data-num="1"] {
+        background-color: get-val($colours-map, 'inverse.1');
+    }
+    [data-num="2"] {
+        background-color: get-val($colours-map, 'inverse.2');
+    }
+    [data-num="3"] {
+        background-color: get-val($colours-map, 'inverse.3');
+    }
+    [data-num="4"] {
+        background-color: get-val($colours-map, 'inverse.4');
+    }
+    [data-num="5"] {
+        background-color: get-val($colours-map, 'inverse.5');
+    }
+}
+
+.theme {
+    [data-num="0"] {
+        background-color: get-val($colours-map, 'theme-col.normal');
+    }
+    [data-num="1"] {
+        background-color: get-val($colours-map, 'theme-col.lighten.1');
+    }
+    [data-num="2"] {
+        background-color: get-val($colours-map, 'theme-col.lighten.2');
+    }
+    [data-num="3"] {
+        background-color: get-val($colours-map, 'theme-col.lighten.3');
+    }
+    [data-num="4"] {
+        background-color: get-val($colours-map, 'theme-col.lighten.4');
+    }
+    [data-num="5"] {
+        background-color: get-val($colours-map, 'theme-col.lighten.5');
+    }
+
+    .darken {
+        [data-num="0"] {
+            background-color: get-val($colours-map, 'theme-col.darken.normal');
+        }
+        [data-num="1"] {
+            background-color: get-val($colours-map, 'theme-col.darken.1');
+        }
+        [data-num="2"] {
+            background-color: get-val($colours-map, 'theme-col.darken.2');
+        }
+        [data-num="3"] {
+            background-color: get-val($colours-map, 'theme-col.darken.3');
+        }
+        [data-num="4"] {
+            background-color: get-val($colours-map, 'theme-col.darken.4');
+        }
+        [data-num="5"] {
+            background-color: get-val($colours-map, 'theme-col.lighten.5');
+        }
+    }
+}
