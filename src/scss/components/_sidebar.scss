@@ -6,7 +6,7 @@
     height: 100%;
     right: 0;
     top: 0;
-    background-color: white;
+    background-color: get-val($main-map, 'background-color');
     @include background-grid(5, get-val($main-map, 'background-grid.grid-color'));
     z-index: 2;
 
@@ -52,9 +52,11 @@
         display: flex;
         align-items: center;
 
-        border-bottom-color: black;
+        border-bottom-color: get-val($colours-map, 'inverse.1');
         border-bottom-style: solid;
         border-width: 1px;
+
+        color: get-val($colours-map, 'inverse.1');
 
         .title {
             margin-left: get-val($main-map, 'margin') * 3;
@@ -97,7 +99,8 @@ hr {
 }
 
 .calculation {
-    background-color: rgba(195, 204, 255, 0.37);
+    background-color: rgba(get-val($colours-map, 'theme-col.lighten.4'), 0.37);
+    color: get-val($colours-map, 'inverse.1');
     padding: 10px 10px;
     margin: get-val($main-map, 'margin') * 2 0px;
 }

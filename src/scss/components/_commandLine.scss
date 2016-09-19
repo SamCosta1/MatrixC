@@ -8,7 +8,7 @@ $commandlineBorder: 7px;
     #commandLine {
         width: 50%;
         border-radius: $commandlineBorder;
-        background-color: rgba(208, 208, 208, 0.5);
+        background-color: rgba(get-val($colours-map, 'inverse.3'), 0.9);
 
         #cmdinput {
             background: transparent;

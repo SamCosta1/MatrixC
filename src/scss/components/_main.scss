@@ -46,6 +46,9 @@ $fontstack: 'Mandali', sans-serif;
     margin-left: auto;
     margin-right: get-val($main-map, 'margin') * 4;
     user-select: none;
+
+    color: get-val($colours-map, 'inverse.1');
+
     &:hover {
         .binLabel {
             display: block;
@@ -84,7 +87,9 @@ a {
 }
 
 .newLabel {
-    background-color: get-val($colours-map, 'theme-col.lighten.3');
+    background-color: get-val($colours-map, 'theme-col.lighten.1');
+    color: get-val($colours-map, 'inverse.1');
+
     border-radius: 10px;
     padding: 2px 5px;
     margin-left: get-val($main-map, 'margin') * 2;

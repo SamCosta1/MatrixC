@@ -7,7 +7,8 @@
         padding-left: get-val($main-map, 'margin') * 2;
         padding-right: get-val($main-map, 'margin') * 2;
         border-radius: 25px;
-        background-color: rgba(204, 204, 204, 0.2);
+        background-color: rgba(get-val($colours-map, 'theme-col.lighten.1'), 0.2);
+        color: get-val($colours-map, 'inverse.1');
 
         .label {
             display: flex;
@@ -15,7 +16,7 @@
         }
 
         &.deleting {
-            background-color: rgba(236, 110, 110, 0.2) !important;
+            background-color: rgba(get-val($colours-map, 'error'), 0.2) !important;
         }
 
         &:hover {
@@ -57,7 +58,7 @@
         margin-left:  get-val($main-map, 'margin') * 4;
         margin-top:  get-val($main-map, 'margin') * 2;
 
-        $borderStyle: 3px solid black;
+        $borderStyle: 3px solid get-val($colours-map, 'inverse.1');
         .matGUI {
             padding-left: get-val($main-map, 'margin') * 2;
             padding-top: get-val($main-map, 'margin') * 2;

@@ -15,10 +15,10 @@
 
     top: 0px;
     height: get-val($header-map, 'height');
-    background-color: white;
+    background-color: get-val($colours-map, 'base.1');
 
     border-bottom-style: solid;
-    border-color: black;
+    border-color: get-val($colours-map, 'inverse.1');
 
     @include background-grid(1, get-val($main-map, 'background-grid.grid-color'));
 
@@ -92,7 +92,7 @@
 
     &.pinned {
         .quickCalcsPinIcon {
-            color: #22374a;
+            color: get-val($colours-map, 'theme-col.lighten.1');
         }
     }
 
@@ -119,8 +119,10 @@
     .quickBtn {
         display: flex;
         align-items: center;
-        background-color: gray;
-        color: white;
+
+        background-color: get-val($colours-map, 'inverse.4');
+        color: get-val($colours-map, 'base.2');
+
         padding:0px 10px;
         margin: get-val($main-map, 'margin') get-val($main-map, 'margin');
         justify-content: center;
@@ -129,7 +131,7 @@
 
         &:hover {
             cursor: pointer;
-            background-color: #676767;
+            background-color: get-val($colours-map, 'theme-col.lighten.4');
         }
         div:first-child {
             margin-right: get-val($main-map, 'margin')
