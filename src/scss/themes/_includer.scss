@@ -19,4 +19,3 @@ $themes: (
 $base: get-val($themes, 'themes.' + $THEME + '.base');
 $shift-amount: get-val($themes, 'themes.' + $THEME + '.shift-amount');
 $theme-col: get-val($themes, 'colours.' + $COLOUR);
-@debug  $base, $theme-col;

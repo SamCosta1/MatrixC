@@ -2,7 +2,6 @@ var gulp = require('gulp');
 var sass = require('gulp-sass');
 var concat = require('gulp-concat');
 var rename = require('gulp-rename');
-var shell = require('gulp-shell');
 var uglify = require('gulp-uglify');
 var gulpif = require('gulp-if');
 var cleanCSS = require('gulp-clean-css');
@@ -66,10 +65,6 @@ gulp.task('default', function() {
     gulp.start('scripts');
     gulp.start('styles');
 });
-
-gulp.task('icon-update', shell.task([
-  '/home/sam/Mess_About_Code/MatrixC/generate-all-styles'
-]));
 
 gulp.task('develop', ['default', 'browser-sync'], function() {
     gulp.watch('./*.zip',['icon-update']);
