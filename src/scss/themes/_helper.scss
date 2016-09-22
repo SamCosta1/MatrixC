@@ -45,6 +45,12 @@ $colours-map: (
             '3': darken($theme-col, 35%),
             '4': darken($theme-col, 50%),
             '5': darken($theme-col, 65%)
+        ),
+        'theme-modify': (
+            '1': colour-shift($theme-col, $shift-amount * 1),
+            '2': colour-shift($theme-col, $shift-amount * 2),
+            '3': colour-shift($theme-col, $shift-amount * 3),
+            '4': colour-shift($theme-col, $shift-amount * 4)
         )
     ),
     'error': red

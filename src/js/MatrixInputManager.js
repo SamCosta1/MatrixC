@@ -163,11 +163,11 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
         e.stopImmediatePropagation();
         var id = $(this).attr('id');
         if ($(this).attr("data-clicked") == 1) {
-            $(this).css("background-color", "rgba(204, 204, 204, 0.2)");
+            // De-select
             $(this).attr("data-clicked", 0);
             selectedVariables.splice(selectedVariables.indexOf(id), 1);
         } else {
-            $(this).css("background-color", "rgba(99, 182, 255, 0.2)");
+            // Select
             $(this).attr("data-clicked", 1);
             selectedVariables.push(id);
         }
@@ -186,7 +186,7 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
             var varName = $(this).closest(".matInput").attr("id").split("-")[1];
             variables.get(varName).resize(numRows, numCols);
         }
-        $('body').trigger('matrixChange');        
+        $('body').trigger('matrixChange');
     }
 
     function onAddColumn(e) {

@@ -10,6 +10,10 @@
         background-color: rgba(get-val($colours-map, 'theme-col.lighten.1'), 0.2);
         color: get-val($colours-map, 'inverse.1');
 
+        &[data-clicked="1"] {
+            background-color: rgba(get-val($colours-map, 'theme-col.theme-modify.1'), 0.2);
+        }
+
         .label {
             display: flex;
             align-items: center;
