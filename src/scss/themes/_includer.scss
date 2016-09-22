@@ -1,2 +1,22 @@
-@import 'colours/green';
-//@import 'themes/dark';
+$themes: (
+    'colours': (
+        'blue': #22374a,
+        'green': #019a1c,
+        'purple': #7c008a
+    ),
+    'themes': (
+        'light': (
+            'base': #fbfbfb,
+            'shift-amount': -10%
+        ),
+        'dark': (
+            'base': #040404,
+            'shift-amount': 10%
+        )
+    )
+);
+
+$base: get-val($themes, 'themes.' + $THEME + '.base');
+$shift-amount: get-val($themes, 'themes.' + $THEME + '.shift-amount');
+$theme-col: get-val($themes, 'colours.' + $COLOUR);
+@debug  $base, $theme-col;

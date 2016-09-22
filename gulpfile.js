@@ -11,6 +11,7 @@ var babel = require('gulp-babel');
 var browserSync = require('browser-sync').create();
 var fs = require('fs');
 var gcallback = require('gulp-callback');
+var inject = require('gulp-inject-string');
 
 // Static server
 gulp.task('browser-sync', function() {
@@ -30,33 +31,29 @@ options = {
 var jsFiles = 'src/js/**/*.js',
 jsDest = 'dist/';
 
+var colours = ['blue', 'green', 'purple'];
+var themes = ['light', 'dark'];
+
 gulp.task('styles', function() {
-    gulp.src('src/scss/styleSheets/*.scss')
-    .pipe(sass().on('error', sass.logError))
-        .pipe(autoprefixer({
-            browsers: ['last 2 versions'],
-            cascade: false
-        }))
-        .pipe(gulpif(deploy,cleanCSS()))
-        .pipe(gulp.dest(jsDest))
-        .pipe(gulpif(!deploy,browserSync.reload({stream: true})));
+    for (var theme = 0; theme < themes.length; theme++) {
+        for (var col = 0; col < colours.length; col++) {
+            themeCompile(theme,col);
+        }
+    }
 });
 
-var match = /--(.+)/;
-gulp.task('all-styles', function() {
-    var theme = match.exec(process.argv[process.argv.length - 2])[1];
-    var colour = match.exec(process.argv[process.argv.length - 1])[1];
-    gulp.src('src/scss/styleSheets/*.scss')
-    .pipe(sass().on('error', sass.logError))
+function themeCompile(theme, col) {
+    gulp.src('src/scss/styleSheets/index.scss')
+    .pipe(inject.prepend("$COLOUR: '" + colours[col] + "'; $THEME: '" + themes[theme] + "';"))
+        .pipe(sass().on('error', sass.logError))
         .pipe(autoprefixer({
             browsers: ['last 2 versions'],
             cascade: false
         }))
         .pipe(gulpif(deploy,cleanCSS()))
-        .pipe(gulp.dest(jsDest + theme + '/' + colour))
+        .pipe(gulp.dest(jsDest + themes[theme] + '/' + colours[col]))
         .pipe(gulpif(!deploy,browserSync.reload({stream: true})));
-    });
-
+}
 
 var deploy = false;
 gulp.task('deploy', function() {
@@ -71,7 +68,7 @@ gulp.task('default', function() {
 });
 
 gulp.task('icon-update', shell.task([
-  './updateicons'
+  '/home/sam/Mess_About_Code/MatrixC/generate-all-styles'
 ]));
 
 gulp.task('develop', ['default', 'browser-sync'], function() {
