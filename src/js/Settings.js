@@ -9,7 +9,8 @@ function Settings() {
         <div class="settingsThemes">
         </div>
     </div>
-    `;
+    `,
+    $stylesheet = $('#theme');
 
     // GULP-INCLUDE(THEME&COLOURS)
     /*
@@ -21,11 +22,24 @@ function Settings() {
     function init() {
         appendColours($settingsDom.find('.settingsColours'));
         appendThemes($settingsDom.find('.settingsThemes'));
-        $('.settingsOption').click(onSettingsChanged);
+        $('body').on('click', '.settingsOption', onSettingsChanged);
+        if (localStorage.hasOwnProperty('themeAndColour')) {
+            $stylesheet.attr('href', localStorage.getItem('themeAndColour'));
+        }
     }
 
     function onSettingsChanged() {
-
+        var choice, href;
+        if ((choice = $(this).attr('data-theme'))){
+            href = $stylesheet.attr('href').split('/');
+            href[1] = choice;
+        } else if ((choice = $(this).attr('data-col'))){
+            href = $stylesheet.attr('href').split('/');
+            href[2] = choice;
+        }
+        href = href.join('/');
+        $stylesheet.attr('href', href);
+        localStorage.setItem("themeAndColour", href);
     }
 
     function appendColours($parent) {
