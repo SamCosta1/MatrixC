@@ -33,7 +33,7 @@ function ApplicationManager() {
         popup.render({
             header: "Settings",
             body: settings.getDom()
-        });
+        }, 0.4);
     }
 
     return {

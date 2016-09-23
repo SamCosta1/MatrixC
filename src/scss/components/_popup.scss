@@ -7,7 +7,7 @@ $borderRadius: 10px;
     position: fixed;
     top: 10px;
     left: 10px;
-    box-shadow: rgb(49, 49, 49) 0px 0px 17px;
+    box-shadow: get-val($colours-map, 'inverse.1') 0px 0px 17px;
     border-radius: $borderRadius;
     @include background-grid(1.5, get-val($main-map, 'background-grid.grid-color'));
 
