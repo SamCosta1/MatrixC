@@ -30,7 +30,7 @@ options = {
 var jsFiles = 'src/js/**/*.js',
 jsDest = 'dist/';
 
-var colours = ['blue', 'green', 'purple'];
+var colours = ['blue', 'green', 'purple', 'cyan'];
 var themes = ['light', 'dark'];
 
 gulp.task('styles', function() {
