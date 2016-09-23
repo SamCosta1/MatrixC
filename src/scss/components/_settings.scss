@@ -1,12 +1,27 @@
 .settingsContainer {
 
+    .settingsOption {
+        border-radius: 3px;
+        border-style: solid;
+        border-width: thin;
+        border-color: get-val($colours-map, 'inverse.4');
+    }
+
     .settingsColours {
         display: flex;
 
         .settingsOption {
             height: 50px;
             width: 50px;
+
+            &:not(:first-child) {
+                margin-left: 10px;
+            }
         }
+    }
+
+    p {
+        color: get-val($colours-map, 'inverse.1');
     }
 
     .settingsThemes {
@@ -15,6 +30,12 @@
         .settingsOption {
             flex: 1;
             height: 50px;
+
+            &.BASE-light {
+                .settingsOption {
+                    border-color: get-val($colours-map, 'base.4');
+                }
+            }
         }
     }
 }

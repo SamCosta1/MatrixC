@@ -1,7 +1,7 @@
 $borderRadius: 10px;
 
 .popUpContainer {
-    background-color: white;
+    background-color: get-val($main-map, 'background-color');
 
     height:98%;
     position: fixed;
@@ -21,7 +21,8 @@ $borderRadius: 10px;
         justify-content: space-between;
         align-items: center;
         font-size: 30px;
-        background-color: white;
+        background-color: get-val($main-map, 'background-color');
+        color: get-val($colours-map, 'inverse.1');
 
         overflow: hidden;
 
