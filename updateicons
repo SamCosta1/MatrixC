@@ -7,4 +7,4 @@ rm matrixc.zip
 
 cd /home/sam/Mess_About_Code/MatrixC/src/scss/
 
-sed -i 's/fonts/..\/img\/fonts/g' _icons.scss
+sed -i 's/fonts/..\/../../img\/fonts/g' _icons.scss

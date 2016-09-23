@@ -11,6 +11,7 @@ function CommandLine(_variables, _matrixManager) {
         parser = new Parser(_variables);
 
     function init() {
+        history.init();
         $commandLineTxtBox.on('input', lockPromptText);
         $commandLineTxtBox.keyup(onKeyUp);
         $('body').on('error', function(data) { errorHandle(data.msg); });
@@ -90,11 +91,26 @@ function CommandLine(_variables, _matrixManager) {
         var comHist = [],
             histPos = -1;
 
-        function push(item) {
+        function init() {
+            for (var key in localStorage) {
+                var res;
+                if ((res = /HISTORY-(.+)/.exec(key))) {
+                    if (localStorage.getItem(key) === 'undefined') {
+                        continue;
+                    }
+                    comHist.splice(res, 0, localStorage.getItem(key));
+                }
+            }
+            comHist.reverse();
+            histPos = comHist.length;
+        }
 
+        function push(item) {
             // Only add the command if not already present and not undefined
             if (comHist.indexOf(item) < 0 && /\S/.test(item) && comHist !== 'undefined') {
-                comHist.push(item.replace(/\n/g, ''));
+                item = item.replace(/\n/g, '');
+                comHist.push(item);
+                localStorage.setItem('HISTORY-' + comHist.length, item);
                 histPos++;
             }
         }
@@ -123,7 +139,8 @@ function CommandLine(_variables, _matrixManager) {
             popDown: popDown,
             resetCount: function() {
                 histPos = comHist.length;
-            }
+            },
+            init: init
         };
     }
 

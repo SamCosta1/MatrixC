@@ -16,6 +16,15 @@ Matrix.prototype.update = function(row, col, val) {
     this.matrix[parseInt(row)][parseInt(col)] = val instanceof Fraction ?
         val : new Fraction(val);
 };
+Matrix.prototype.toString = function() {
+    var str = '';
+    for (var r = 0; r < this.numRows(); r++) {
+        for (var c = 0; c < this.numCols(); c++)
+            str += ' ' + this.matrix[r][c].getLiteral();
+        str += '\n';
+    }
+    return str;
+};
 Matrix.prototype.getCell = function(row, col) {
     return this.matrix[row][col];
 };
@@ -213,10 +222,10 @@ Matrix.prototype.performFunction = function(func, args, step) {
             return this.transpose();
         case funcENUM.INVERSE:
             return this.inverse();
-        case funcENUM.RANK:
-            return null;
         case funcENUM.DET:
             return this.det();
+        case funcENUM.RANK:
+            return this.rank();
         case funcENUM.DIAGONALIZE:
             return null;
         case funcENUM.ROWREDUCE:
@@ -230,8 +239,43 @@ Matrix.prototype.performFunction = function(func, args, step) {
     }
     throw "Something weird just happened!";
 };
+Matrix.prototype.rank = function() {
+    var rowReduced = this.reduceToReducedEchF(null, this.step);
+    this.step.push(new CalculationStep({
+        type: funcENUM.ROWREDUCE,
+        op1: this,
+        result: rowReduced
+    }));
+    this.step.push(new CalculationStep({
+        type: 'comment',
+        comment: 'Count non zero rows'
+    }));
+
+    // Start counting zero rows from the bottom since in RREForm zero rows are on the bottom
+    // Once a none zero row is found, can stop, no more zero rows will be found
+    var nonZeroFound = false,
+        row,
+        numZeroRows = 0;
+
+    for (row = rowReduced.numRows() - 1; row >= 0; row--) {
+        for (var col = 0; col < rowReduced.numCols(); col++) {
+            console.log(col);
+            if (!rowReduced.getCell(row,col).isZero()){
+                nonZeroFound = true;
+                break;
+            }
+        }
+        if (nonZeroFound){
+            break;
+        }
+        numZeroRows++;
+    }
+    // Return a fraction for consistancy
+    return new Fraction(rowReduced.numRows() - numZeroRows);
+
+};
 Matrix.prototype.reduceToReducedEchF = function(numCols, step) {
-    if (numCols === undefined || numCols > this.numCols())
+    if (numCols === undefined || numCols === null || numCols > this.numCols())
         numCols = this.numCols();
     if (step === undefined)
         step = this.step;
