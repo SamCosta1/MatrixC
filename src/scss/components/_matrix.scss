@@ -11,7 +11,8 @@
         color: get-val($colours-map, 'inverse.1');
 
         &[data-clicked="1"] {
-            background-color: rgba(get-val($colours-map, 'theme-col.theme-modify.1'), 0.2);
+            background-color: rgba(get-val($colours-map, 'theme-col.lighten.4'), 0.4);
+            box-shadow:inset 0px 0px 0px 1px get-val($colours-map, 'theme-col.darken.1');
         }
 
         .label {

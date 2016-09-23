@@ -76,4 +76,22 @@
             background-color: get-val($colours-map, 'theme-col.lighten.5');
         }
     }
+
+        .theme-modify {
+            [data-num="1"] {
+                background-color: get-val($colours-map, 'theme-col.theme-modify.1');
+            }
+            [data-num="2"] {
+                background-color: get-val($colours-map, 'theme-col.theme-modify.2');
+            }
+            [data-num="3"] {
+                background-color: get-val($colours-map, 'theme-col.theme-modify.3');
+            }
+            [data-num="4"] {
+                background-color: get-val($colours-map, 'theme-col.theme-modify.4');
+            }
+            [data-num="5"] {
+                background-color: get-val($colours-map, 'theme-col.theme-modify.5');
+            }
+        }
 }

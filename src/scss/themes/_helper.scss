@@ -48,9 +48,9 @@ $colours-map: (
         ),
         'theme-modify': (
             '1': colour-shift($theme-col, $shift-amount * 1),
-            '2': colour-shift($theme-col, $shift-amount * 2),
-            '3': colour-shift($theme-col, $shift-amount * 3),
-            '4': colour-shift($theme-col, $shift-amount * 4)
+            '2': colour-shift($theme-col, $shift-amount * 1.3),
+            '3': colour-shift($theme-col, $shift-amount * 1.6),
+            '4': colour-shift($theme-col, $shift-amount * 2)
         )
     ),
     'error': red
