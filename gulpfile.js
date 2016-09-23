@@ -42,7 +42,7 @@ gulp.task('styles', function() {
 });
 
 function themeCompile(theme, col) {
-    gulp.src('src/scss/styleSheets/index.scss')
+    gulp.src('src/scss/styleSheets/*.scss')
     .pipe(inject.prepend("$COLOUR: '" + colours[col] + "'; $THEME: '" + themes[theme] + "';"))
         .pipe(sass().on('error', sass.logError))
         .pipe(autoprefixer({
