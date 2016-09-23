@@ -1,0 +1,25 @@
+$main-map: (
+    'background-grid': (
+        'grid-color': rgba(get-val($colours-map, 'inverse.3'), 0.1),
+        'default-dimension': 20px
+    ),
+    'background-color': get-val($colours-map, 'base.1'),
+    'button': (
+        'height': 40px,
+        'label': (
+            'height': 30px
+        )
+    ),
+    'font-size': (
+        'large-heading': 50px,
+        'heading': 30px,
+        'small': 20px
+    ),
+    'margin': 5px
+);
+
+@mixin background-grid($scale, $colour) {
+    $dim: $scale * get-val($main-map, 'background-grid.default-dimension');
+    background-size: $dim $dim;
+    background-image: linear-gradient(to right, $colour 1px, transparent 1px), linear-gradient(to bottom, $colour 1px, transparent 1px);
+}

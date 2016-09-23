@@ -1,7 +1,7 @@
 function AllCalculations (_name, _matrix) {
     var matrix = _matrix,
         name = _name,
-        functions = [funcENUM.TRANSPOSE, funcENUM.INVERSE, funcENUM.DET, funcENUM.ROWREDUCE],
+        functions = [funcENUM.TRANSPOSE, funcENUM.INVERSE, funcENUM.DET, funcENUM.ROWREDUCE, funcENUM.RANK],
         label = '<div class="allCalcLabel">';
 
     function generateAll() {

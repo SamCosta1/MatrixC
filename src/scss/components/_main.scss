@@ -1,22 +1,20 @@
 $fontstack: 'Mandali', sans-serif;
-$col1: #fbfbfb;
-$col2: gray;
 
 #newMatGroup {
     display: flex;
-    margin-left: 10px;
+    margin-left: get-val($main-map, 'margin') * 2;
 
     #btnNewMat {
         cursor: pointer;
         display: flex;
-        height:40px; // == fontsize
+        height: get-val($main-map, 'button.height');
         display: flex;
         align-items: center;
 
         .newMatIcon {
-            background-color: black;
-            color: white;
-            font-size:40px;
+            background-color: get-val($colours-map, 'inverse.1');
+            color: get-val($colours-map, 'base.1');
+            font-size: get-val($main-map, 'button.height');
             padding: 2px;
             border-radius: 5px;
         }
@@ -30,8 +28,8 @@ $col2: gray;
 }
 
 #bin {
-    width: 50px;
-    font-size: 50px;
+    width: get-val($main-map, 'button.height') * 1.2;
+    font-size: get-val($main-map, 'button.height') * 1.2;
 
     &.icon-bin {
         &.binOpen {
@@ -46,31 +44,27 @@ $col2: gray;
 
     float: right;
     margin-left: auto;
-    margin-right: 17px;
+    margin-right: get-val($main-map, 'margin') * 4;
     user-select: none;
+
+    color: get-val($colours-map, 'inverse.1');
+
     &:hover {
         .binLabel {
             display: block;
-            color: black;
+            color: get-val($colours-map, 'inverse.1');
         }
-        color: red;
+        color: get-val($colours-map, 'error');
     }
 }
 
-$gridCol: rgba(128, 128, 128, 0.1);
-$gridDim: 20px;
 body {
     margin: 0;
     padding: 0;
     font: 100% $fontstack !important;
-    background-color: $col1;
-    background-size: $gridDim $gridDim;
-    background-image: linear-gradient(to right, $gridCol 1px, transparent 1px), linear-gradient(to bottom, $gridCol 1px, transparent 1px);
-}
+    background-color: get-val($main-map, 'background-color');
 
-#enterMat {
-    font: 100% $fontstack;
-    font-size: 30px;
+    @include background-grid(1, get-val($main-map, 'background-grid.grid-color'));
 }
 
 .noSelect {
@@ -88,21 +82,19 @@ a {
 }
 .clickedit {
     width: 60px;
-    font-size: 30px;
+    font-size: get-val($main-map, 'font-size.normal');
     border-style: none;
 }
 
 .newLabel {
-    background-color: #e8effd;
+    background-color: rgba(get-val($colours-map, 'theme-col.lighten.3'), 0.4);
+    color: get-val($colours-map, 'inverse.1');
+
     border-radius: 10px;
     padding: 2px 5px;
-    margin-left: 10px;
+    margin-left: get-val($main-map, 'margin') * 2;
     display: none;
     cursor: default;
 
-    height: 30px;
-
-    &.binLabel {
-
-    }
+    height: get-val($main-map, 'button.label.height');
 }

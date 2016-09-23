@@ -4,8 +4,8 @@ $cellHeight: 55px;
 .matrixCell {
     width: $cellWidth;
     height: $cellHeight;
-    margin-right: 10px;
-    margin-bottom: 10px;
+    margin-right: get-val($main-map, 'margin') * 2;
+    margin-bottom: get-val($main-map, 'margin') * 2;
     text-align: center;
     border-radius: 4px;
     border-color: black;

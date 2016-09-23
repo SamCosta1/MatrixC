@@ -8,6 +8,12 @@ function QuickCalculations() {
             func: funcENUM.INVERSE,
             text: "Inverse"
         }, {
+            func: funcENUM.RANK,
+            text: "Rank"
+        }, {
+            func: funcENUM.ROWREDUCE,
+            text: "Row Reduce"
+        }, {
             func: funcENUM.DET,
             text: "Determinant"
         }],
@@ -89,7 +95,6 @@ function QuickCalculations() {
                 step.data.op2 = scalarMultiple;
             } else if ($(e.currentTarget).hasClass('quickCalcsPowerCalc')) {
                 var pow = parseInt($('.quickCalcsPowerCalc .inputCell').val());
-                console.log($(e.currentTarget), "POWER", pow);
                 step.data.result = currentMatrix.power(pow, step);
                 step.data.type = '^';
                 step.data.op1 = currentMatrix;

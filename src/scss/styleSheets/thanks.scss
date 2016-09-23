@@ -1,7 +1,10 @@
-@import "../icons";
-@import "../main";
-@import "../matrix";
-@import "../header";
+@import "../maps/helper-functions";
+@import "../themes/helper";
+@import "../maps/includer";
+@import "../components/icons";
+@import "../components/main";
+@import "../components/matrix";
+@import "../components/header";
 
 .mainBody {
     display: flex;

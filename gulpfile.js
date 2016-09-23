@@ -2,13 +2,15 @@ var gulp = require('gulp');
 var sass = require('gulp-sass');
 var concat = require('gulp-concat');
 var rename = require('gulp-rename');
-var shell = require('gulp-shell');
 var uglify = require('gulp-uglify');
 var gulpif = require('gulp-if');
 var cleanCSS = require('gulp-clean-css');
 var autoprefixer = require('gulp-autoprefixer');
 var babel = require('gulp-babel');
 var browserSync = require('browser-sync').create();
+var fs = require('fs');
+var gcallback = require('gulp-callback');
+var inject = require('gulp-inject-string');
 
 // Static server
 gulp.task('browser-sync', function() {
@@ -28,17 +30,29 @@ options = {
 var jsFiles = 'src/js/**/*.js',
 jsDest = 'dist/';
 
+var colours = ['blue', 'green', 'purple', 'cyan'];
+var themes = ['light', 'dark'];
+
 gulp.task('styles', function() {
+    for (var theme = 0; theme < themes.length; theme++) {
+        for (var col = 0; col < colours.length; col++) {
+            themeCompile(theme,col);
+        }
+    }
+});
+
+function themeCompile(theme, col) {
     gulp.src('src/scss/styleSheets/*.scss')
-    .pipe(sass().on('error', sass.logError))
+    .pipe(inject.prepend("$COLOUR: '" + colours[col] + "'; $THEME: '" + themes[theme] + "';"))
+        .pipe(sass().on('error', sass.logError))
         .pipe(autoprefixer({
             browsers: ['last 2 versions'],
             cascade: false
         }))
         .pipe(gulpif(deploy,cleanCSS()))
-        .pipe(gulp.dest(jsDest))
+        .pipe(gulp.dest(jsDest + themes[theme] + '/' + colours[col]))
         .pipe(gulpif(!deploy,browserSync.reload({stream: true})));
-});
+}
 
 var deploy = false;
 gulp.task('deploy', function() {
@@ -51,10 +65,6 @@ gulp.task('default', function() {
     gulp.start('scripts');
     gulp.start('styles');
 });
-
-gulp.task('icon-update', shell.task([
-  './updateicons'
-]));
 
 gulp.task('develop', ['default', 'browser-sync'], function() {
     gulp.watch('./*.zip',['icon-update']);
@@ -74,8 +84,14 @@ gulp.task('libraryScripts', function() {
 gulp.task('scripts', function() {
     return gulp.src(jsFiles)
         .pipe(concat('scripts.min.js'))
-        .pipe(gulp.dest(jsDest))    
+        .pipe(inject.after('// GULP-INCLUDE(THEME&COLOURS)', getArraysAsStrings()))
+        .pipe(gulp.dest(jsDest))
         .pipe(gulpif(deploy, uglify()))
         .pipe(gulp.dest(jsDest))
         .pipe(gulpif(!deploy,browserSync.reload({stream: true})));
 });
+
+function getArraysAsStrings() {
+    return '\nvar colours = ' + JSON.stringify(colours) + '; \n' +
+           'var themes = ' + JSON.stringify(themes) + ';';
+}

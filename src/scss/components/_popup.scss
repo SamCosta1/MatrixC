@@ -1,0 +1,50 @@
+$borderRadius: 10px;
+
+.popUpContainer {
+    background-color: get-val($main-map, 'background-color');
+
+    height:98%;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    box-shadow: get-val($colours-map, 'inverse.1') 0px 0px 17px;
+    border-radius: $borderRadius;
+    @include background-grid(1.5, get-val($main-map, 'background-grid.grid-color'));
+
+    .popUpHeader {
+
+        .popUpHeaderText {
+            margin: 0px get-val($main-map, 'margin') * 3;
+        }
+        border-radius: $borderRadius;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 30px;
+        background-color: get-val($main-map, 'background-color');
+        color: get-val($colours-map, 'inverse.1');
+
+        overflow: hidden;
+
+        .closebtn {
+            margin-right: get-val($main-map, 'margin') * 3;
+            cursor: pointer;
+            font-size: get-val($main-map, 'font-size.small');
+        }
+    }
+
+    .popUpBody {
+        padding: get-val($main-map, 'margin') * 3;
+        overflow: auto;
+        color: get-val($colours-map, 'inverse.1');
+    }
+
+    .allCalcLabel {
+        width: 95%;
+        background-color: get-val($colours-map, 'theme-col.darken.1');;
+        border-radius: $borderRadius;
+        padding-left: get-val($main-map, 'margin') * 3 / 2;
+        color: white;
+    }
+
+}

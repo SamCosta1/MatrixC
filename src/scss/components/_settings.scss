@@ -1,0 +1,41 @@
+.settingsContainer {
+
+    .settingsOption {
+        border-radius: 3px;
+        border-style: solid;
+        border-width: thin;
+        border-color: get-val($colours-map, 'inverse.4');
+
+        &:not(:first-child) {
+            margin-left: get-val($main-map, 'margin') * 2;
+        }
+    }
+
+    .settingsColours {
+        display: flex;
+
+        .settingsOption {
+            height: 50px;
+            width: 50px;
+        }
+    }
+
+    p {
+        color: get-val($colours-map, 'inverse.1');
+    }
+
+    .settingsThemes {
+        display: flex;
+
+        .settingsOption {
+            flex: 1;
+            height: 50px;
+
+            &.BASE-light {
+                .settingsOption {
+                    border-color: get-val($colours-map, 'base.4');
+                }
+            }
+        }
+    }
+}

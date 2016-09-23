@@ -47,12 +47,18 @@ CalculationStep.prototype.renderThis = function($parent) {
         case funcENUM.TRANSPOSE:
             tex += '\\text{transpose} \\Bigg(' + this.data.op1.getTex() + '\\Bigg) = ' + this.data.result.getTex();
             break;
+        case funcENUM.RANK:
+            tex += '\\text{rank} \\Bigg(' + this.data.op1.getTex() + '\\Bigg) = ' + this.data.result.getTex();
+            break;
         case '+':
         case '-':
             tex += this.data.op1.getTex() + this.data.type + this.data.op2.getTex() + '=' + this.data.result.getTex();
             break;
         case '*':
             tex += this.data.op1.getTex() + '\\times' + this.data.op2.getTex() + '=' + this.data.result.getTex();
+            break;
+        case 'comment':
+            tex += '\\text{' + this.data.comment + '}';
             break;
         case '/':
             tex += '\\frac{' + this.data.op1.getTex() + '}{' + this.data.op2.getTex() + '}' + '=' + this.data.result.getTex();

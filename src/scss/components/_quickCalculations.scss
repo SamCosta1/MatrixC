@@ -11,28 +11,23 @@
     width: 100%;
     position: fixed;
     flex-direction: column;
-    font: 100% $fontstack !important;
     z-index: 1;
 
     top: 0px;
-    height: 150px;
-    background-color: white;
+    height: get-val($header-map, 'height');
+    background-color: get-val($colours-map, 'base.1');
 
     border-bottom-style: solid;
-    border-color: black;
+    border-color: get-val($colours-map, 'inverse.1');
 
-    $gridCol: rgba(128, 128, 128, 0.1);
-    $gridDim: 20px;
-    background-size: $gridDim $gridDim;
-    background-image: linear-gradient(to right, $gridCol 1px, transparent 1px), linear-gradient(to bottom, $gridCol 1px, transparent 1px);
+    @include background-grid(1, get-val($main-map, 'background-grid.grid-color'));
 
-    $titleFontSize: 30px;
     .quickCalcsTitle {
-        font-size: $titleFontSize;
-        height: $titleFontSize;
+        font-size: get-val($main-map, 'font-size.heading');
+        height: get-val($main-map, 'font-size.heading');
         display: flex;
         align-items: center;
-        margin-left: 5px
+        margin-left: get-val($main-map, 'margin');
     }
 
     .quickCalcsColumnContainer {
@@ -51,7 +46,7 @@
                 margin: 0px;
 
                 &.op {
-                    margin: 0 10px;
+                    margin: 0 get-val($main-map, 'margin') * 2;
                 }
             }
         }
@@ -74,14 +69,14 @@
         justify-content: space-between;
 
         .quickCalcsPinIcon {
-            margin-right: 16px;
+            margin-right: get-val($sidebar-map, 'handle.width');
             cursor: pointer;
             color: #a5a5a5;
-            width:20px;
+            width: 20px;
             height: 20px;
 
             .icon-pin {
-                margin-left: 4px;
+                margin-left: get-val($main-map, 'margin')
             }
 
             &:hover {
@@ -97,7 +92,7 @@
 
     &.pinned {
         .quickCalcsPinIcon {
-            color: #22374a;
+            color: get-val($colours-map, 'theme-col.lighten.1');
         }
     }
 
@@ -124,33 +119,30 @@
     .quickBtn {
         display: flex;
         align-items: center;
-        background-color: gray;
-        color: white;
+
+        background-color: get-val($colours-map, 'inverse.4');
+        color: get-val($colours-map, 'base.2');
+
         padding:0px 10px;
-        margin: 5px 5px;
+        margin: get-val($main-map, 'margin') get-val($main-map, 'margin');
         justify-content: center;
         border-radius: 3px;
-        font-size: 20px;
-
-        .quickCalcBtnText {
-            height: 40px;
-        }
+        font-size: get-val($main-map, 'font-size.small');
 
         &:hover {
             cursor: pointer;
-            background-color: #676767;
+            background-color: get-val($colours-map, 'theme-col.lighten.4');
         }
         div:first-child {
-            margin-right: 3px;
+            margin-right: get-val($main-map, 'margin')
         }
         div:last-child {
-            margin-left: 3px;
+            margin-left: get-val($main-map, 'margin')
         }
 
         select {
             border-radius: 2px;
-            font-size: 20px;
+            font-size: get-val($main-map, 'font-size.small');
         }
     }
-
 }

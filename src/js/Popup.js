@@ -5,7 +5,9 @@ function Popup() {
         $close = $('<div class="closebtn icon-close">'),
         $popupBody = $('<div class="popUpBody">'),
         $window = $(window),
-        $body = $('body');
+        $body = $('body'),
+
+        heightScalar;
 
     function init() {
         $container.hide();
@@ -30,9 +32,10 @@ function Popup() {
 
     function resize() {
         $container.width($window.width() - 23 - $('.sidebar').width());
-        $container.height($(window).height() * 0.98);
+        $container.height($(window).height() * 0.98 * heightScalar);
+
         $popupBody.height($container.height() - $headerText.outerHeight(true));
-        $container.css('top', 10);
+        $container.css('top', ($(window).height() - $container.height()) / 2);
 
         if ($('#quickCalcsContainer').is(":visible")) {
             var quickCalcsHeight = $('#quickCalcsContainer').height();
@@ -42,7 +45,8 @@ function Popup() {
         }
     }
 
-    function renderContent(content) {
+    function renderContent(content, heightMultiplier = 1) {
+        heightScalar = heightMultiplier;
         $headerText.empty();
         $popupBody.empty();
         $headerText.append(content.header);
