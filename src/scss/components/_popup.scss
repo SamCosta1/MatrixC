@@ -34,15 +34,17 @@ $borderRadius: 10px;
     }
 
     .popUpBody {
-        margin-left: get-val($main-map, 'margin') * 3;
+        padding: get-val($main-map, 'margin') * 3;
         overflow: auto;
+        color: get-val($colours-map, 'inverse.1');
     }
 
     .allCalcLabel {
         width: 95%;
-        background-color: #eaf1ff;
+        background-color: get-val($colours-map, 'theme-col.darken.1');;
         border-radius: $borderRadius;
         padding-left: get-val($main-map, 'margin') * 3 / 2;
+        color: white;
     }
 
 }

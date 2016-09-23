@@ -5,6 +5,10 @@
         border-style: solid;
         border-width: thin;
         border-color: get-val($colours-map, 'inverse.4');
+
+        &:not(:first-child) {
+            margin-left: get-val($main-map, 'margin') * 2;
+        }
     }
 
     .settingsColours {
@@ -13,10 +17,6 @@
         .settingsOption {
             height: 50px;
             width: 50px;
-
-            &:not(:first-child) {
-                margin-left: 10px;
-            }
         }
     }
 
