@@ -84,8 +84,14 @@ gulp.task('libraryScripts', function() {
 gulp.task('scripts', function() {
     return gulp.src(jsFiles)
         .pipe(concat('scripts.min.js'))
+        .pipe(inject.after('// GULP-INCLUDE(THEME&COLOURS)', getArraysAsStrings()))
         .pipe(gulp.dest(jsDest))
         .pipe(gulpif(deploy, uglify()))
         .pipe(gulp.dest(jsDest))
         .pipe(gulpif(!deploy,browserSync.reload({stream: true})));
 });
+
+function getArraysAsStrings() {
+    return '\nvar colours = ' + JSON.stringify(colours) + '; \n' +
+           'var themes = ' + JSON.stringify(themes) + ';';
+}

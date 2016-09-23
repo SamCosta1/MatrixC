@@ -19,3 +19,16 @@ $themes: (
 $base: get-val($themes, 'themes.' + $THEME + '.base');
 $shift-amount: get-val($themes, 'themes.' + $THEME + '.shift-amount');
 $theme-col: get-val($themes, 'colours.' + $COLOUR);
+
+// Add classes for each colour and theme-col
+@each $name, $col in map-get($themes, 'colours') {
+    .COLOUR-#{$name} {
+        background-color: $col;
+    }
+}
+
+@each $name, $theme in map-get($themes, 'themes') {
+    .BASE-#{$name} {
+        background-color: map-get($theme, 'base');
+    }
+}

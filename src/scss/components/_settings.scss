@@ -1,0 +1,20 @@
+.settingsContainer {
+
+    .settingsColours {
+        display: flex;
+
+        .settingsOption {
+            height: 50px;
+            width: 50px;
+        }
+    }
+
+    .settingsThemes {
+        display: flex;
+
+        .settingsOption {
+            flex: 1;
+            height: 50px;
+        }
+    }
+}
