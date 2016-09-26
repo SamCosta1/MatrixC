@@ -3,7 +3,6 @@ $borderRadius: 10px;
 .popUpContainer {
     background-color: get-val($main-map, 'background-color');
 
-    height:98%;
     position: fixed;
     top: 10px;
     left: 10px;

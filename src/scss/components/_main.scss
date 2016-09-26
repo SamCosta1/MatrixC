@@ -30,6 +30,7 @@ $fontstack: 'Mandali', sans-serif;
 #bin {
     width: get-val($main-map, 'button.height') * 1.2;
     font-size: get-val($main-map, 'button.height') * 1.2;
+    cursor: pointer;
 
     &.icon-bin {
         &.binOpen {
@@ -82,6 +83,8 @@ a {
 }
 .clickedit {
     width: 60px;
+    height: 30px;
+    border-radius: 7px;
     font-size: get-val($main-map, 'font-size.normal');
     border-style: none;
 }
