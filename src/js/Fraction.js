@@ -20,7 +20,7 @@ function Fraction(top, bottom) {
 
     // Convert decimal numbers into Fraction
     var topDec = !this.top.mod(1).eq(0);
-    botDec = !this.bottom.mod(1).eq(0);
+    var botDec = !this.bottom.mod(1).eq(0);
     if (topDec || botDec) {
         var noDigtsTop = topDec ? this.top.toString().split('.')[1].length : 0;
         var noDigtsBot = botDec ? this.bottom.toString().split('.')[1].length : 0;

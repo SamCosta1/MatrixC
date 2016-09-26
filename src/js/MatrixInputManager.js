@@ -73,9 +73,9 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
         $table.attr("data-rows", row);
 
         // Build up the table
-        for (i = 0; i < row; i++) {
+        for (var i = 0; i < row; i++) {
             var $tr = $("<tr>");
-            for (j = 0; j < col; j++) {
+            for (var j = 0; j < col; j++) {
                 var $td = $("<td>");
                 $td.append(cellManager.getCell(i, j, matrix instanceof Matrix ? matrix.getCell(i, j) :
                     matrix instanceof Fraction ? matrix : new Fraction(matrix)));
@@ -87,12 +87,12 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
 
         $div.append($contnr);
         if (matrix instanceof Matrix) {
-            $buttons = $('<div class="matrixButtons">')
-            $hiddenBtns = $('<div class="MatrixOpButtons noSelect">').appendTo($buttons);
-            $modifiers = $('<div class="guiModifiers">').appendTo($buttons);
+            var $buttons = $('<div class="matrixButtons">'),
+            $hiddenBtns = $('<div class="MatrixOpButtons noSelect">').appendTo($buttons),
+            $modifiers = $('<div class="guiModifiers">').appendTo($buttons),
 
-            $dragHandle = $('<div class="dragHandle icon-drag-handle">').appendTo($hiddenBtns);
-            $allCalcButton = $('<div class="allCalcButton icon-info">').appendTo($hiddenBtns);
+            $dragHandle = $('<div class="dragHandle icon-drag-handle">').appendTo($hiddenBtns),
+            $allCalcButton = $('<div class="allCalcButton icon-info">').appendTo($hiddenBtns),
             $quickCalcsBtn = $('<div class="quickCalcsButton icon-quickCalcs">').appendTo($hiddenBtns);
 
             $allCalcButton.click(onAllCalcClicked);
@@ -102,16 +102,16 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
                 return $('<div class="icon-'+direction+'-arrow">');
             };
 
-            $colbtn = $('<button class="addCol colButton rowColModifier noSelect">');
+            var $colbtn = $('<button class="addCol colButton rowColModifier noSelect">');
             $colbtn.append(btnImg('right'));
 
-            $rowbtn = $('<button class="addRow rowButton rowColModifier noSelect">');
+            var $rowbtn = $('<button class="addRow rowButton rowColModifier noSelect">');
             $rowbtn.append(btnImg('down'));
 
-            $rmvColbtn = $('<button class="rmvCol colButton rowColModifier noSelect">');
+            var $rmvColbtn = $('<button class="rmvCol colButton rowColModifier noSelect">');
             $rmvColbtn.append(btnImg('left'));
 
-            $rmvRowbtn = $('<button class="rmvRow rowButton rowColModifier noSelect">');
+            var $rmvRowbtn = $('<button class="rmvRow rowButton rowColModifier noSelect">');
             $rmvRowbtn.append(btnImg('up'));
 
             $colbtn.attr("data-tableid", "t" + count);

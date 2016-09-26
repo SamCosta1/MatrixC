@@ -7,7 +7,7 @@ function Popup() {
         $window = $(window),
         $body = $('body'),
 
-        heightScalar;
+        isFullScreen;
 
     function init() {
         $container.hide();
@@ -27,26 +27,33 @@ function Popup() {
     }
 
     function close() {
+        $popupBody.css("height", "");
+        $container.css("height", "");
         $container.hide();
     }
 
     function resize() {
         $container.width($window.width() - 23 - $('.sidebar').width());
-        $container.height($(window).height() * 0.98 * heightScalar);
+        if (isFullScreen) {
+            $container.height(window.innerHeight * 0.98);
+            $popupBody.height($container.height() - $headerText.height() - (parseInt($popupBody.css('padding-top')) * 2));
+        }
 
-        $popupBody.height($container.height() - $headerText.outerHeight(true));
-        $container.css('top', ($(window).height() - $container.height()) / 2);
+        $container.css('top', (window.innerHeight - $container.height()) / 2);
 
         if ($('#quickCalcsContainer').is(":visible")) {
             var quickCalcsHeight = $('#quickCalcsContainer').height();
             $container.css('top', quickCalcsHeight + 10);
-            $container.height($container.height() - quickCalcsHeight);
-            $popupBody.height($popupBody.height() - quickCalcsHeight);
+
+            if (isFullScreen) {
+                $container.height($container.height() - quickCalcsHeight);
+                $popupBody.height($popupBody.height() - quickCalcsHeight);
+            }
         }
     }
 
-    function renderContent(content, heightMultiplier = 1) {
-        heightScalar = heightMultiplier;
+    function renderContent(content, fullScreen = true) {
+        isFullScreen = fullScreen;
         $headerText.empty();
         $popupBody.empty();
         $headerText.append(content.header);

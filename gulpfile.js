@@ -87,6 +87,9 @@ gulp.task('scripts', function() {
         .pipe(inject.after('// GULP-INCLUDE(THEME&COLOURS)', getArraysAsStrings()))
         .pipe(gulp.dest(jsDest))
         .pipe(gulpif(deploy, uglify()))
+        .pipe(babel({
+            presets: ['es2015']
+        }))
         .pipe(gulp.dest(jsDest))
         .pipe(gulpif(!deploy,browserSync.reload({stream: true})));
 });

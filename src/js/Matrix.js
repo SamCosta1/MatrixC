@@ -258,8 +258,7 @@ Matrix.prototype.rank = function() {
         numZeroRows = 0;
 
     for (row = rowReduced.numRows() - 1; row >= 0; row--) {
-        for (var col = 0; col < rowReduced.numCols(); col++) {
-            console.log(col);
+        for (var col = 0; col < rowReduced.numCols(); col++) {        
             if (!rowReduced.getCell(row,col).isZero()){
                 nonZeroFound = true;
                 break;

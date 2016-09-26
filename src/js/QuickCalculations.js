@@ -39,7 +39,7 @@ function QuickCalculations() {
         $errorLabel = $('.quickCalcsErrDisplay'),
         $errorContainer = $('.quickCalcsErrContainer'),
         $dropdowns = $('.quickCalcsOperatorsContainer').find('select').not('.quickCalcsAddMatricies'),
-        $addDropDown = $('.quickCalcsAddMatricies');
+        $addDropDown = $('.quickCalcsAddMatricies'),
         $scalarMultiple = $('.quickCalcsScalarContainer');
 
     function init(_matrixManager, _variables) {

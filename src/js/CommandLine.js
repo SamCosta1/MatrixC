@@ -19,7 +19,8 @@ function CommandLine(_variables, _matrixManager) {
 
     function onKeyUp(e) {
         e.stopImmediatePropagation(); // Mainly to stop delete key deleting the matrix
-        var code = e.keyCode ? e.keyCode : e.which;
+        var code = e.keyCode ? e.keyCode : e.which,
+        returned;
 
         switch (code) {
             case 13: // Enter key pressed
