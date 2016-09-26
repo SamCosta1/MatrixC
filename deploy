@@ -7,7 +7,6 @@ else
     echo "Branch check successful"
     echo "Running gulp"
 
-    ./generate-all-styles
     gulp deploy
 
     cd /home/sam/Mess_About_Code/MatrixCLive
@@ -15,13 +14,13 @@ else
 
     echo "Clearing old code"
     rm *
-    rm dist/*
-    rm dependencies/*
-    rm img/*
+    rm -r dist/*
+    rm -r dependencies/*
+    rm -r img/*
 
     cp ../MatrixC/*html .
-    cp ../MatrixC/img/* ./img
-    cp ../MatrixC/dist/* ./dist
+    cp -r ../MatrixC/img/* ./img
+    cp -r ../MatrixC/dist/* ./dist
     rsync -av --exclude='*js' ../MatrixC/dependencies/ dependencies
 
     echo "Current Directory Structure:"
