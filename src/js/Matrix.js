@@ -52,7 +52,7 @@ Matrix.prototype.determinant = function() {
     var reduced = this.reduceToReducedEchF();
     var multiplier = reduced.multiplier;
 
-    var lastRow = reduced.numRows() - 1;
+    var lastRow = 0;
     var sum = new Fraction();
     var mult = 1;
     for (var col = 0; col < reduced.numCols(); col++, mult *= -1) {

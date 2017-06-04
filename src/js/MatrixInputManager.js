@@ -192,7 +192,7 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
     function onAddColumn(e) {
         e.stopImmediatePropagation();
         var rowCount = 0;
-        $table = $("#" + $(this).attr("data-tableid"));
+        var $table = $("#" + $(this).attr("data-tableid"));
         var n = $table.attr("data-cols") - 1;
         var m = $table.attr("data-rows");
         $table.attr("data-cols", n + 2);
@@ -209,14 +209,14 @@ function MatrixInputManager(_variables, _popup, _quickCalcsPanel) {
 
     function onAddRow(e) {
         e.stopImmediatePropagation();
-        $table = $("#" + $(this).attr("data-tableid"));
+        var $table = $("#" + $(this).attr("data-tableid"));
         var numCols = $table.attr("data-cols");
         var numRows = $table.attr("data-rows");
         $table.attr("data-rows", parseInt(numRows) + 1);
 
-        $tr = $("<tr>");
-        for (i = 0; i < numCols; i++) {
-            $td = $("<td>");
+        var $tr = $("<tr>");
+        for (var i = 0; i < numCols; i++) {
+            var $td = $("<td>");
             $td.append(cellManager.getCell(numRows, i, new Fraction('0')));
             $tr.append($td);
         }
